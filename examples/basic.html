@@ -19,6 +19,9 @@
 			<label>Email</label>
 			<input type="email" name="email"></div>
 		<div>
+			<label>Age</label>
+			<input type="text" name="age"></div>
+		<div>
 			<label>Mobile</label>
 			<input type="tel" name="mobile"></div>
 		<div>
@@ -31,6 +34,18 @@
 			<label>Resume</label>
 			<input type="file" name="resume" multiple>
 		</div>
+		<div>
+			<label>Date of birth</label>
+			<input type="text" name="date_of_birth" placeholder="YYYY-MM-DD">
+		</div>
+		<div>
+			<label>Office time</label>
+			<input type="text" name="office_time" placeholder="HH:MM:SS">
+		</div>
+		<div>
+			<label>Portfolio</label>
+			<input type="text" name="portfolio_link" placeholder="https://www.example.com">
+		</div>
 		<button>Submit</button>
 	</form>
 	<script src="../src/form-validator.js"></script>
@@ -40,11 +55,15 @@
 		something: 'require|in::name,email,address',
 		name: 'require|minLength::2|maxLength::50',
 		email: 'require|email',
-		mobile: 'require|integer|length::10',
+		age: 'require|integer|length::2',
+		mobile: 'require|mobile',
 		password: 'require|minLength::8|maxLength::20',
 		confirm_password: 'require|match::password',
 		resume: 'require|file::maxFiles(1)|file::maxSize(20kb)|file::accepts(png|jpg|jpeg)',
 		// something: 'require|notIn::name,email,address'
+		date_of_birth: 'require|date',
+		office_time: 'require|time',
+		portfolio_link: 'require|url',
 	}).enableLiveValidation();
 	</script>
 </body>
