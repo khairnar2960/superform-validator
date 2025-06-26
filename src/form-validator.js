@@ -832,12 +832,14 @@ class FormValidator {
         for (let field in this.errors) {
             const fieldElement = this.form.querySelector(`[name="${field}"]`);
             const isGroup = fieldElement?.parentNode.classList.contains('input-group') || false;
-            const id = `#${field}-error`;
+            const idName = `${field}-error`;
+            const id = '#' + idName;
             const msg = this.errors[field];
             let errorElement = this.form.querySelector(id);
+
             if (!errorElement) {
                 errorElement = document.createElement(this.errorElement);
-                errorElement.id = id;
+                errorElement.id = idName;
                 errorElement.className = this.errorClass;
                 if (isGroup) {
                     fieldElement.parentNode.insertAdjacentElement('afterend', errorElement);
