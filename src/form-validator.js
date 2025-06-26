@@ -290,6 +290,8 @@ class FormValidator {
             return !isNaN(val);
         }, false, '@{field} must be numeric');
 
+        ruleSet.add('mobile', /^[6-9]{1}[0-9]{9}$/, false, '@{field} must be a valid mobile number');
+
         ruleSet.add('integer', /^\d+$/, false, '@{field} must be integer');
 
         ruleSet.add('match', (value, other) => {
