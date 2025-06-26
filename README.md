@@ -2,7 +2,7 @@
 
 A powerful and flexible JavaScript form validator for native HTML forms.
 
-![npm](https://img.shields.io/npm/v/superform-validator) ![npm bundle size (version)](https://img.shields.io/bundlephobia/min/superform-validator/1.0.1) ![GitHub release (by tag)](https://img.shields.io/github/downloads/khairnar2960/superform-validator/stable/total) ![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hy/superform-validator) ![npm](https://img.shields.io/npm/dy/superform-validator) ![GitHub issues](https://img.shields.io/github/issues-raw/khairnar2960/superform-validator) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/khairnar2960/superform-validator)
+![npm](https://img.shields.io/npm/v/superform-validator) ![npm bundle size (version)](https://img.shields.io/bundlephobia/min/superform-validator/1.0.2) ![GitHub release (by tag)](https://img.shields.io/github/downloads/khairnar2960/superform-validator/stable/total) ![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hy/superform-validator) ![npm](https://img.shields.io/npm/dy/superform-validator) ![GitHub issues](https://img.shields.io/github/issues-raw/khairnar2960/superform-validator) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/khairnar2960/superform-validator)
 
 ---
 
@@ -29,12 +29,12 @@ To use FormValidator include `form-validator.js` just above closing body tag int
 OR use jsDeliver CDN
 
 ```html
-  <script src="https://cdn.jsdelivr.net/npm/superform-validator@1.0.1/dist/form-validator.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/superform-validator@1.0.2/dist/form-validator.js"></script>
 ```
 OR use unpkg CDN
 
 ```html
-  <script src="https://unpkg.com/superform-validator@1.0.1/dist/form-validator.js"></script>
+  <script src="https://unpkg.com/superform-validator@1.0.2/dist/form-validator.js"></script>
 ```
 
 ---
@@ -88,7 +88,12 @@ const validator = FormValidator.init('#myForm', schema, onValid, onError, option
 | `alphanumspace` | `alphanumspace`           | Alphabets, numbers, spaces              |
 | `slug`          | `slug`                    | Valid slug                              |
 | `decimal`       | `decimal`                 | Decimal number                          |
+| `numeric`       | `numeric`                 | Integer & Decimal both number           |
 | `integer`       | `integer`                 | Integer number                          |
+| `mobile`        | `mobile`                  | Indian mobile number                    |
+| `date`          | `date`                    | Date in format YYYY-MM-DD               |
+| `time`          | `time`                    | Time in format HH:MM:SS                 |
+| `url`           | `url`                     | Web URL                                 |
 | `match`         | `match::otherFieldName`   | Must match another field                |
 | `in`            | `in::val1,val2`           | Value must be in provided list          |
 | `notIn`         | `notIn::val1,val2`        | Value must not be in provided list      |
