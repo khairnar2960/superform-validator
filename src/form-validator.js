@@ -298,6 +298,8 @@ class FormValidator {
 
         ruleSet.add('time', /^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, false, '@{field} must be valid time');
 
+        ruleSet.add('url', /\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i, false, '@{field} must be valid url');
+
         ruleSet.add('match', (value, other) => {
             return other && other?.value === value;
         }, true, '@{field} do not match with @{other}');
