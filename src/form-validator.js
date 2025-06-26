@@ -286,6 +286,10 @@ class FormValidator {
 
         ruleSet.add('decimal', /^(\d+)\.?(\d+)?$/, false, 'Invalid @{field}');
 
+        ruleSet.add('numeric', (val) => {
+            return !isNaN(val);
+        }, false, '@{field} must be numeric');
+
         ruleSet.add('integer', /^\d+$/, false, '@{field} must be integer');
 
         ruleSet.add('match', (value, other) => {
