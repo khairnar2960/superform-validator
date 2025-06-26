@@ -294,6 +294,8 @@ class FormValidator {
 
         ruleSet.add('integer', /^\d+$/, false, '@{field} must be integer');
 
+        ruleSet.add('date', /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, false, '@{field} must be valid date');
+
         ruleSet.add('match', (value, other) => {
             return other && other?.value === value;
         }, true, '@{field} do not match with @{other}');
