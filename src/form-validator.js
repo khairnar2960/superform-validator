@@ -830,18 +830,23 @@ class FormValidator {
 
     displayErrors() {
         for (let field in this.errors) {
-            const el = this.form.querySelector(`[name="${field}"]`);
-            const msg = this.errors[field];
-            const group = el ? (el.closest('.input-group') || el.parentNode) : form;
-            let err = this.form.querySelector(`#${field}-error`);
-            if (!err) {
-                err = document.createElement(this.errorElement);
-                err.id = `${field}-error`;
-                err.className = this.errorClass;
-                group.appendChild(err);
-            }
-            err.innerHTML = msg;
-        }
+			const fieldElement = this.form.querySelector(`[name="${field}"]`);
+			const isGroup = fieldElement?.parentNode.classList.contains('input-group') || false;
+			const id = `#${field}-error`;
+			const msg = this.errors[field];
+			let errorElement = this.form.querySelector(id);
+			if (!errorElement) {
+				errorElement = document.createElement(this.errorElement);
+				errorElement.id = id;
+				errorElement.className = this.errorClass;
+				if (isGroup) {
+					fieldElement.parentNode.insertAdjacentElement('afterend', errorElement);
+				} else {
+					fieldElement.parentNode.appendChild(errorElement);
+				}
+			}
+			errorElement.innerHTML = msg;
+		}
     }
 
 	scrollToFirstError() {
