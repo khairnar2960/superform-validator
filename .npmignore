@@ -1,6 +1,7 @@
 # Ignore source files, examples, and other dev files
 src/
 examples/
+scripts/
 node_modules/
 .gitignore
 .gitattributes

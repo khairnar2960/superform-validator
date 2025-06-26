@@ -6,7 +6,10 @@
   "module": "dist/form-validator.js",
   "scripts": {
     "build": "npx terser src/form-validator.js -o dist/form-validator.js -c -m",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "release": "npm run bump-version --",
+    "bump-version": "node scripts/release.js",
+    "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md && git commit --no-verify -m \"chore: update changelog\""
   },
   "keywords": [
     "form",
@@ -28,6 +31,7 @@
     "url": "https://github.com/khairnar2960/superform-validator"
   },
   "devDependencies": {
+    "conventional-changelog-cli": "^5.0.0",
     "terser": "^5.0.0"
   }
 }
