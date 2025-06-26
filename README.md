@@ -21,20 +21,20 @@ A powerful and flexible JavaScript form validator for native HTML forms.
 
 ## Installation
 
-To use FormValidator include `superform-validator.js` just above closing body tag into html
+To use FormValidator include `form-validator.js` just above closing body tag into html
 
 ```html
-  <script src="superform-validator.js"></script>
+  <script src="form-validator.js"></script>
 ```
 OR use jsDeliver CDN
 
 ```html
-  <script src="https://cdn.jsdelivr.net/npm/superform-validator@1.0.0/dist/superform-validator.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/superform-validator@1.0.0/dist/form-validator.js"></script>
 ```
 OR use unpkg CDN
 
 ```html
-  <script src="https://unpkg.com/superform-validator@1.0.0/dist/superform-validator.js"></script>
+  <script src="https://unpkg.com/superform-validator@1.0.0/dist/form-validator.js"></script>
 ```
 
 ---
