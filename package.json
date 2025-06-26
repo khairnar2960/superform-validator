@@ -1,0 +1,33 @@
+{
+  "name": "superform-validator",
+  "version": "1.0.0",
+  "description": "A powerful and flexible JavaScript form validator for HTML.",
+  "main": "dist/form-validator.js",
+  "module": "dist/form-validator.js",
+  "scripts": {
+    "build": "npx terser src/form-validator.js -o dist/form-validator.js -c -m",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "form",
+    "validation",
+    "validator",
+    "html",
+    "javascript",
+    "form-validator"
+  ],
+  "author": "Harshal Khairnar <harshal@hitraa.com>",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khairnar2960/superform-validator"
+  },
+  "devDependencies": {
+    "terser": "^5.0.0"
+  }
+}

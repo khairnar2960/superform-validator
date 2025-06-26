@@ -1,0 +1,15 @@
+# Node
+node_modules/
+dist/
+npm-debug.log*
+.DS_Store
+
+# OS
+Thumbs.db
+ehthumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project

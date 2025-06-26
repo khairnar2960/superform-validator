@@ -1,0 +1,10 @@
+# Ignore source files, examples, and other dev files
+src/
+examples/
+node_modules/
+.gitignore
+.gitattributes
+package-lock.json
+npm-debug.log*
+README.md
+LICENSE

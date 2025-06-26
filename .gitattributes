@@ -1,0 +1,6 @@
+# Ensure consistent line endings
+* text=auto
+
+# Classify files by language for GitHub statistics
+*.js linguist-language=JavaScript
+*.html linguist-language=HTML
