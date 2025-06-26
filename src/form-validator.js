@@ -296,6 +296,8 @@ class FormValidator {
 
         ruleSet.add('date', /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, false, '@{field} must be valid date');
 
+        ruleSet.add('time', /^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, false, '@{field} must be valid time');
+
         ruleSet.add('match', (value, other) => {
             return other && other?.value === value;
         }, true, '@{field} do not match with @{other}');
