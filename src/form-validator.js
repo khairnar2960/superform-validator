@@ -848,15 +848,16 @@ class FormValidator {
             const id = '#' + idName;
             const msg = this.errors[field];
             let errorElement = this.form.querySelector(id);
+            const parentNode = fieldElement?.parentNode || this.form;
 
             if (!errorElement) {
                 errorElement = document.createElement(this.errorElement);
                 errorElement.id = idName;
                 errorElement.className = this.errorClass;
                 if (isGroup) {
-                    fieldElement.parentNode.insertAdjacentElement('afterend', errorElement);
+                    parentNode.insertAdjacentElement('afterend', errorElement);
                 } else {
-                    fieldElement.parentNode.appendChild(errorElement);
+                    parentNode.appendChild(errorElement);
                 }
             }
             errorElement.innerHTML = msg;
