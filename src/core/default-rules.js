@@ -38,7 +38,12 @@ rules.register('alphanumspace', /^[0-9a-zA-Z\s]+$/, false, 'Only alphabets, numb
 
 rules.register('slug', /^[0-9a-zA-Z-]+$/, false, 'Invalid slug');
 
-rules.register('decimal', /^(\d+)\.?(\d+)?$/, false, 'Invalid @{field}');
+// Float: Typically provides around 7 decimal digits of precision.
+rules.register('float', /^([+-]?([0-9]+[.][0-9]+))$/, false, '@{field} must be valid float');
+
+// Double: Offers higher precision, usually around 15-16 decimal digits.
+// Decimal: Provides the highest precision among the three, often with a larger number of decimal places
+rules.register('decimal', /^([+-]?([0-9]+[.][0-9]+))$/, false, '@{field} must be valid decimal');
 
 rules.register('numeric', (val) => {
 	return !isNaN(val);
@@ -46,7 +51,7 @@ rules.register('numeric', (val) => {
 
 rules.register('mobile', /^[6-9]{1}[0-9]{9}$/, false, '@{field} must be a valid mobile number');
 
-rules.register('integer', /^\d+$/, false, '@{field} must be integer');
+rules.register('integer', /^[+-]?[0-9]+$/, false, '@{field} must be integer');
 
 rules.register('date', /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, false, '@{field} must be valid date');
 
