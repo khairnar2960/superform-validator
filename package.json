@@ -1,11 +1,12 @@
 {
   "name": "superform-validator",
   "version": "1.0.2",
+  "type": "module",
   "description": "A powerful and flexible JavaScript form validator for HTML.",
   "main": "dist/form-validator.js",
   "module": "dist/form-validator.js",
   "scripts": {
-    "build": "npx terser src/form-validator.js -o dist/form-validator.js -c -m",
+    "build": "rollup -c",
     "prepare": "npm run build",
     "release": "npm run bump-version --",
     "bump-version": "node scripts/release.js",
@@ -31,7 +32,8 @@
     "url": "https://github.com/khairnar2960/superform-validator"
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
     "conventional-changelog-cli": "^5.0.0",
-    "terser": "^5.0.0"
+    "rollup": "^2.79.2"
   }
 }
