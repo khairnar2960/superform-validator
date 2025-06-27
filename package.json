@@ -1,6 +1,6 @@
 {
   "name": "superform-validator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "A powerful and flexible JavaScript form validator for HTML.",
   "main": "dist/form-validator.js",
