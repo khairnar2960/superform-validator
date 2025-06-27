@@ -2,6 +2,7 @@
 
 import { castings } from "./default-castings.js";
 import { rules as defaultRules } from "./default-rules.js";
+import { Rule } from "./rule.js";
 
 export class Validator {
 
