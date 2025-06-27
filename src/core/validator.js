@@ -1,241 +1,20 @@
-class CaseConverter {
-    static toSnakeCase(input) {
-        return input.replace(/(?<!^)[A-Z]/g, (char) => '_' + char).toLowerCase().replace(/\_?(\s+)\_?/g, '_');
-    }
+"use strict";
 
-    static toKebabCase(input) {
-        return input.replace(/(?<!^)[A-Z]/g, (char) => '-' + char).toLowerCase().replace(/\-?(\s+)\-?/g, '-');
-    }
+import { castings } from "./default-castings.js";
+import { rules as defaultRules } from "./default-rules.js";
 
-    static toCamelCase(input) {
-        return input.replace(/\s+/g, ' ')
-        .replace(/[-_\s](.)/g, (_, char) => char.toUpperCase())
-        .replace(/^(.)/, (_, char) => char.toLowerCase());
-    }
-
-    static toPascalCase(input) {
-        return input.replace(/\s+/g, ' ')
-        .replace(/[-_\s](.)/g, (_, char) => char.toUpperCase())
-        .replace(/^(.)/, (_, char) => char.toUpperCase());
-    }
-
-    static toTitleCase(input) {
-        return input
-        .replace(/[-_\s]+/g, ' ')
-        .replace(/\b\w/g, char => char.toUpperCase());
-    }
-
-    static toUpperCase(input) {
-        return input.toUpperCase();
-    }
-
-    static toLowerCase(input) {
-        return input.toLowerCase();
-    }
-
-    static convert(input, fromCase, toCase) {
-        const normalize = str => {
-            switch (fromCase.toLowerCase()) {
-                case 'snake':
-                    return str.replace(/[_]+/g, ' ');
-                case 'kebab':
-                    return str.replace(/[-]+/g, ' ');
-                case 'camel':
-                case 'pascal':
-                    return str.replace(/(?<!^)[A-Z]/g, (char) => ' ' + char);
-                case 'title':
-                case 'upper':
-                case 'lower':
-                    return str.toLowerCase();
-                default:
-                    return str;
-            }
-        };
-
-        const normalized = normalize(input)
-        .split(' ')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-        .join(' ');
-
-        switch (toCase.toLowerCase()) {
-            case 'snake':
-                return normalized.toLowerCase().replace(/\s+/g, '_');
-            case 'kebab':
-                return normalized.toLowerCase().replace(/\s+/g, '-');
-            case 'camel':
-                return normalized.replace(/\s+/g, '').replace(/^./, c => c.toLowerCase());
-            case 'pascal':
-                return normalized.replace(/\s+/g, '');
-            case 'title':
-                return normalized;
-            case 'upper':
-                return normalized.toUpperCase();
-            case 'lower':
-                return normalized.toLowerCase();
-            default:
-                return input;
-        }
-    }
-}
-
-class Rule {
+export class Validator {
 
     /**
-     * @param {string} name Rule name
-     * @param {((value, ...args)boolean)|RegExp} pattern Pattern or callback function
-     * @param {boolean} hasParams Set rule accepts parameters
-     * @param {string} messageTemplate Error message template to format
-     **/
-    constructor(name, pattern, hasParams, messageTemplate) {
-        this.name = name;
-        this.pattern = pattern;
-        this.hasParams = hasParams;
-        this.messageTemplate = messageTemplate;
-    }
-
-    /**
-     * @param {string} value Input value to validate 
-     * @param {any[]} args Arguments for callback function
-     **/
-    validate(value, ...args) {
-        if ('function' === typeof this.pattern) {
-            return this.pattern(value, ...args);
-        } else if (this.pattern instanceof RegExp) {
-            return this.pattern.test(value);
-        }
-        return false;
-    }
-
-    static format(params = {}, template = '') {
-        template = String(template);
-        for (const field in params) {
-            const value = params[field];
-            template = template.replaceAll(`@{${field}}`, value);
-        }
-        return template;
-    }
-
-    formatMessage(params = {}, customMessage = null) {
-        return Rule.format(params, customMessage || this.messageTemplate || '');
-    }
-
-    /**
-     * @param {string} name Rule name
-     * @param {((value, ...args)boolean)|RegExp} pattern Pattern or callback function
-     * @param {boolean} hasParams Set rule accepts parameters
-     * @param {string} messageTemplate Error message template to format
-     * @returns {Rule}
-     **/
-    static define(name, pattern, hasParams, messageTemplate) {
-        return new Rule(name, pattern, hasParams, messageTemplate);
-    }
-}
-
-class RuleSet {
-    constructor() {
-        this.rules = new Map();
-    }
-
-    /**
-     * @param {string} name Rule name
-     * @param {((value, ...args)boolean)|RegExp} pattern Pattern or callback function
-     * @param {boolean} hasParams Set rule accepts parameters
-     * @param {string} messageTemplate Error message template to format
-     * @returns {RuleSet}
-     **/
-    add(name, pattern, hasParams, messageTemplate) {
-        this.rules.set(name, Rule.define(name, pattern, hasParams, messageTemplate));
-        return this;
-    }
-
-    /**
-     * @param {string} name Rule name
-     * @returns {?Rule}
-     **/
-    get(name) {
-        return this.rules.get(name) || null;
-    }
-
-    /**
-     * @param {string} name Rule name
-     * @returns {boolean}
-     **/
-    hasParams(name) {
-        return this.get(name)?.hasParams || false;
-    }
-
-    /**
-     * @param {string} name Rule name to validate against
-     * @param {string} value Input value to validate 
-     * @param {any[]} args Arguments for callback function
-     **/
-    validate(name, value, ...args) {
-        const rule = this.get(name);
-        return rule ? rule.validate(value, ...args) : value;
-    }
-
-    /**
-     * @returns {string[]}
-     **/
-    defined() {
-        return this.rules.keys().toArray();
-    }
-}
-
-class Cast {
-    constructor(name, callback) {
-        this.name = name;
-        this.callback = callback;
-    }
-
-    apply(value) {
-        try {
-            return this.callback(value);
-        } catch {
-            return value;
-        }
-    }
-
-    static define(name, callback) {
-        return new Cast(name, callback);
-    }
-}
-
-class CastSet {
-    constructor() {
-        this.rules = new Map();
-    }
-
-    add(name, callback) {
-        this.rules.set(name, Cast.define(name, callback));
-        return this;
-    }
-
-    /**
-     * @param {string} name Casting rule name
-     * @returns {?Cast}
-     **/
-    get(name) {
-        return this.rules.get(name) || null;
-    }
-
-    apply(name, value) {
-        const rule = this.get(name);
-        return rule ? rule.apply(value) : value;
-    }
-
-    /**
-     * @returns {string[]}
-     **/
-    defined() {
-        return this.rules.keys().toArray();
-    }
-}
-
-class FormValidator {
+     * Initiate validator on form
+     * @param {?HTMLFormElement} form Form reference
+     * @param {object} schema Schema definition
+     * @param {function(object)} onValid Callback function on valid (optional)
+     * @param {function(object)} onError Callback function on invalid (optional)
+     * @param {{ errorElement: string, errorClass: string, errorId: string }} options Error message options
+     * @returns {Validator}
+     */
     constructor(form, schema = {}, onValid = null, onError = null, options = {}) {
-        this.ruleSet = this.loadRuleset();
-        this.casting = this.loadCasting();
         this.form = this.resolveForm(form);
         this.rawSchema = schema;
         this.onValid = onValid;
@@ -245,200 +24,6 @@ class FormValidator {
         this.bind();
         this.errorElement = options.errorElement || 'div';
         this.errorClass = options.errorClass || 'validation-error';
-    }
-
-    loadRuleset() {
-        const ruleSet = new RuleSet();
-
-        ruleSet.add('require', (value) => {
-            return value.length > 0;
-        }, false, '@{field} is required');
-
-        ruleSet.add('minLength', (value, length) => {
-            return length <= value.length;
-        }, true, 'Minimum length is @{length}');
-
-        ruleSet.add('maxLength', (value, length) => {
-            return length >= value.length;
-        }, true, 'Maximum length is @{length}');
-
-        ruleSet.add('length', (value, length) => {
-            return length === value.length;
-        }, true, 'Must be exactly @{length} characters');
-
-        ruleSet.add('email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/, false, 'Invalid email address');
-        
-        ruleSet.add('pincode', /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/, false, 'Invalid PIN Code');
-        
-        ruleSet.add('pan', /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, false, 'Invalid PAN');
-
-        ruleSet.add('ifsc', /^[A-Z]{4}0[A-Z0-9]{6}$/, false, 'Invalid IFSC');
-
-        ruleSet.add('alpha', /^[a-zA-Z]+$/, false, 'Only alphabets allowed');
-
-        ruleSet.add('alphaspace', /^[a-zA-Z\s]+$/, false, 'Only alphabets & spaces allowed');
-
-        ruleSet.add('alphanum', /^[0-9a-zA-Z]+$/, false, 'Only alphabets & numbers allowed');
-
-        ruleSet.add('alphanumspace', /^[0-9a-zA-Z\s]+$/, false, 'Only alphabets, number & spaces allowed');
-
-        ruleSet.add('slug', /^[0-9a-zA-Z-]+$/, false, 'Invalid slug');
-
-        ruleSet.add('decimal', /^(\d+)\.?(\d+)?$/, false, 'Invalid @{field}');
-
-        ruleSet.add('numeric', (val) => {
-            return !isNaN(val);
-        }, false, '@{field} must be numeric');
-
-        ruleSet.add('mobile', /^[6-9]{1}[0-9]{9}$/, false, '@{field} must be a valid mobile number');
-
-        ruleSet.add('integer', /^\d+$/, false, '@{field} must be integer');
-
-        ruleSet.add('date', /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, false, '@{field} must be valid date');
-
-        ruleSet.add('time', /^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, false, '@{field} must be valid time');
-
-        ruleSet.add('url', /\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i, false, '@{field} must be valid url');
-
-        ruleSet.add('match', (value, other) => {
-            return other && other?.value === value;
-        }, true, '@{field} do not match with @{other}');
-
-        ruleSet.add('in', (value, listItems) => {
-            return listItems.includes(value);
-        }, true, '@{field} must be between (@{listItems})');
-
-        ruleSet.add('notIn', (value, listItems) => {
-            return !listItems.includes(value);
-        }, true, '@{field} must not be between (@{listItems})');
-
-        ruleSet.add('eq', (value, other) => {
-            return other === value;
-        }, true, '@{field} must be exactly @{other}');
-
-        ruleSet.add('notEq', (value, other) => {
-            return other !== value;
-        }, true, '@{field} must not be @{other}');
-
-        ruleSet.add('gt', (value, other) => {
-            return other < value;
-        }, true, '@{field} must be greater than @{other}');
-
-        ruleSet.add('gte', (value, other) => {
-            return other <= value;
-        }, true, '@{field} must be greater than or equal to @{other}');
-
-        ruleSet.add('lt', (value, other) => {
-            return other > value;
-        }, true, '@{field} must be less than @{other}');
-        
-        ruleSet.add('lte', (value, other) => {
-            return other >= value;
-        }, true, '@{field} must be less than or equal to @{other}');
-
-        ruleSet.add('contains', (value, other) => {
-            return value.includes(other);
-        }, true, '@{field} must contain @{other}');
-
-        ruleSet.add('notContains', (value, other) => {
-            return !value.includes(other);
-        }, true, '@{field} must not contain @{other}');
-
-        ruleSet.add('startsWith', (value, other) => {
-            return value.startsWith(other);
-        }, true, '@{field} must start with @{other}');
-
-        ruleSet.add('notStartsWith', (value, other) => {
-            return !value.startsWith(other);
-        }, true, '@{field} must not start with @{other}');
-
-        ruleSet.add('endsWith', (value, other) => {
-            return value.endsWith(other);
-        }, true, '@{field} must end with @{other}');
-
-        ruleSet.add('notEndsWith', (value, other) => {
-            return !value.endsWith(other);
-        }, true, '@{field} must not end with @{other}');
-
-        ruleSet.add('file::maxFiles', (files, limit) => {
-            return Array.from(files || []).length <= limit;
-        }, true, 'Maximum @{limit} files allowed');
-
-        ruleSet.add('file::maxSize', (files, limit) => {
-            return Array.from(files || []).every(file => file.size <= limit);
-        }, true, 'File size exceeds @{limit}');
-
-        ruleSet.add('file::accepts', (files, types) => {
-            const allowed = Array.isArray(types) ? types : String(types).split('|');
-            return Array.from(files || []).every(file => {
-                const ext = file.name.split('.').pop().toLowerCase();
-                return allowed.includes(ext) || allowed.includes(file.type);
-            });
-        }, true, 'Invalid file type. Only (@{types}) allowed');
-
-
-        return ruleSet;
-    }
-
-    /**
-     * @param {string} name Rule name
-     * @param {((value, ...args)boolean)|RegExp} callback Pattern or callback function
-     * @param {string} messageTemplate Error message template to format
-     * @returns {void}
-     **/
-    addCustomRule(name, callback, messageTemplate) {
-        this.ruleSet.add(name, callback, true, messageTemplate);
-    }
-
-    loadCasting() {
-        const casting = new CastSet();
-
-        casting.add('trim', (value) => {
-            return typeof value === 'string' ? value.trim() : value;
-        });
-
-        casting.add('integer', (value) => parseInt(value, 10));
-
-        casting.add('float', (value) => parseFloat(value));
-
-        casting.add('boolean', (value) => {
-            value = (value || '').toLowerCase();
-            return ['0', 'false'].includes(value) ? false : Boolean(value);
-        });
-
-        casting.add('lowercase', (value) => {
-            return CaseConverter.toLowerCase(value);
-        });
-
-        casting.add('uppercase', (value) => {
-            return CaseConverter.toUpperCase(value);
-        });
-
-        casting.add('snakecase', (value) => {
-            return CaseConverter.toSnakeCase(value);
-        });
-
-        casting.add('kebabcase', (value) => {
-            return CaseConverter.toKebabCase(value);
-        });
-
-        casting.add('camelcase', (value) => {
-            return CaseConverter.toCamelCase(value);
-        });
-
-        casting.add('pascalcase', (value) => {
-            return CaseConverter.toPascalCase(value);
-        });
-
-        casting.add('titlecase', (value) => {
-            return CaseConverter.toTitleCase(value);
-        });
-
-        return casting;
-    }
-
-    static init(form, schema, onValid, onError, options) {
-        return new FormValidator(form, schema, onValid, onError, options);
     }
 
     resolveForm(input) {
@@ -468,6 +53,11 @@ class FormValidator {
         });
     }
 
+    /**
+     * Enable live validation
+     * @param {string[]} events validate on events default (['blur', 'change'])
+     * @returns { Validator }
+     */
     enableLiveValidation(events = ['blur', 'change']) {
         for (let field in this.fields) {
             const el = this.form.querySelector(`[name="${field}"]`);
@@ -477,6 +67,7 @@ class FormValidator {
                 });
             }
         }
+        return this;
     }
 
     normalizeSchema(schema) {
@@ -550,7 +141,7 @@ class FormValidator {
                     } else {
                         let val = def[key];
                         
-                        const hasParams = this.ruleSet.hasParams(key);
+                        const hasParams = defaultRules.hasParams(key);
                         const isFileRule = this.isFileRule(`${key}(${val})`);
 
                         if (isFileRule) {
@@ -655,7 +246,7 @@ class FormValidator {
     }
 
     applyFileRule(field, files, ruleName, param, msg) {		
-        const ruleDef = this.ruleSet.get(ruleName);
+        const ruleDef = defaultRules.get(ruleName);
 
         if (!ruleDef) return null;
 
@@ -711,7 +302,7 @@ class FormValidator {
             param = target || '';
         }
 
-        const ruleDef = this.ruleSet.get(ruleName);
+        const ruleDef = defaultRules.get(ruleName);
 
         return (ruleDef && !ruleDef.validate(value, param)) ? ruleDef.formatMessage(params, msg) : null;
     }
@@ -745,7 +336,7 @@ class FormValidator {
                 if (typeof fn === 'function') {
                     data[field] = fn(data[field]);
                 } else if (typeof fn === 'string') {
-                    data[field] = this.casting.apply(fn, data[field]);
+                    data[field] = castings.apply(fn, data[field]);
                 }
             }
         }
@@ -753,7 +344,7 @@ class FormValidator {
     }
 
     formatLabel(field) {
-        return this.casting.apply('titlecase', field);
+        return castings.apply('titlecase', field);
     }
 
     normalizeStr(val) {
@@ -823,13 +414,13 @@ class FormValidator {
     }
 
     validateRuleName(ruleName) {
-        if (!['custom', 'file'].concat(this.ruleSet.defined()).includes(ruleName)) {
+        if (!['custom', 'file'].concat(defaultRules.defined()).includes(ruleName)) {
             throw new Error('Invalid rule name ' + ruleName);
         }
     }
     
     validateCasting(ruleName) {
-        if ('function' !== typeof ruleName && !this.casting.defined().includes(ruleName)) {
+        if ('function' !== typeof ruleName && !castings.defined().includes(ruleName)) {
             throw new Error('Invalid rule name ' + ruleName + " for casting");
         }
     }
