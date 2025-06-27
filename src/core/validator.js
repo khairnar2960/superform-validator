@@ -24,6 +24,11 @@ export class Validator {
         this.bind();
         this.errorElement = options.errorElement || 'div';
         this.errorClass = options.errorClass || 'validation-error';
+        this.errorId = options.errorId || '@{field}-error';
+    }
+
+    generateId(fieldName) {
+        return String(this.errorId).replaceAll('@{field}', fieldName);
     }
 
     resolveForm(input) {
@@ -435,7 +440,7 @@ export class Validator {
         for (let field in this.errors) {
             const fieldElement = this.form.querySelector(`[name="${field}"]`);
             const isGroup = fieldElement?.parentNode.classList.contains('input-group') || false;
-            const idName = `${field}-error`;
+            const idName = this.generateId(field);
             const id = '#' + idName;
             const msg = this.errors[field];
             let errorElement = this.form.querySelector(id);

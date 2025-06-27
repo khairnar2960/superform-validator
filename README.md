@@ -61,10 +61,11 @@ const validator = FormValidator.init('#myForm', schema, onValid, onError, option
 
 ## ⚙️ Options
 
-| Option         | Type   | Default              | Description                            |
-| -------------- | ------ | -------------------- | -------------------------------------- |
-| `errorElement` | String | `'div'`              | HTML element to display error messages |
-| `errorClass`   | String | `'validation-error'` | CSS class for error elements           |
+| Option         | Type   | Default              | Description                               |
+| -------------- | ------ | -------------------- | ----------------------------------------- |
+| `errorElement` | String | `'div'`              | HTML element to display error messages    |
+| `errorClass`   | String | `'validation-error'` | CSS class for error elements              |
+| `errorId`      | String | `'@{field}-error'`   | Field id name template for error elements |
 
 ---
 
