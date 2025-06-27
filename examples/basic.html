@@ -48,23 +48,23 @@
 		</div>
 		<button>Submit</button>
 	</form>
-	<script src="../src/form-validator.js"></script>
+	<script src="../dist/form-validator.js"></script>
 	<script>
-	// basic definition with no message
-	const validator = FormValidator.init('#form', {
-		something: 'require|in::name,email,address',
-		name: 'require|minLength::2|maxLength::50',
-		email: 'require|email',
-		age: 'require|integer|length::2',
-		mobile: 'require|mobile',
-		password: 'require|minLength::8|maxLength::20',
-		confirm_password: 'require|match::password',
-		resume: 'require|file::maxFiles(1)|file::maxSize(20kb)|file::accepts(png|jpg|jpeg)',
-		// something: 'require|notIn::name,email,address'
-		date_of_birth: 'require|date',
-		office_time: 'require|time',
-		portfolio_link: 'require|url',
-	}).enableLiveValidation();
+		// basic definition with no message
+		const validator = FormValidator.init('#form', {
+			something: 'require|in::name,email,address',
+			name: 'require|minLength::2|maxLength::50',
+			email: 'require|email',
+			age: 'require|integer|length::2',
+			mobile: 'require|mobile',
+			password: 'require|minLength::8|maxLength::20',
+			confirm_password: 'require|match::password',
+			resume: 'require|file::maxFiles(1)|file::maxSize(20kb)|file::accepts(png|jpg|jpeg)',
+			// something: 'require|notIn::name,email,address'
+			date_of_birth: 'require|date',
+			office_time: 'require|time',
+			portfolio_link: 'require|url',
+		}).enableLiveValidation();
 	</script>
 </body>
 </html>

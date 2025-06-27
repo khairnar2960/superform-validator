@@ -33,81 +33,81 @@
 		</div>
 		<button>Submit</button>
 	</form>
-	<script src="../src/form-validator.js"></script>
+	<script src="../dist/form-validator.js"></script>
 	<script>
-	// advance definition with casting and error message
-	const validator = FormValidator.init('#form', {
-		something: {
-			require: true,
-			in: 'name,email,address'
-		},
-		name: {
-			require: true,
-			minLength: 2,
-			maxLength: 50,
-			cast: 'trim|titlecase'
-		},
-		email: {
-			require: true,
-			email: true,
-			cast: ['trim', 'lowercase']
-		},
-		mobile: {
-			require: true,
-			integer: true,
-			length: 10,
-			custom: {
-				pattern: /^[6-9][0-9]{9}$/,
-				message: 'Invalid @{field}'
+		// Register Custom validation rule
+		FormValidator.registerRule('password', (value) => {
+			return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
+		}, `
+		<div>
+			<span>@{field} must have</span>
+			<ul>
+				<li>8 characters in length</li>
+				<li>One lowercase letter</li>
+				<li>One uppercase letter</li>
+				<li>One digit</li>
+				<li>One special character (@$!%*?&)</li>
+			</ul>
+		</div>
+		`)
+		// advance definition with casting and error message
+		const validator = FormValidator.init('#form', {
+			something: {
+				require: true,
+				in: 'name,email,address'
 			},
-			cast: (val) => parseInt(val)
-		},
-		password: {
-			require: true,
-			// password: true,
-			minLength: 8,
-			maxLength: 20,
-			contains: '@',
-			notContains: '\'',
-			custom: {
-				pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-				message: '@{field} must have at least one lowercase, uppercase, digit & special character from (@$!%*?&)'
+			name: {
+				require: true,
+				minLength: 2,
+				maxLength: 50,
+				cast: 'trim|titlecase'
 			},
-			messages: {
-				minLength: '@{field} must have at least @{length} characters',
-				maxLength: '@{field} must not exceed @{length} characters',
-				contains: '@{field} must contain @{other}',
-				notContains: '@{field} must not contain @{other}'
+			email: {
+				require: true,
+				email: true,
+				cast: ['trim', 'lowercase']
+			},
+			mobile: {
+				require: true,
+				integer: true,
+				length: 10,
+				custom: {
+					pattern: /^[6-9][0-9]{9}$/,
+					message: 'Invalid @{field}'
+				},
+				cast: (val) => parseInt(val)
+			},
+			password: {
+				require: true,
+				// password: true,
+				minLength: 8,
+				maxLength: 20,
+				contains: '@',
+				notContains: '\'',
+				custom: {
+					pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+					message: '@{field} must have at least one lowercase, uppercase, digit & special character from (@$!%*?&)'
+				},
+				messages: {
+					minLength: '@{field} must have at least @{length} characters',
+					maxLength: '@{field} must not exceed @{length} characters',
+					contains: '@{field} must contain @{other}',
+					notContains: '@{field} must not contain @{other}'
+				}
+			},
+			confirm_password: {
+				require: true,
+				match: 'password'
+			},
+			resume: {
+				require: true,
+				'file::maxFiles': 1,
+				'file::maxSize': '20kb',
+				'file::accepts': 'png|jpg|jpeg'
 			}
-		},
-		confirm_password: {
-			require: true,
-			match: 'password'
-		},
-		resume: {
-			require: true,
-			'file::maxFiles': 1,
-			'file::maxSize': '20kb',
-			'file::accepts': 'png|jpg|jpeg'
-		}
-	}, console.log, console.log, { errorElement: 'span', errorClass: 'validation-error input-error'});
-	
-	validator.enableLiveValidation(['blur', 'change', 'input']);
-	
-	validator.addCustomRule('password', (value) => {
-		return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
-	}, `
-	<div>
-		<span>@{field} must have</span>
-		<ul>
-			<li>8 characters in length</li>
-			<li>One lowercase letter</li>
-			<li>One uppercase letter</li>
-			<li>One digit</li>
-			<li>One special character (@$!%*?&)</li>
-		</ul>
-	</div>
-	`)
+		}, console.log, console.log, { errorElement: 'span', errorClass: 'validation-error input-error', errorId: 'invalid-@{field}-error'});
+		
+		validator.enableLiveValidation(['blur', 'change', 'input']);
 	</script>
 </body>
 </html>
