@@ -138,7 +138,7 @@ rules.register('file::accepts', (files, types) => {
  * @returns {void}
  **/
 export function registerRule(name, callback, messageTemplate) {
-	rules.add(name, callback, true, messageTemplate);
+	rules.register(name, callback, true, messageTemplate);
 }
 
 export { rules }

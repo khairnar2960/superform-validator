@@ -1,6 +1,6 @@
 export { CaseConverter } from "./core/case-converter.js";
 export { registerCasting } from "./core/default-castings.js";
-export { registerRule, registerRule as addCustomRule } from "./core/default-rules.js";
+export { registerRule } from "./core/default-rules.js";
 import { Validator } from "./core/validator.js";
 
 /**
