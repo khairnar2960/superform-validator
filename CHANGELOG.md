@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/khairnar2960/superform-validator/compare/v1.0.2...v1.0.3) (2025-06-27)
+
+### Features
+
+* options can accept error id template ([140ad4f](https://github.com/khairnar2960/superform-validator/commit/140ad4ffdfee04720923cdb57ad3b9bf13dc3035))
+
+### Bug Fixes
+
+* Field missing error shown if removed from DOM ([3e00ded](https://github.com/khairnar2960/superform-validator/commit/3e00ded8881f603c4834c3f46c677fda31c2d95f))
 ## [1.0.2](https://github.com/khairnar2960/superform-validator/compare/v1.0.1...v1.0.2) (2025-06-26)
 
 ### Features
