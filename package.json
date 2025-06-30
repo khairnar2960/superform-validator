@@ -3,10 +3,21 @@
   "version": "1.0.3",
   "type": "module",
   "description": "A powerful and flexible JavaScript form validator for HTML.",
-  "main": "dist/form-validator.js",
-  "module": "dist/form-validator.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
+    }
+  },
   "scripts": {
-    "build": "rollup -c",
+    "clean": "rm -r dist",
+    "prebuild": "npm run clean",
+    "build:types": "tsc",
+    "build:bundle": "rollup -c",
+    "build": "npm run build:types && npm run build:bundle",
     "prepare": "npm run build",
     "release": "npm run bump-version --",
     "bump-version": "node scripts/release.js",
@@ -34,6 +45,7 @@
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "conventional-changelog-cli": "^5.0.0",
-    "rollup": "^2.79.2"
+    "rollup": "^2.79.2",
+    "typescript": "^5.8.3"
   }
 }

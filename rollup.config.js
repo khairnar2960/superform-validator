@@ -1,9 +1,22 @@
 import terser from "@rollup/plugin-terser";
 
 export default {
-  input: 'src/index.js',
-  output: [
-    { file: 'dist/form-validator.js', format: 'umd', name: 'FormValidator' },
-    { file: 'dist/form-validator.min.js', format: 'umd', name: 'FormValidator', plugins: [terser()] }
-  ]
+    input: "dist/index.js",
+    output: [
+        {
+            file: "dist/index.cjs.js",
+            format: "cjs",
+        },
+        {
+            file: "dist/form-validator.js",
+            format: "umd",
+            name: "FormValidator",
+        },
+        {
+            file: "dist/form-validator.min.js",
+            format: "umd",
+            name: "FormValidator",
+            plugins: [terser()],
+        },
+    ],
 };
