@@ -73,7 +73,7 @@ export class IntegerRule extends BaseRule {
             name: 'between',
             paramType: 'range',
             argumentType: 'integer',
-            aliases: [],
+            aliases: ['intBetween'],
             validators: [
                 {
                     callback: (value, param) => parseInt(value) >= param.min && parseInt(value) <= param.max,
@@ -104,6 +104,84 @@ export class IntegerRule extends BaseRule {
                 {
                     callback: (value) => parseInt(value) % 2 !== 0,
                     message: '@{field} must be an odd number'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'equals',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['intEquals'],
+            validators: [
+                {
+                    callback: (value, param) => parseInt(value) === param,
+                    message: '@{field} must be exactly @{other}'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'notEquals',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['intNotEquals'],
+            validators: [
+                {
+                    callback: (value, param) => parseInt(value) !== param,
+                    message: '@{field} must not be @{other}'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'gt',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['gt'],
+            validators: [
+                {
+                    callback: (value, param) => parseInt(value) > param,
+                    message: '@{field} must be greater than @{other}'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'gte',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['gte'],
+            validators: [
+                {
+                    callback: (value, param) => parseInt(value) >= param,
+                    message: '@{field} must be @{other} or greater'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'lt',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['lt'],
+            validators: [
+                {
+                    callback: (value, param) => parseInt(value) < param,
+                    message: '@{field} must be less than @{other}'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'lte',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['lte'],
+            validators: [
+                {
+                    callback: (value, param) => parseInt(value) <= param,
+                    message: '@{field} must be @{other} or less'
                 }
             ]
         });
