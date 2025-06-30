@@ -82,6 +82,18 @@ export class StringRule extends BaseRule {
         });
         
         this.registerFunction({
+            name: 'mobile',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['mobile'],
+            validators: [
+                {
+                    pattern: /^[6-9]{1}[0-9]{9}$/,
+                    message: '@{field} must be a valid mobile number'
+                }
+            ],
+        });
+        this.registerFunction({
             name: 'pincode',
             paramType: 'single',
             argumentType: 'string',
@@ -160,7 +172,7 @@ export class StringRule extends BaseRule {
             aliases: ['alphanumspace'],
             validators: [
                 {
-                    pattern: /^[0-9a-zA-Z]+$/,
+                    pattern: /^[0-9a-zA-Z\s]+$/,
                     message: '@{field} accepts alphabets, numbers & spaces only'
                 }
             ],
@@ -234,6 +246,78 @@ export class StringRule extends BaseRule {
                 {
                     callback: (value, param) => value !== param,
                     message: '@{field} must not be @{other}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'contains',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['strContains'],
+            validators: [
+                {
+                    callback: (value: string, param: string) => value.includes(param),
+                    message: '@{field} must contain @{other}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'notContains',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['strNotContains'],
+            validators: [
+                {
+                    callback: (value: string, param: string) => !value.includes(param),
+                    message: '@{field} must not contain @{other}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'startsWith',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['strStartsWith'],
+            validators: [
+                {
+                    callback: (value: string, param: string) => value.startsWith(param),
+                    message: '@{field} must start with @{other}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'notStartsWith',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['strNotStartsWith'],
+            validators: [
+                {
+                    callback: (value: string, param: string) => !value.startsWith(param),
+                    message: '@{field} must not start with @{other}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'endsWith',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['strEndsWith'],
+            validators: [
+                {
+                    callback: (value: string, param: string) => value.endsWith(param),
+                    message: '@{field} must end with @{other}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'notEndsWith',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['strNotEndsWith'],
+            validators: [
+                {
+                    callback: (value: string, param: string) => !value.endsWith(param),
+                    message: '@{field} must not end with @{other}'
                 }
             ],
         });
