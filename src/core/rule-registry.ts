@@ -1,0 +1,108 @@
+import { toCamelCase } from "../utils/case.js";
+import { CaseConverter } from "./case-converter.js";
+import { CastingProcessor } from "./casting.js";
+import { Processor, ProcessorFunc } from "./processor.js";
+import { BaseRule, type RuleFunction } from "./rules/base-rule.js";
+import { CoreRule } from "./rules/core-rules.js";
+import { DateRule } from "./rules/date-rule.js";
+import { IntegerRule } from "./rules/integer-rule.js";
+import { StringRule } from "./rules/string-rule.js";
+import { TimeRule } from "./rules/time-rule.js";
+import { Trimmer } from "./trimmer.js";
+
+export interface RuleMeta {
+    type: string,
+    function: string,
+    paramType: string,
+    argumentType: string,
+    rule: BaseRule|Processor,
+}
+
+export const allRules = [
+    new CoreRule(),
+    new IntegerRule(),
+    new StringRule(),
+    new DateRule(),
+	new TimeRule(),
+    new Trimmer(),
+    new Trimmer(true),
+    new CaseConverter(),
+    new CaseConverter(true),
+    new CastingProcessor(),
+    new CastingProcessor(true),
+];
+
+export const ruleRegistry: Record<string, RuleMeta> = {};
+export const preProcessors: Record<string, RuleMeta> = {};
+export const postProcessors: Record<string, RuleMeta> = {};
+
+// Build registry dynamically
+allRules.forEach((rule: BaseRule|Processor) => {
+    if (rule instanceof BaseRule) {
+        rule.functions.forEach((func: RuleFunction) => {
+                const fullName = `${rule.type}::${func.name}`;
+
+                if (ruleRegistry[fullName]) throw new Error("Duplicate rule entry " + fullName);
+
+                const ruleMeta: RuleMeta = {
+                    type: rule.type,
+                    function: func.name,
+                    paramType: func.paramType,
+                    argumentType: func.argumentType,
+                    rule,
+                };
+
+                ruleRegistry[fullName] = ruleMeta;
+        
+                // Register aliases
+                func.aliases.forEach(alias => {
+                    if (ruleRegistry[alias]) throw new Error("Duplicate rule entry " + fullName + " for alias " + alias);
+
+                    ruleRegistry[alias] = ruleMeta;
+                });
+        });
+    } else {
+        rule.functions.forEach((func: ProcessorFunc) => {
+            const { isPreprocessor } = rule;
+            const fullName = toCamelCase((isPreprocessor ? 'pre ' : '') + rule.type) + `${func.name && func.name !== 'default' ? '::' + func.name : '' }`;
+
+            if (ruleRegistry[fullName]) throw new Error("Duplicate processor entry " + fullName);
+
+            const ruleMeta: RuleMeta = {
+                type: rule.type,
+                function: func.name || 'default',
+                paramType: func.paramType,
+                argumentType: func.argumentType,
+                rule,
+            };
+
+            ruleRegistry[fullName] = ruleMeta;
+
+            if (isPreprocessor) {
+                preProcessors[fullName] = ruleMeta;
+            } else {
+                postProcessors[fullName] = ruleMeta;
+            }
+
+            func.aliases.forEach(alias => {
+
+                alias = toCamelCase((isPreprocessor ? 'pre ' : '')  + alias);
+
+                if (ruleRegistry[alias]) throw new Error("Duplicate processor entry " + fullName + " for alias " + alias);
+
+                ruleRegistry[alias] = ruleMeta;
+
+                if (isPreprocessor) {
+                    preProcessors[alias] = ruleMeta;
+                } else {
+                    postProcessors[alias] = ruleMeta;
+                }
+            });
+        })
+    }
+});
+
+
+export function resolveRule(name: string): RuleMeta {
+    return ruleRegistry[name] || { type: 'string', function: 'unknown', paramType: 'none', argumentType: 'string' };
+}
