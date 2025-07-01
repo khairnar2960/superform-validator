@@ -1,6 +1,6 @@
 "use strict";
 
-import { toCamelCase, toKebabCase, toPascalCase, toSentenceCase, toSnakeCase, toTitleCase } from "../utils/case.js";
+import { toCamelCase, toKebabCase, toPascalCase, toSentenceCase, toSnakeCase, toTitleCase } from "../../utils/case.js";
 import { Processor } from "./processor.js";
 
 export class CaseConverter extends Processor {
