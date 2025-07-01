@@ -24,7 +24,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseInt(value) >= 0,
-                    message: '@{field} must be positive number'
+                    message: '@{field} must be positive integer'
                 }
             ]
         });
@@ -37,7 +37,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseInt(value) < 0,
-                    message: '@{field} must be negative number'
+                    message: '@{field} must be negative integer'
                 }
             ]
         });
@@ -51,7 +51,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) >= param,
-                    message: '@{field} must be at least @{limit}'
+                    message: '@{field} must be at least @{param}'
                 }
             ]
         });
@@ -64,7 +64,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) <= param,
-                    message: '@{field} must be at most @{limit}'
+                    message: '@{field} must be at most @{param}'
                 }
             ]
         });
@@ -77,7 +77,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) >= param.min && parseInt(value) <= param.max,
-                    message: '@{field} must be between @{min} and @{max}'
+                    message: '@{field} must be between @{param.min} and @{param.max}'
                 }
             ]
         });
