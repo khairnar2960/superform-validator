@@ -11,7 +11,7 @@ import { FloatRule } from "./rules/float-rule.js";
 import { IntegerRule } from "./rules/integer-rule.js";
 import { StringRule } from "./rules/string-rule.js";
 import { TimeRule } from "./rules/time-rule.js";
-import { Trimmer } from "./trimmer.js";
+import { Trimmer } from "./processors/trimmer.js";
 
 export interface RuleMeta {
     type: string,

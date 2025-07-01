@@ -1,6 +1,6 @@
 "use strict";
 
-import { Processor } from "./processors/processor.js";
+import { Processor } from "./processor.js";
 
 export class Trimmer extends Processor {
 

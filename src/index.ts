@@ -7,7 +7,7 @@ export { resolveRule, ruleRegistry } from "./core/rule-registry.js";
 export { parseSchema } from "./core/schema-parser.js";
 export { CaseConverter } from "./core/processors/case-converter.js";
 export { CastingProcessor } from "./core/processors/casting.js";
-export { Trimmer } from "./core/trimmer.js";
+export { Trimmer } from "./core/processors/trimmer.js";
 export { validateField, validate } from "./core/validator-engine.js";
 export { allRules, preProcessors, postProcessors } from "./core/rule-registry.js";
 export { ErrorFormatter } from "./core/error-formatter.js";
