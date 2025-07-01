@@ -1,3 +1,4 @@
+import { extractDate, ExtractedDate } from "../../utils/date-time.js";
 import { BaseRule } from "./base-rule.js";
 
 export class DateRule extends BaseRule {
@@ -22,8 +23,8 @@ export class DateRule extends BaseRule {
 			aliases: ['dateBefore'],
 			validators: [
 				{
-					callback: (value, param) => new Date(value) < new Date(param),
-					message: '@{field} must be before @{limit}'
+					callback: (value: string, param: ExtractedDate) => extractDate(value).toDate() < param.toDate(),
+					message: '@{field} must be before @{param}'
 				}
 			],
 		});
@@ -35,8 +36,8 @@ export class DateRule extends BaseRule {
 			aliases: ['dateAfter'],
 			validators: [
 				{
-					callback: (value, param) => new Date(value) > new Date(param),
-					message: '@{field} must be after @{limit}'
+					callback: (value: string, param: ExtractedDate) => extractDate(value).toDate() > param.toDate(),
+					message: '@{field} must be after @{param}'
 				}
 			],
 		});
@@ -48,8 +49,8 @@ export class DateRule extends BaseRule {
 			aliases: ['dateEquals'],
 			validators: [
 				{
-					callback: (value, param) => new Date(value) > new Date(param),
-					message: '@{field} must exactly match the @{limit}'
+					callback: (value: string, param: ExtractedDate) => extractDate(value).toDate() > param.toDate(),
+					message: '@{field} must exactly match the @{param}'
 				}
 			],
 		});
@@ -61,8 +62,11 @@ export class DateRule extends BaseRule {
 			aliases: ['dateBetween'],
 			validators: [
 				{
-					callback: (value, param) => new Date(value) >= param.min && new Date(value) <= param.max,
-					message: '@{field} must be between @{min} and @{max}'
+					callback: (value: string, param: Record<string, ExtractedDate>) => {
+						const val = extractDate(value).toDate();
+						return val >= param.min.toDate() && val <= param.max.toDate();
+					},
+					message: '@{field} must be between @{param.min} and @{param.max}'
 				}
 			],
 		});
