@@ -1,15 +1,24 @@
-import { Processor } from "./processor.js";
+import { ucFirst } from "../utils/case.js";
+import { ErrorFormatter } from "./error-formatter.js";
+import { ProcessorFunc } from "./processors/processor.js";
 import { postProcessors, preProcessors } from "./rule-registry.js";
-import { BaseRule } from "./rules/base-rule.js";
+import { Field, RuleFunction } from "./rules/base-rule.js";
 import { isEmpty } from "./rules/core-rules.js";
-import { FieldRule } from "./schema-parser.js";
+import { FieldRule, ParsedSchema } from "./schema-parser.js";
 
-export function validateField(value: any, fieldRules: FieldRule[]): { valid: boolean, error?: string, processedValue?: any } {
+export interface ValidationResponse {
+    valid: boolean,
+    error?: string,
+    processedValue?: any,
+    param?: any
+}
+
+export function validateField(value: any, fieldRules: FieldRule[], fields: Record<string, Field>): ValidationResponse {
     // 1. Apply Pre-Processors
     fieldRules.forEach(rule => {
         if (preProcessors[rule.name]) {
-            const processor = preProcessors[rule.name].rule as Processor;
-            value = processor.process(rule.func || rule.name, value);
+            const processor = preProcessors[rule.name].function as ProcessorFunc | null;
+            value = processor?.process(value);
         }
     });
 
@@ -29,21 +38,60 @@ export function validateField(value: any, fieldRules: FieldRule[]): { valid: boo
 
     // 4. Field-Specific Rule Validation
     for (const fieldRule of fieldRules) {
-        if (fieldRule.rule instanceof BaseRule) {
-            const result = fieldRule.rule.validate(fieldRule.func || fieldRule.name, value, fieldRule.param);
+        if (fieldRule.rule instanceof RuleFunction) {
+            const result = fieldRule.rule.validate(value, fieldRule.param, fields);
             if (!result.valid) {
-                return { valid: false, error: result.error };
+                return { valid: false, error: result.error, param: fieldRule.param };
             }
+        } else {
+            console.log(fieldRule);
         }
     }
 
     // 5. Apply Post-Processors
     fieldRules.forEach(rule => {
         if (postProcessors[rule.name]) {
-            const processor = postProcessors[rule.name].rule as Processor;
-            value = processor.process(rule.func || rule.name, value);
+            const processor = postProcessors[rule.name].function as ProcessorFunc | null;
+            value = processor?.process(value);
         }
     });
 
     return { valid: true, processedValue: value };
+}
+
+
+export function validate(schema: ParsedSchema, fieldValues: Record<string, any> = {}): ValidationResponse[] {
+    const validations: ValidationResponse[] = [];
+
+    const fieldValuesDate: Record<string, Field> = Object.fromEntries(Object.entries(fieldValues).map(([name, value]) => {
+        return [name, { name: ucFirst(name), value }]
+    }));
+
+    for (const field in schema) {
+        const fieldRules: FieldRule[] = schema[field];
+
+        const value = (fieldValues[field] as any|undefined);
+        
+        const { valid, error = undefined, processedValue = undefined, param = undefined } = validateField(value, fieldRules, fieldValuesDate);
+        
+        const fieldValidation: ValidationResponse = { valid }; 
+
+        if (!valid) {
+            fieldValidation.error = ErrorFormatter.format(
+                error || 'Invalid @{field} value',
+                {
+                    field: ucFirst(field),
+                    value,
+                    fields: fieldValuesDate,
+                    param
+                }
+            );
+        } else {
+            fieldValidation.processedValue = processedValue;
+        }
+
+        validations.push(fieldValidation);
+    }
+
+    return validations;
 }

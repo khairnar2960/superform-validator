@@ -1,10 +1,6 @@
-// 📦 Core Independent Validator
-
-export interface ValidationResult {
-    valid: boolean;
-    errors: Record<string, string>;
-    processedData: Record<string, any>;
-}
+import { Request, Response, NextFunction } from 'express';
+import { parseSchema } from './schema-parser.js';
+import { validate, ValidationResponse } from './validator-engine.js';
 
 export type Plugin = {
     name: string;
@@ -26,25 +22,8 @@ export class Validator {
         this.plugins.push(plugin);
     }
 
-    validate(formData: Record<string, any>): ValidationResult {
-        const errors: Record<string, string> = {};
-        const processedData: Record<string, any> = {};
-        let valid = true;
-
-        for (const field in this.parsedSchema) {
-            const fieldRules = this.parsedSchema[field];
-            const fieldValue = formData[field];
-
-            const result = validateField(fieldValue, fieldRules);
-            if (!result.valid) {
-                valid = false;
-                errors[field] = result.error || 'Invalid value';
-            } else {
-                processedData[field] = result.processedValue;
-            }
-        }
-
-        return { valid, errors, processedData };
+    validate(formData: Record<string, any>): ValidationResponse[] {
+        return validate(this.parsedSchema, formData)
     }
 }
 
@@ -57,17 +36,17 @@ export const HTMLPlugin = (): Plugin => ({
     attach: (validator: Validator) => {
         document.querySelectorAll('[data-validate]').forEach(element => {
             element.addEventListener('blur', (e) => {
-                const field = (e.target as HTMLInputElement).name;
-                const formData = { [field]: (e.target as HTMLInputElement).value };
-                const result = validator.validate(formData);
-                if (!result.valid && result.errors[field]) {
-                    // Show error (You can customize this part)
-                    const errorElement = document.querySelector(`#${field}-error`);
-                    if (errorElement) errorElement.textContent = result.errors[field];
-                } else {
-                    const errorElement = document.querySelector(`#${field}-error`);
-                    if (errorElement) errorElement.textContent = '';
-                }
+                // const field = (e.target as HTMLInputElement).name;
+                // const formData = { [field]: (e.target as HTMLInputElement).value };
+                // const result = validator.validate(formData);
+                // if (!result.valid && result.errors[field]) {
+                //     // Show error (You can customize this part)
+                //     const errorElement = document.querySelector(`#${field}-error`);
+                //     if (errorElement) errorElement.textContent = result.errors[field];
+                // } else {
+                //     const errorElement = document.querySelector(`#${field}-error`);
+                //     if (errorElement) errorElement.textContent = '';
+                // }
             });
         });
     }
@@ -77,19 +56,10 @@ export const HTMLPlugin = (): Plugin => ({
 // 📄 Express Plugin Example
 // ==========================
 
-import { Request, Response, NextFunction } from 'express';
-import { parseSchema } from './schema-parser.js';
-import { validateField } from './validator-engine.js';
-
 export const ExpressPlugin = (schema: any) => {
     const validator = new Validator(schema);
-
     return (req: Request, res: Response, next: NextFunction) => {
-        const result = validator.validate(req.body);
-        if (!result.valid) {
-            return res.status(400).json({ errors: result.errors });
-        }
-        req.body = result.processedData;
+        Object.assign(req, { validate: validator.validate });
         next();
     };
 };
