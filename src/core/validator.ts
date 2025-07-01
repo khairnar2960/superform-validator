@@ -22,7 +22,7 @@ export class Validator {
         this.plugins.push(plugin);
     }
 
-    validate(formData: Record<string, any>): ValidationResponse[] {
+    validate(formData: Record<string, any>): Record<string, ValidationResponse> {
         return validate(this.parsedSchema, formData)
     }
 }
@@ -51,18 +51,6 @@ export const HTMLPlugin = (): Plugin => ({
         });
     }
 });
-
-// ==========================
-// 📄 Express Plugin Example
-// ==========================
-
-export const ExpressPlugin = (schema: any) => {
-    const validator = new Validator(schema);
-    return (req: Request, res: Response, next: NextFunction) => {
-        Object.assign(req, { validate: validator.validate });
-        next();
-    };
-};
 
 // ==========================
 // 📄 React Plugin Skeleton (Concept)

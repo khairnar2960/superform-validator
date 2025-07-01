@@ -2,14 +2,20 @@
   "name": "superform-validator",
   "version": "1.0.3",
   "type": "module",
-  "description": "A powerful and flexible JavaScript form validator for HTML.",
+  "description": "A powerful and flexible JavaScript form validator for HTML forms/Express.js.",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs.js"
+      "require": "./dist/index.js"
+    },
+    "./middlewares": {
+      "types": "./dist/plugins/plugin.d.ts",
+      "import": "./dist/plugins/plugin.js",
+      "require": "./dist/plugins/plugin.js"
     }
   },
   "scripts": {
@@ -28,6 +34,7 @@
     "validation",
     "validator",
     "html",
+    "express",
     "javascript",
     "form-validator"
   ],

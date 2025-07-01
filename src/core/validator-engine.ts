@@ -43,7 +43,7 @@ export function validateField(value: any, fieldRules: FieldRule[], fields: Recor
             if (!result.valid) {
                 return { valid: false, error: result.error, param: fieldRule.param };
             }
-        } else {
+        } else if (!(fieldRule.rule instanceof ProcessorFunc)) {
             console.log(fieldRule);
         }
     }
@@ -60,8 +60,8 @@ export function validateField(value: any, fieldRules: FieldRule[], fields: Recor
 }
 
 
-export function validate(schema: ParsedSchema, fieldValues: Record<string, any> = {}): ValidationResponse[] {
-    const validations: ValidationResponse[] = [];
+export function validate(schema: ParsedSchema, fieldValues: Record<string, any> = {}): Record<string, ValidationResponse> {
+    const validations: Record<string, ValidationResponse> = {};
 
     const fieldValuesDate: Record<string, Field> = Object.fromEntries(Object.entries(fieldValues).map(([name, value]) => {
         return [name, { name: ucFirst(name), value }]
@@ -90,7 +90,7 @@ export function validate(schema: ParsedSchema, fieldValues: Record<string, any> 
             fieldValidation.processedValue = processedValue;
         }
 
-        validations.push(fieldValidation);
+        validations[field] = fieldValidation;
     }
 
     return validations;
