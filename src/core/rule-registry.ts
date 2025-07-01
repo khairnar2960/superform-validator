@@ -1,10 +1,13 @@
 import { toCamelCase } from "../utils/case.js";
-import { CaseConverter } from "./case-converter.js";
-import { CastingProcessor } from "./casting.js";
-import { Processor, ProcessorFunc } from "./processor.js";
+import { CaseConverter } from "./processors/case-converter.js";
+import { CastingProcessor } from "./processors/casting.js";
+import { Processor, ProcessorFunc } from "./processors/processor.js";
 import { BaseRule, type RuleFunction } from "./rules/base-rule.js";
-import { CoreRule } from "./rules/core-rules.js";
 import { DateRule } from "./rules/date-rule.js";
+import { DateTimeRule } from "./rules/datetime-rule.js";
+import { FieldRule } from "./rules/field-rules.js";
+import { FileRule } from "./rules/file-rules.js";
+import { FloatRule } from "./rules/float-rule.js";
 import { IntegerRule } from "./rules/integer-rule.js";
 import { StringRule } from "./rules/string-rule.js";
 import { TimeRule } from "./rules/time-rule.js";
@@ -12,18 +15,22 @@ import { Trimmer } from "./trimmer.js";
 
 export interface RuleMeta {
     type: string,
-    function: string,
+    functionName: string,
+    function: RuleFunction|ProcessorFunc|null,
     paramType: string,
     argumentType: string,
     rule: BaseRule|Processor,
 }
 
 export const allRules = [
-    new CoreRule(),
+    new FieldRule(),
     new IntegerRule(),
+    new FloatRule(),
     new StringRule(),
     new DateRule(),
 	new TimeRule(),
+    new DateTimeRule(),
+    new FileRule(),
     new Trimmer(),
     new Trimmer(true),
     new CaseConverter(),
@@ -46,7 +53,8 @@ allRules.forEach((rule: BaseRule|Processor) => {
 
                 const ruleMeta: RuleMeta = {
                     type: rule.type,
-                    function: func.name,
+                    functionName: func.name,
+                    function: func,
                     paramType: func.paramType,
                     argumentType: func.argumentType,
                     rule,
@@ -70,7 +78,8 @@ allRules.forEach((rule: BaseRule|Processor) => {
 
             const ruleMeta: RuleMeta = {
                 type: rule.type,
-                function: func.name || 'default',
+                functionName: func.name || 'default',
+                function: func,
                 paramType: func.paramType,
                 argumentType: func.argumentType,
                 rule,
