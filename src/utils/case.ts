@@ -15,3 +15,5 @@ export const toSnakeCase = (value: string) => value.replace(/(?<!^)[A-Z]/g, (cha
 export const toTitleCase = (value: string) => value
                 .replace(/[-_\s]+/g, ' ')
                 .replace(/\b\w/g, char => char.toUpperCase());
+
+export const ucFirst = (value: string) => value.replace(/[-_\s]+/g, ' ').toLowerCase().replace(/(\w)(.+)?/, (_, first = '', rest = '') => first.toUpperCase() + rest)
