@@ -1,4 +1,4 @@
-import { BaseRule } from "./base-rule.js";
+import { BaseRule, Field } from "./base-rule.js";
 
 export class FieldRule extends BaseRule {
     constructor() {
@@ -22,12 +22,12 @@ export class FieldRule extends BaseRule {
             aliases: ['match'],
             validators: [
                 {
-                    callback: (value, param) => 'undefined' === typeof param.fieldReference,
-                    message: 'Matching field @{other} not found'
+                    callback: (value, param, fields: Record<string, Field>) => 'undefined' !== typeof fields[param],
+                    message: 'Matching field @{param} not found'
                 },
                 {
-                    callback: (value, param) => param.fieldReference === value,
-                    message: '@{field} not matched with @{other}'
+                    callback: (value, param, fields: Record<string, Field>) => fields[param].value === value,
+                    message: '@{field} not matched with @{param}'
                 }
             ],
         })
