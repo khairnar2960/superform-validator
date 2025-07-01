@@ -10,7 +10,7 @@ export class TimeRule extends BaseRule {
             aliases: ['time'],
             validators: [
                 {
-                    callback: (value) => /^([0-1][0-9]|2[0-3])\:([0-5][0-9])(?:\:([0-5][0-9]))?$/.test(String(value)),
+                    callback: (value) => /^([0-1][0-9]|2[0-3])\:([0-5][0-9])(?:\:([0-5][0-9]))?$/.test(String(value)) && !isNaN(Date.parse(`1970-01-01 ${value}`)),
                     message: '@{field} must be a valid time',
                 }
             ]

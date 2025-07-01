@@ -23,7 +23,7 @@ export class FileRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) =>  Array.from(value || []).length <= param,
-                    message: 'Maximum @{limit} files allowed for @{field}'
+                    message: 'Maximum @{param} files allowed for @{field}'
                 }
             ],
         });
@@ -34,8 +34,8 @@ export class FileRule extends BaseRule {
             aliases: ['maxFileSize'],
             validators: [
                 {
-                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).every(file => (file?.size || 0) <= param),
-                    message: '@{field} exceeds maximum limit of @{limit}'
+                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).every(file => (file?.size || 0) <= param.bytes),
+                    message: '@{field} exceeds maximum limit of @{param.raw}'
                 }
             ],
         });
@@ -51,7 +51,7 @@ export class FileRule extends BaseRule {
 							return param.includes(file?.extension || '') || param.includes(file?.type || '');
 						});
 					},
-                    message: 'Invalid file. Only (@{types}) allowed'
+                    message: 'Invalid file. Only (@{param}) allowed'
                 }
             ],
         });

@@ -55,7 +55,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) >= param,
-                    message: '@{field} must be at least @{limit}'
+                    message: '@{field} must be at least @{param}'
                 }
             ]
         });
@@ -68,7 +68,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) <= param,
-                    message: '@{field} must be at most @{limit}'
+                    message: '@{field} must be at most @{param}'
                 }
             ]
         });
@@ -81,7 +81,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) >= param.min && parseFloat(value) <= param.max,
-                    message: '@{field} must be between @{min} and @{max}'
+                    message: '@{field} must be between @{param.min} and @{param.max}'
                 }
             ]
         });
@@ -94,7 +94,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) === param,
-                    message: '@{field} must be exactly @{other}'
+                    message: '@{field} must be exactly @{param}'
                 }
             ]
         });
@@ -107,7 +107,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) !== param,
-                    message: '@{field} must not be @{other}'
+                    message: '@{field} must not be @{param}'
                 }
             ]
         });
@@ -120,7 +120,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) > param,
-                    message: '@{field} must be greater than @{other}'
+                    message: '@{field} must be greater than @{param}'
                 }
             ]
         });
@@ -133,7 +133,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) >= param,
-                    message: '@{field} must be @{other} or greater'
+                    message: '@{field} must be @{param} or greater'
                 }
             ]
         });
@@ -146,7 +146,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) < param,
-                    message: '@{field} must be less than @{other}'
+                    message: '@{field} must be less than @{param}'
                 }
             ]
         });
@@ -159,7 +159,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) <= param,
-                    message: '@{field} must be @{other} or less'
+                    message: '@{field} must be @{param} or less'
                 }
             ]
         });

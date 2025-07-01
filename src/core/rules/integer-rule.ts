@@ -116,7 +116,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) === param,
-                    message: '@{field} must be exactly @{other}'
+                    message: '@{field} must be exactly @{param}'
                 }
             ]
         });
@@ -129,7 +129,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) !== param,
-                    message: '@{field} must not be @{other}'
+                    message: '@{field} must not be @{param}'
                 }
             ]
         });
@@ -142,7 +142,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) > param,
-                    message: '@{field} must be greater than @{other}'
+                    message: '@{field} must be greater than @{param}'
                 }
             ]
         });
@@ -155,7 +155,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) >= param,
-                    message: '@{field} must be @{other} or greater'
+                    message: '@{field} must be @{param} or greater'
                 }
             ]
         });
@@ -168,7 +168,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) < param,
-                    message: '@{field} must be less than @{other}'
+                    message: '@{field} must be less than @{param}'
                 }
             ]
         });
@@ -181,7 +181,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) <= param,
-                    message: '@{field} must be @{other} or less'
+                    message: '@{field} must be @{param} or less'
                 }
             ]
         });

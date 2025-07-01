@@ -1,4 +1,5 @@
 import { BaseRule, Field } from "./base-rule.js";
+import { isEmpty } from "./core-rules.js";
 
 export class FieldRule extends BaseRule {
     constructor() {
@@ -9,7 +10,7 @@ export class FieldRule extends BaseRule {
             aliases: ['require'],
             validators: [
                 {
-                    callback: (value: any) => !(value === null || value === undefined || value === ''),
+                    callback: (value: any) => !isEmpty(value),
                     message: '@{field} is required',
                 }
             ]
