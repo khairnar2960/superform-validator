@@ -2,7 +2,12 @@ export type ParamType = 'none' | 'single' | 'range' | 'list' | 'fileSize' | 'fie
 
 export type ArgumentDataType = 'any' | 'string' | 'integer' | 'float' | 'date' | 'file' | 'array' | 'boolean' | 'time' | 'datetime';
 
-export type callback = (value: any, param: any) => boolean;
+export interface Field {
+    name: string,
+    value: any,
+}
+
+export type callback = (value: any, param: any, fields: Record<string, Field>) => boolean;
 
 export interface ValidationStep {
     callback?: callback | undefined;
@@ -10,7 +15,7 @@ export interface ValidationStep {
     message: string;
 }
 
-export interface RuleFunction {
+export interface RuleFunctionSchema {
     name: string;
     paramType: ParamType;
     argumentType: ArgumentDataType;
@@ -36,15 +41,62 @@ export interface SignatureRecord {
     rules: Signature[]
 }
 
+export class RuleFunction {
+
+    name: string;
+    paramType: ParamType;
+    argumentType: ArgumentDataType;
+    aliases: string[];
+    validators: ValidationStep[];
+    desc?: string
+
+    constructor(schema: RuleFunctionSchema) {
+        this.name = schema.name;
+        this.paramType = schema.paramType;
+        this.argumentType = schema.argumentType;
+        this.aliases = schema.aliases;
+        this.validators = schema.validators;
+        this.desc = schema.desc;
+    }
+
+    /**
+     * Validate a value.
+     * @param {any} value value to be validated
+     * @param {any} param extra param for callback
+     * @returns {ValidationResponse}
+     */
+    validate(value: any, param: any, fields: Record<string, Field>): ValidationResponse {
+
+        const response: ValidationResponse = { valid: true, function: this.name, value, param };
+
+        for (const validator of this.validators) {
+
+            if (validator.callback && !validator.callback(value, param, fields)) {
+                response.valid = false;
+                response.error = validator.message;
+                return response;
+            }
+
+            if (validator.pattern && !validator.pattern.test(value)) {
+                response.valid = false;
+                response.error = validator.message;
+                return response;
+            }
+        }
+
+        return response;
+    }
+}
+
 export class BaseRule {
     type: string;
     functions: Map<string, RuleFunction>;
 
     /**
      * @param {string} type Rule type e.g. string | integer
-     * @param {RuleFunction} typeChecker 
+     * @param {RuleFunctionSchema} typeChecker 
      */
-    constructor(type: string, typeChecker?: RuleFunction) {
+    constructor(type: string, typeChecker?: RuleFunctionSchema) {
         this.type = type;
         this.functions = new Map();
         if (typeChecker) this.registerFunction(typeChecker);
@@ -52,11 +104,11 @@ export class BaseRule {
 
     /**
      * Register a new function for this rule type.
-     * @param {RuleFunction} ruleFunction Rule function definition
+     * @param {RuleFunctionSchema} ruleFunction Rule function definition
      * @returns {this}
      */
-    registerFunction(ruleFunction: RuleFunction): this {
-        this.functions.set(ruleFunction.name, ruleFunction);
+    registerFunction(ruleFunction: RuleFunctionSchema): this {
+        this.functions.set(ruleFunction.name, new RuleFunction(ruleFunction));
         return this;
     }
 
@@ -80,7 +132,7 @@ export class BaseRule {
      * @param {any} param extra param for callback
      * @returns {ValidationResponse}
      */
-    validate(functionName: string, value: any, param: any): ValidationResponse {
+    validate(functionName: string, value: any, param: any, fields: Record<string, Field>): ValidationResponse {
         let func = this.functions.get(functionName);
 
         if (!func) {
@@ -89,23 +141,7 @@ export class BaseRule {
 
         if (!func) throw new Error(`Function ${functionName} is not registered in ${this.type}`);
 
-        const response: ValidationResponse = { valid: true, function: functionName, value, param };
-
-        for (const validator of func.validators) {
-
-            if (validator.callback && !validator.callback(value, param)) {
-                response.valid = false;
-                response.error = validator.message;
-                return response;
-            }
-
-            if (validator.pattern && !validator.pattern.test(value)) {
-                response.valid = false;
-                response.error = validator.message;
-                return response;
-            }
-        }
-        return response;
+        return func.validate(value, param, fields);
     }
 
     /**
