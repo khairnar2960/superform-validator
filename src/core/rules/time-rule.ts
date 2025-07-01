@@ -1,3 +1,4 @@
+import { ExtractedTime, extractTime } from "../../utils/date-time.js";
 import { BaseRule } from "./base-rule.js";
 
 export class TimeRule extends BaseRule {
@@ -22,8 +23,8 @@ export class TimeRule extends BaseRule {
 			aliases: ['timeBefore'],
 			validators: [
 				{
-					callback: (value, param) => new Date(value) < new Date(param),
-					message: '@{field} must be before @{limit}'
+					callback: (value: string, param: ExtractedTime) => extractTime(value).toDate() < param.toDate(),
+					message: '@{field} must be before @{param}'
 				}
 			],
 		});
@@ -35,8 +36,37 @@ export class TimeRule extends BaseRule {
 			aliases: ['timeAfter'],
 			validators: [
 				{
-					callback: (value, param) => new Date(value) > new Date(param),
-					message: '@{field} must be after @{limit}'
+					callback: (value: string, param: ExtractedTime) => extractTime(value).toDate() > param.toDate(),
+					message: '@{field} must be after @{param}'
+				}
+			],
+		});
+
+		this.registerFunction({
+			name: 'equals',
+			paramType: 'single',
+			argumentType: 'time',
+			aliases: ['timeEquals'],
+			validators: [
+				{
+					callback: (value: string, param: ExtractedTime) => extractTime(value).toDate() > param.toDate(),
+					message: '@{field} must exactly match the @{param}'
+				}
+			],
+		});
+
+		this.registerFunction({
+			name: 'between',
+			paramType: 'range',
+			argumentType: 'time',
+			aliases: ['timeBetween'],
+			validators: [
+				{
+					callback: (value: string, param: Record<string, ExtractedTime>) => {
+						const val = extractTime(value).toDate();
+						return val >= param.min.toDate() && val <= param.max.toDate();
+					},
+					message: '@{field} must be between @{param.min} and @{param.max}'
 				}
 			],
 		});
