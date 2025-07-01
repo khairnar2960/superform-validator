@@ -23,7 +23,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value.length >= param,
-                    message: '@{field} must be at least @{limit} characters long'
+                    message: '@{field} must be at least @{param} characters long'
                 }
             ],
         });
@@ -36,7 +36,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value.length <= param,
-                    message: '@{field} must be at least most @{limit} characters long'
+                    message: '@{field} must not be more than @{param} characters'
                 }
             ],
         });
@@ -49,7 +49,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value.length === param,
-                    message: '@{field} must be exactly @{limit} characters long'
+                    message: '@{field} must be exactly @{param} characters long'
                 }
             ],
         });
@@ -209,7 +209,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => (param as Array<any>).includes(value),
-                    message: '@{field} must be anyone of this (@{listItems})'
+                    message: '@{field} must be anyone of this (@{param})'
                 }
             ],
         });
@@ -221,7 +221,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => !(param as Array<any>).includes(value),
-                    message: '@{field} must not be none of this (@{listItems})'
+                    message: '@{field} must not be none of this (@{param})'
                 }
             ],
         });
@@ -233,7 +233,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value === param,
-                    message: '@{field} must be exactly @{other}'
+                    message: '@{field} must be exactly @{param}'
                 }
             ],
         });
@@ -245,7 +245,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value !== param,
-                    message: '@{field} must not be @{other}'
+                    message: '@{field} must not be @{param}'
                 }
             ],
         });
@@ -257,7 +257,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string, param: string) => value.includes(param),
-                    message: '@{field} must contain @{other}'
+                    message: '@{field} must contain @{param}'
                 }
             ],
         });
@@ -269,7 +269,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string, param: string) => !value.includes(param),
-                    message: '@{field} must not contain @{other}'
+                    message: '@{field} must not contain @{param}'
                 }
             ],
         });
@@ -281,7 +281,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string, param: string) => value.startsWith(param),
-                    message: '@{field} must start with @{other}'
+                    message: '@{field} must start with @{param}'
                 }
             ],
         });
@@ -293,7 +293,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string, param: string) => !value.startsWith(param),
-                    message: '@{field} must not start with @{other}'
+                    message: '@{field} must not start with @{param}'
                 }
             ],
         });
@@ -305,7 +305,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string, param: string) => value.endsWith(param),
-                    message: '@{field} must end with @{other}'
+                    message: '@{field} must end with @{param}'
                 }
             ],
         });
@@ -317,7 +317,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string, param: string) => !value.endsWith(param),
-                    message: '@{field} must not end with @{other}'
+                    message: '@{field} must not end with @{param}'
                 }
             ],
         });
