@@ -14,7 +14,6 @@ export class StringRule extends BaseRule {
                 }
             ]
         });
-
         this.registerFunction({
             name: 'minLength',
             paramType: 'single',
@@ -27,7 +26,6 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
-        
         this.registerFunction({
             name: 'maxLength',
             paramType: 'single',
@@ -40,7 +38,6 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
-
         this.registerFunction({
             name: 'length',
             paramType: 'single',
@@ -53,85 +50,9 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
-        
-        this.registerFunction({
-            name: 'strongPassword',
-            paramType: 'none',
-            argumentType: 'string',
-            aliases: ['strongPassword'],
-            validators: [
-                { callback: value => /[A-Z]/.test(value), message: '@{field} must contain at least one uppercase letter' },
-                { callback: value => /[a-z]/.test(value), message: '@{field} must contain at least one lowercase letter' },
-                { callback: value => /\\d/.test(value), message: '@{field} must contain at least one digit' },
-                { callback: value => /[!@#$%^&*]/.test(value), message: '@{field} must contain at least one special character' },
-                { callback: value => value.length >= 8, message: '@{field} must be at least 8 characters long' }
-            ],
-        });
-
-        this.registerFunction({
-            name: 'email',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['email'],
-            validators: [
-                {
-                    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: '@{field} must be a valid email'
-                }
-            ],
-        });
-        
-        this.registerFunction({
-            name: 'mobile',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['mobile'],
-            validators: [
-                {
-                    pattern: /^[6-9]{1}[0-9]{9}$/,
-                    message: '@{field} must be a valid mobile number'
-                }
-            ],
-        });
-        this.registerFunction({
-            name: 'pincode',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['pincode'],
-            validators: [
-                {
-                    pattern: /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/,
-                    message: '@{field} must be a valid PIN code'
-                }
-            ],
-        });
-        this.registerFunction({
-            name: 'pan',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['pan'],
-            validators: [
-                {
-                    pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
-                    message: '@{field} must be a valid PAN'
-                }
-            ],
-        });
-        this.registerFunction({
-            name: 'ifsc',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['ifsc'],
-            validators: [
-                {
-                    pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/,
-                    message: '@{field} must be a valid ISFC'
-                }
-            ],
-        });
         this.registerFunction({
             name: 'alpha',
-            paramType: 'single',
+            paramType: 'none',
             argumentType: 'string',
             aliases: ['alpha'],
             validators: [
@@ -143,7 +64,7 @@ export class StringRule extends BaseRule {
         });
         this.registerFunction({
             name: 'alphaspace',
-            paramType: 'single',
+            paramType: 'none',
             argumentType: 'string',
             aliases: ['alphaspace'],
             validators: [
@@ -155,7 +76,7 @@ export class StringRule extends BaseRule {
         });
         this.registerFunction({
             name: 'alphanum',
-            paramType: 'single',
+            paramType: 'none',
             argumentType: 'string',
             aliases: ['alphanum'],
             validators: [
@@ -167,37 +88,13 @@ export class StringRule extends BaseRule {
         });
         this.registerFunction({
             name: 'alphanumspace',
-            paramType: 'single',
+            paramType: 'none',
             argumentType: 'string',
             aliases: ['alphanumspace'],
             validators: [
                 {
                     pattern: /^[0-9a-zA-Z\s]+$/,
                     message: '@{field} accepts alphabets, numbers & spaces only'
-                }
-            ],
-        });
-        this.registerFunction({
-            name: 'slug',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['slug'],
-            validators: [
-                {
-                    pattern: /^[0-9a-zA-Z-]+$/,
-                    message: '@{field} must be a valid slug'
-                }
-            ],
-        });
-        this.registerFunction({
-            name: 'url',
-            paramType: 'single',
-            argumentType: 'string',
-            aliases: ['url'],
-            validators: [
-                {
-                    pattern: /\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i,
-                    message: '@{field} must be a valid url'
                 }
             ],
         });
@@ -318,6 +215,103 @@ export class StringRule extends BaseRule {
                 {
                     callback: (value: string, param: string) => !value.endsWith(param),
                     message: '@{field} must not end with @{param}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'strongPassword',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['strongPassword'],
+            validators: [
+                { callback: value => /[A-Z]/.test(value), message: '@{field} must contain at least one uppercase letter' },
+                { callback: value => /[a-z]/.test(value), message: '@{field} must contain at least one lowercase letter' },
+                { callback: value => /\\d/.test(value), message: '@{field} must contain at least one digit' },
+                { callback: value => /[!@#$%^&*]/.test(value), message: '@{field} must contain at least one special character' },
+                { callback: value => value.length >= 8, message: '@{field} must be at least 8 characters long' }
+            ],
+        });
+        this.registerFunction({
+            name: 'email',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['email'],
+            validators: [
+                {
+                    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: '@{field} must be a valid email'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'mobile',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['mobile'],
+            validators: [
+                {
+                    pattern: /^[6-9]{1}[0-9]{9}$/,
+                    message: '@{field} must be a valid mobile number'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'pincode',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['pincode'],
+            validators: [
+                {
+                    pattern: /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/,
+                    message: '@{field} must be a valid PIN code'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'pan',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['pan'],
+            validators: [
+                {
+                    pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+                    message: '@{field} must be a valid PAN'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'ifsc',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['ifsc'],
+            validators: [
+                {
+                    pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/,
+                    message: '@{field} must be a valid ISFC'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'slug',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['slug'],
+            validators: [
+                {
+                    pattern: /^[0-9a-zA-Z-]+$/,
+                    message: '@{field} must be a valid slug'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'url',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['url'],
+            validators: [
+                {
+                    pattern: /\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i,
+                    message: '@{field} must be a valid url'
                 }
             ],
         });

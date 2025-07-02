@@ -11,7 +11,7 @@ export class CastingProcessor extends Processor {
 			name: 'integer',
 			paramType: 'none',
 			argumentType: 'any',
-			aliases: [],
+			aliases: ['toInteger'],
 			processors: [
 				(value) => parseInt(value, 10)
 			],
@@ -22,7 +22,7 @@ export class CastingProcessor extends Processor {
 			name: 'float',
 			paramType: 'none',
 			argumentType: 'any',
-			aliases: [],
+			aliases: ['toFloat'],
 			processors: [
 				(value) => parseFloat(value)
 			],
@@ -33,7 +33,7 @@ export class CastingProcessor extends Processor {
 			name: 'boolean',
 			paramType: 'none',
 			argumentType: 'any',
-			aliases: [],
+			aliases: ['toBoolean'],
 			processors: [
 				(value) => {
 					value = 'string' === typeof value ? value.toLowerCase() : value;
@@ -44,10 +44,10 @@ export class CastingProcessor extends Processor {
 		});
 
 		this.registerFunction({
-			name: 'tojson',
+			name: 'toJson',
 			paramType: 'none',
 			argumentType: 'any',
-			aliases: [],
+			aliases: ['toJson'],
 			processors: [
 				(value) => JSON.stringify(value)
 			],
@@ -55,10 +55,10 @@ export class CastingProcessor extends Processor {
 		});
 
 		this.registerFunction({
-			name: 'fromjson',
+			name: 'fromJson',
 			paramType: 'none',
 			argumentType: 'any',
-			aliases: [],
+			aliases: ['fromJson'],
 			processors: [
 				(value) => {
 					try {

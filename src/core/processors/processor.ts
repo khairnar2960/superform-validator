@@ -111,6 +111,3 @@ export class Processor {
 		return signatures;
 	}
 }
-
-
-new Processor('trim')

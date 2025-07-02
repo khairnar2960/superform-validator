@@ -88,7 +88,7 @@ export class FloatRule extends BaseRule {
 
         this.registerFunction({
             name: 'equals',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'float',
             aliases: ['floatEquals'],
             validators: [
@@ -101,7 +101,7 @@ export class FloatRule extends BaseRule {
 
         this.registerFunction({
             name: 'notEquals',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'float',
             aliases: ['floatNotEquals'],
             validators: [
@@ -114,7 +114,7 @@ export class FloatRule extends BaseRule {
 
         this.registerFunction({
             name: 'gt',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'float',
             aliases: ['floatGt'],
             validators: [
@@ -127,7 +127,7 @@ export class FloatRule extends BaseRule {
 
         this.registerFunction({
             name: 'gte',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'float',
             aliases: ['floatGte'],
             validators: [
@@ -140,7 +140,7 @@ export class FloatRule extends BaseRule {
 
         this.registerFunction({
             name: 'lt',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'float',
             aliases: ['floatLt'],
             validators: [
@@ -153,7 +153,7 @@ export class FloatRule extends BaseRule {
 
         this.registerFunction({
             name: 'lte',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'float',
             aliases: ['floatLte'],
             validators: [

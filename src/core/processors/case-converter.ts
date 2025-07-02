@@ -12,7 +12,7 @@ export class CaseConverter extends Processor {
             name: 'camel',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['camelcase'],
+            aliases: ['toCamelcase'],
             processors: [toCamelCase],
             desc: 'Convert string to camelcase',
         });
@@ -21,49 +21,49 @@ export class CaseConverter extends Processor {
             name: 'kebab',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['kebabcase'],
+            aliases: ['toKebabcase'],
             processors: [toKebabCase],
         });
         this.registerFunction({
             name: 'lower',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['lowercase'],
+            aliases: ['toLowercase'],
             processors: [(value: string) => value.toLowerCase()],
         });
         this.registerFunction({
             name: 'pascal',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['pascalcase'],
+            aliases: ['toPascalcase'],
             processors: [toPascalCase],
         });
         this.registerFunction({
             name: 'sentence',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['sentencecase'],
+            aliases: ['toSentencecase'],
             processors: [toSentenceCase],
         });
         this.registerFunction({
             name: 'snake',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['snakecase'],
+            aliases: ['toSnakecase'],
             processors: [toSnakeCase],
         });
         this.registerFunction({
             name: 'title',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['titlecase'],
+            aliases: ['toTitlecase'],
             processors: [toTitleCase],
         });
         this.registerFunction({
             name: 'upper',
             paramType: 'none',
             argumentType: 'string',
-            aliases: ['uppercase'],
+            aliases: ['toUppercase'],
             processors: [(value: string) => value.toUpperCase()],
         });
     }

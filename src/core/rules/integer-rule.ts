@@ -110,7 +110,7 @@ export class IntegerRule extends BaseRule {
 
         this.registerFunction({
             name: 'equals',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'integer',
             aliases: ['intEquals'],
             validators: [
@@ -123,7 +123,7 @@ export class IntegerRule extends BaseRule {
 
         this.registerFunction({
             name: 'notEquals',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'integer',
             aliases: ['intNotEquals'],
             validators: [
@@ -136,7 +136,7 @@ export class IntegerRule extends BaseRule {
 
         this.registerFunction({
             name: 'gt',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'integer',
             aliases: ['gt'],
             validators: [
@@ -149,7 +149,7 @@ export class IntegerRule extends BaseRule {
 
         this.registerFunction({
             name: 'gte',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'integer',
             aliases: ['gte'],
             validators: [
@@ -162,7 +162,7 @@ export class IntegerRule extends BaseRule {
 
         this.registerFunction({
             name: 'lt',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'integer',
             aliases: ['lt'],
             validators: [
@@ -175,7 +175,7 @@ export class IntegerRule extends BaseRule {
 
         this.registerFunction({
             name: 'lte',
-            paramType: 'none',
+            paramType: 'single',
             argumentType: 'integer',
             aliases: ['lte'],
             validators: [
