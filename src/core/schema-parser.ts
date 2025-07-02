@@ -3,8 +3,10 @@
 import { extractParam } from "./param-extractor.js";
 import { parseParam } from "./param-parser.js";
 import { ProcessorFunc } from "./processors/processor.js";
+import { RuleName } from "./rule-name.js";
 import { resolveRule } from "./rule-registry.js";
-import { RuleFunction } from "./rules/base-rule.js";
+import { RuleFunction, ValidationStep } from "./rules/base-rule.js";
+import { isObject } from "./rules/core-rules.js";
 
 export type FieldRule = {
     name: string,
@@ -16,7 +18,20 @@ export type FieldRule = {
 
 export type ParsedSchema = Record<string, FieldRule[]>;
 
-export function parseSchema(rawSchema: any): ParsedSchema {
+type SchemaRuleNames = {
+    [ruleName in RuleName]?: boolean|string|number|string[]|number[];
+}
+
+export type SchemaField = SchemaRuleNames & {
+    custom?: ValidationStep;
+    messages?: {
+        [key in RuleName]?: string;
+    };
+}
+
+export type RawSchema = Record<string, SchemaField | string>;
+
+export function parseSchema(rawSchema: RawSchema): ParsedSchema {
     const parsedSchema: ParsedSchema = {};
 
     for (const field in rawSchema) {
@@ -34,14 +49,14 @@ export function parseSchema(rawSchema: any): ParsedSchema {
         }
 
         if (typeof schemaDef === 'object') {
-            const { messages = {}, ...rules } = schemaDef;
+            const { messages = {}, ...rules } = schemaDef as SchemaField;
             for (const ruleName in rules) {
                 if (ruleName === 'messages') continue;
 
-                const param = rules[ruleName];
+                const param = rules[ruleName as (RuleName | 'custom')];
 
                 // Custom rule handling
-                if (typeof param === 'object' && (param.callback || param.pattern)) {
+                if (isObject(param) && ((param as ValidationStep)?.callback || (param as ValidationStep)?.pattern)) {
                     fieldRules.push({
                         name: ruleName,
                         type: 'custom', rule: null, param
@@ -49,7 +64,7 @@ export function parseSchema(rawSchema: any): ParsedSchema {
                 } else {
                     const { function: validator, type, paramType, argumentType } = resolveRule(ruleName);
                     const parsedParam = parseParam(param === true ? null : String(param), paramType, argumentType);
-                    const message = messages[ruleName];
+                    const message = messages[ruleName as RuleName];
                     fieldRules.push({ name: ruleName, type, rule: validator, param: parsedParam, message });
                 }
             }
