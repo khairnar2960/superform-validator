@@ -2,7 +2,7 @@ import { toCamelCase } from "../utils/case.js";
 import { CaseConverter } from "./processors/case-converter.js";
 import { CastingProcessor } from "./processors/casting.js";
 import { Processor, ProcessorFunc } from "./processors/processor.js";
-import { BaseRule, type RuleFunction } from "./rules/base-rule.js";
+import { BaseRule, RuleFunction, RuleFunctionSchema, ValidationStep } from "./rules/base-rule.js";
 import { DateRule } from "./rules/date-rule.js";
 import { DateTimeRule } from "./rules/datetime-rule.js";
 import { FieldRule } from "./rules/field-rules.js";
@@ -19,7 +19,7 @@ export interface RuleMeta {
     function: RuleFunction|ProcessorFunc|null,
     paramType: string,
     argumentType: string,
-    rule: BaseRule|Processor,
+    rule: BaseRule|Processor|null,
 }
 
 export const allRules = [
@@ -56,7 +56,7 @@ allRules.forEach((rule: BaseRule|Processor) => {
                     functionName: func.name,
                     function: func,
                     paramType: func.paramType,
-                    argumentType: func.argumentType,
+                    argumentType: func.argumentType.join('|'),
                     rule,
                 };
 
