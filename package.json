@@ -12,16 +12,22 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
-    "./middlewares": {
-      "types": "./dist/plugins/plugin.d.ts",
-      "import": "./dist/plugins/plugin.js",
-      "require": "./dist/plugins/plugin.js"
+    "./express": {
+      "types": "./dist/middlewares/express.d.ts",
+      "import": "./dist/middlewares/express.js",
+      "require": "./dist/middlewares/express.js"
+    },
+    "./react": {
+      "types": "./dist/middlewares/react.d.ts",
+      "import": "./dist/middlewares/react.js",
+      "require": "./dist/middlewares/react.js"
     }
   },
   "scripts": {
     "clean": "rm -r dist",
     "prebuild": "npm run clean",
-    "build:types": "tsc",
+    "build:schemaTypes": "node scripts/build-schema-types.js",
+    "build:types": "tsc && npm run build:schemaTypes",
     "build:bundle": "rollup -c",
     "build": "npm run build:types && npm run build:bundle",
     "prepare": "npm run build",
