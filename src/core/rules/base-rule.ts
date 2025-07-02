@@ -1,6 +1,8 @@
+import { isArray } from "./core-rules.js";
+
 export type ParamType = 'none' | 'single' | 'range' | 'list' | 'fileSize' | 'fieldReference' | 'fieldEquals' | 'function';
 
-export type ArgumentDataType = 'any' | 'string' | 'integer' | 'float' | 'date' | 'file' | 'array' | 'boolean' | 'time' | 'datetime';
+export type ArgumentDataType = 'any' | 'string' | 'integer' | 'float' | 'date' | 'file' | 'fileSize' | 'fileExtension' | 'fileMimetype' | 'array' | 'boolean' | 'time' | 'datetime';
 
 export interface Field {
     name: string,
@@ -18,7 +20,7 @@ export interface ValidationStep {
 export interface RuleFunctionSchema {
     name: string;
     paramType: ParamType;
-    argumentType: ArgumentDataType;
+    argumentType: ArgumentDataType|ArgumentDataType[];
     aliases: string[];
     validators: ValidationStep[];
     desc?: string
@@ -45,7 +47,7 @@ export class RuleFunction {
 
     name: string;
     paramType: ParamType;
-    argumentType: ArgumentDataType;
+    argumentType: ArgumentDataType[];
     aliases: string[];
     validators: ValidationStep[];
     desc?: string
@@ -53,7 +55,7 @@ export class RuleFunction {
     constructor(schema: RuleFunctionSchema) {
         this.name = schema.name;
         this.paramType = schema.paramType;
-        this.argumentType = schema.argumentType;
+        this.argumentType = (isArray(schema.argumentType) ? schema.argumentType : [schema.argumentType]) as ArgumentDataType[];
         this.aliases = schema.aliases;
         this.validators = schema.validators;
         this.desc = schema.desc;
@@ -192,39 +194,26 @@ export class BaseRule {
     /**
      * Helper to build signature pattern based on parameter type.
      */
-    private getSignaturePattern(paramType: ParamType, argType: ArgumentDataType, isAlias: boolean = false): string {
+    private getSignaturePattern(paramType: ParamType, argTypes: ArgumentDataType[], isAlias: boolean = false): string {
         if (paramType === 'none') return '';
-        const argExample = this.parameterize(paramType, argType);
+        const argExample = this.parameterize(paramType, argTypes, isAlias);
         return `(${argExample})`;
     }
 
-    private parameterize(paramType: ParamType, argType: ArgumentDataType) {
-        if ('single' === paramType) {
-            return argType;
-        } else if ('range' === paramType) {
-            return [1, 2].map(n => argType + n).join(',');
-        } else if ('list' === paramType) {
-            return [1, 2, 3, 4].map(n => argType + n).join(',');
-        }
-        return paramType + `<${argType}>`;
-    }
-
-    /**
-     * Example placeholders for documentation.
-     */
-    private getExampleForType(argType: ArgumentDataType): string {
-        const examples: Record<ArgumentDataType, string> = {
-            any: 'any',
-            string: 'text',
-            integer: '10',
-            float: '5.5',
-            file: 'file.jpg',
-            array: '[item1, item2]',
-            boolean: 'true',
-            datetime: '2025-06-30 12:00:00',
-            date: '2025-06-30',
-            time: '12:00:00',
-        };
-        return examples[argType];
+    private parameterize(paramType: ParamType, argTypes: ArgumentDataType[], isAlias: boolean) {
+        return argTypes.map(argType => {
+            if ('single' === paramType) {
+                return argType;
+            } else if ('range' === paramType) {
+                return [1, 2].map(n => argType + n).join(',');
+            } else if ('list' === paramType) {
+                return [1, 2, 3, 4].map(n => argType + n).join(',');
+            } else if ('fieldReference' === paramType) {
+                return 'anotherField';
+            } else if ('fieldEquals' === paramType) {
+                return 'anotherField=value';
+            }
+            return paramType;
+        }).join('|');
     }
 }
