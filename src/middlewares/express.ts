@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { ValidationResponse } from "../core/validator-engine.js";
-import { Validator } from "../core/validator.js";
+import { validate, ValidationResponse } from "../core/validator-engine.js";
+import { parseSchema } from "../core/schema-parser.js";
 
 declare module 'express-serve-static-core' {
 	interface Request {
@@ -12,18 +12,18 @@ declare module 'express-serve-static-core' {
 	}
 }
 
-export const expressValidator = (req: Request, res: Response, next: NextFunction) => {
-	req.validate = (schema: Record<string, any>, data: Record<string, any>) => (new Validator(schema)).validate(data),
-	req.validateBody = (schema: Record<string, any>) => (new Validator(schema)).validate(req.body),
-	req.validateParams = (schema: Record<string, any>) => (new Validator(schema)).validate(req.params),
-	req.validateQuery = (schema: Record<string, any>) => (new Validator(schema)).validate(req.query),
+export const plugin = (req: Request, res: Response, next: NextFunction) => {
+	req.validate = (schema: Record<string, any>, data: Record<string, any>) => validate(parseSchema(schema), data),
+	req.validateBody = (schema: Record<string, any>) => validate(parseSchema(schema), req.body),
+	req.validateParams = (schema: Record<string, any>) => validate(parseSchema(schema), req.params),
+	req.validateQuery = (schema: Record<string, any>) => validate(parseSchema(schema), req.query),
 	next();
 }
 
 export const validateBody = (schema: Record<string, any>) => {
-	const validator = new Validator(schema);
+	const parsedSchema = parseSchema(schema);
 	return (req: Request, res: Response, next: NextFunction) => {
-		const validated = validator.validate(req.body);
+		const validated = validate(parsedSchema, req.body || {});
 
 		const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
 
@@ -47,9 +47,9 @@ export const validateBody = (schema: Record<string, any>) => {
 }
 
 export const validateParams = (schema: Record<string, any>) => {
-	const validator = new Validator(schema);
+	const parsedSchema = parseSchema(schema);
 	return (req: Request, res: Response, next: NextFunction) => {
-		const validated = validator.validate(req.params);
+		const validated = validate(parsedSchema, req.params);
 
 		const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
 
@@ -73,9 +73,9 @@ export const validateParams = (schema: Record<string, any>) => {
 }
 
 export const validateQuery = (schema: Record<string, any>) => {
-	const validator = new Validator(schema);
+	const parsedSchema = parseSchema(schema);
 	return (req: Request, res: Response, next: NextFunction) => {
-		const validated = validator.validate(req.query);
+		const validated = validate(parsedSchema, req.query);
 
 		const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
 
@@ -98,3 +98,12 @@ export const validateQuery = (schema: Record<string, any>) => {
 		next();
 	}
 }
+
+const validator = {
+	plugin,
+	validateBody,
+	validateParams,
+	validateQuery,
+}
+
+export default validator;
