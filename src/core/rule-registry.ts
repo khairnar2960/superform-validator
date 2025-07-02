@@ -111,6 +111,31 @@ allRules.forEach((rule: BaseRule|Processor) => {
     }
 });
 
+export function registerRule(schema: RuleFunctionSchema, type: string = 'string') {
+    
+    const func = new RuleFunction(schema)
+    const fullName = `${type}::${func.name}`;
+    
+    if (ruleRegistry[fullName]) throw new Error("Duplicate rule entry " + fullName);
+    
+    const ruleMeta: RuleMeta = {
+        type: type,
+        functionName: func.name,
+        function: func,
+        paramType: func.paramType,
+        argumentType: func.argumentType.join('|'),
+        rule: null,
+    };
+
+    ruleRegistry[fullName] = ruleMeta;
+
+    // Register aliases
+    func.aliases.forEach(alias => {
+        if (ruleRegistry[alias]) throw new Error("Duplicate rule entry " + fullName + " for alias " + alias);
+
+        ruleRegistry[alias] = ruleMeta;
+    });
+}
 
 export function resolveRule(name: string): RuleMeta {
     return ruleRegistry[name] || { type: 'string', function: 'unknown', paramType: 'none', argumentType: 'string' };
