@@ -62,9 +62,27 @@ export class FieldRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'requireWithout',
+            paramType: 'list',
+            argumentType: 'fieldName',
+            aliases: ['requireWithout'],
+            validators: [
+                {
+                    callback: (value, param: string[], fields: Record<string, Field>) => {
+                        return !(param.every(field => {
+                            const target = fields[field] || null;
+                            return !target || !target.value
+                        }) && isEmpty(value));
+                    },
+                    message: '@{field} is required when @{param} is absent'
+                }
+            ],
+        });
+        this.registerFunction({
             name: 'match',
             paramType: 'fieldReference',
-            argumentType: 'any',
+            argumentType: 'fieldName',
             aliases: ['match'],
             validators: [
                 {
