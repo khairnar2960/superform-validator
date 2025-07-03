@@ -42,15 +42,33 @@ describe('ErrorFormatter', () => {
 		)).toBe('Missing: ');
     });
 
-    it('trims string values by default', () => {
+    it('trims string values using trim modifier', () => {
         expect(ErrorFormatter.format(
-			'Name: @{user.name}', { user: { name: '  Rahul  ' } }
+			'Name: @{user.name | trim}', { user: { name: '  Rahul  ' } }
+		)).toBe('Name: Rahul');
+    });
+
+	it('lowers the case using lower modifier', () => {
+        expect(ErrorFormatter.format(
+			'Name: @{user.name | lower}', { user: { name: 'RAHUL' } }
+		)).toBe('Name: rahul');
+    });
+	
+	it('uppers the case using upper modifier', () => {
+        expect(ErrorFormatter.format(
+			'Name: @{user.name | upper}', { user: { name: 'rahul' } }
+		)).toBe('Name: RAHUL');
+    });
+	
+	it('capitalizes the case using capitalize modifier', () => {
+        expect(ErrorFormatter.format(
+			'Name: @{user.name | capitalize}', { user: { name: 'rahul' } }
 		)).toBe('Name: Rahul');
     });
 
 	it('handles fallback with quoted strings and spaces', () => {
 		expect(ErrorFormatter.format(
-			'Role: @{user.role || "  Admin  "}', { user: {} }
+			'Role: @{user.role | trim || "  Admin  "}', { user: {} }
 		)).toBe('Role: Admin');
 	});
 
