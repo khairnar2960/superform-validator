@@ -315,5 +315,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'urlSecure',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['urlSecure'],
+            validators: [
+                {
+                    pattern: /^https:\/\/.+/i,
+                    message: '@{field} must start with https://'
+                }
+            ],
+        });
     }
 }
