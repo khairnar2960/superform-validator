@@ -19,10 +19,11 @@ export type FieldRule = {
 export type ParsedSchema = Record<string, FieldRule[]>;
 
 type SchemaRuleNames = {
-    [ruleName in RuleName]?: boolean|string|number|string[]|number[];
+    [ruleName in RuleName]?: any;
 }
 
 export type SchemaField = SchemaRuleNames & {
+    default?: any;
     custom?: ValidationStep;
     messages?: {
         [key in RuleName]?: string;
@@ -30,6 +31,20 @@ export type SchemaField = SchemaRuleNames & {
 }
 
 export type RawSchema = Record<string, SchemaField | string>;
+
+function isValidCustomRule(param: any): boolean {
+    return isObject(param) && (
+        'function' === typeof param?.callback ||
+        param?.pattern instanceof RegExp
+    )
+}
+
+function buildRegex(input: string): RegExp {
+    const match = input.match(/^\/?(.+)\/:?([gimsuy]+)?$/);
+    if (!match) throw new Error("Invalid regex format");
+    const [_, pattern, flags = ''] = match;
+    return new RegExp(pattern, flags);
+}
 
 export function parseSchema(rawSchema: RawSchema): ParsedSchema {
     const parsedSchema: ParsedSchema = {};
@@ -42,9 +57,15 @@ export function parseSchema(rawSchema: RawSchema): ParsedSchema {
             const rules = schemaDef.split(/\|(?![^(]*\))/).map(rule => rule.trim());
             rules.forEach(ruleStr => {
                 const { name, param: rawParam } = extractParam(ruleStr);
-                const { function: validator, type, paramType, argumentType } = resolveRule(name);
-                const param = parseParam(rawParam, paramType, argumentType);
-                fieldRules.push({ name, type, rule: validator, param });
+                if ('default' === name) {
+                    fieldRules.push({ name, type: 'value', rule: null, param: rawParam });
+                } else if ('custom' === name) {
+                    fieldRules.push({ name, type: 'pattern', rule: null, param: { pattern: buildRegex(rawParam || '') } });
+                } else {
+                    const { function: validator, type, paramType, argumentType } = resolveRule(name);
+                    const param = parseParam(rawParam, paramType, argumentType);
+                    fieldRules.push({ name, type, rule: validator, param });
+                }
             });
         }
 
@@ -56,10 +77,19 @@ export function parseSchema(rawSchema: RawSchema): ParsedSchema {
                 const param = rules[ruleName as (RuleName | 'custom')];
 
                 // Custom rule handling
-                if (isObject(param) && ((param as ValidationStep)?.callback || (param as ValidationStep)?.pattern)) {
+                if ('custom' === ruleName) {
+                    if (!isValidCustomRule(param)) throw new Error("Invalid custom rule definition");
+
                     fieldRules.push({
                         name: ruleName,
-                        type: 'custom', rule: null, param
+                        type: param?.callback ? 'callback' : 'pattern', rule: null, param, message: param?.message || 'Invalid @{field}',
+                    });
+                } else if ('default' === ruleName) {
+                    fieldRules.push({
+                        name: ruleName,
+                        type: 'value',
+                        rule: null,
+                        param,
                     });
                 } else {
                     const { function: validator, type, paramType, argumentType } = resolveRule(ruleName);
