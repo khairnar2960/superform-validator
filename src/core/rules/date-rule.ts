@@ -70,5 +70,41 @@ export class DateRule extends BaseRule {
 				}
 			],
 		});
+		this.registerFunction({
+			name: 'today',
+			paramType: 'none',
+			argumentType: 'date',
+			aliases: ['dateToday'],
+			validators: [
+				{
+					callback: (value: string) => extractDate(value).toString() === (new Date()).toISOString().split('T')[0],
+					message: '@{field} must be today\'s date'
+				}
+			],
+		});
+		this.registerFunction({
+			name: 'past',
+			paramType: 'none',
+			argumentType: 'date',
+			aliases: ['datePast'],
+			validators: [
+				{
+					callback: (value: string) => extractDate(value).toDate() < new Date(),
+					message: '@{field} must be past date'
+				}
+			],
+		});
+		this.registerFunction({
+			name: 'future',
+			paramType: 'none',
+			argumentType: 'date',
+			aliases: ['dateFuture'],
+			validators: [
+				{
+					callback: (value: string) => extractDate(value).toDate() > new Date(),
+					message: '@{field} must be future date'
+				}
+			],
+		});
     }
 }
