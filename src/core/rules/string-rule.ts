@@ -375,5 +375,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'uuid',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['uuid'],
+            validators: [
+                {
+                    pattern: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+                    message: '@{field} must be a valid UUID'
+                }
+            ],
+        });
     }
 }
