@@ -82,5 +82,17 @@ export class DateTimeRule extends BaseRule {
 				}
 			],
 		});
+		this.registerFunction({
+			name: 'future',
+			paramType: 'none',
+			argumentType: 'datetime',
+			aliases: ['dateTimeFuture'],
+			validators: [
+				{
+					callback: (value: string) => extractDateTime(value).toDate() > new Date(),
+					message: '@{field} must be future date time'
+				}
+			],
+		});
     }
 }
