@@ -31,6 +31,20 @@ export class FieldRule extends BaseRule {
             ],
         });
         this.registerFunction({
+            name: 'requireUnless',
+            paramType: 'fieldEquals',
+            argumentType: 'any',
+            aliases: ['requireUnless'],
+            validators: [
+                {
+                    callback: (value, param, fields: Record<string, Field>) => {
+                        const target = fields[param.field] || null;
+                        return !(target && target.value !== param.value && isEmpty(value));
+                    },
+                    message: '@{field} is required unless @{param.field} is @{param.value}'
+                }
+            ],
+        });
             name: 'match',
             paramType: 'fieldReference',
             argumentType: 'any',
