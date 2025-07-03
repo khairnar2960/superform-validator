@@ -423,5 +423,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'json',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['jsonString'],
+            validators: [
+                {
+                    callback: (value: string) => isJson(value),
+                    message: '@{field} must be a valid JSON'
+                }
+            ],
+        });
     }
 }
