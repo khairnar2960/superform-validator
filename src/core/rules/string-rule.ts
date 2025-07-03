@@ -1,4 +1,5 @@
 import { BaseRule } from "./base-rule.js";
+import { isJson } from "./core-rules.js";
 
 export class StringRule extends BaseRule {
     constructor() {
@@ -432,6 +433,21 @@ export class StringRule extends BaseRule {
                 {
                     callback: (value: string) => isJson(value),
                     message: '@{field} must be a valid JSON'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'wordCount',
+            paramType: 'range',
+            argumentType: 'integer',
+            aliases: ['wordCount'],
+            validators: [
+                {
+                    callback: (value: string, param) => {
+                        const words = value.trim().split(/\\s+/).length;
+                        return words >= param.min && words <= param.max;
+                    },
+                    message: '@{field} must have between @{param.min} and @{param.max} words'
                 }
             ],
         });
