@@ -111,5 +111,21 @@ export class FileRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'audioOnly',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['fileAudioOnly'],
+            validators: [
+                {
+                    callback: (value: Record<string, any>[]) => {
+						return value.every(file => {
+							return String(file?.type || '').startsWith('audio/');
+						});
+					},
+                    message: '@{field} accepts audio files only'
+                }
+            ],
+        });
     }
 }
