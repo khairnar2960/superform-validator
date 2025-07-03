@@ -387,5 +387,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'noSpace',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['noSpace'],
+            validators: [
+                {
+                    callback: (value: string) => !/\s/.test(value),
+                    message: '@{field} must not contain spaces'
+                }
+            ],
+        });
     }
 }
