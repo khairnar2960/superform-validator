@@ -1,7 +1,7 @@
 import { toCamelCase } from "../../utils/case.js";
 import { ArgumentDataType, ParamType, Signature, SignatureRecord } from "../rules/base-rule.js";
 
-export type callback = (value: any) => any;
+export type callback = (value: any, param?: any) => any;
 
 export interface ProcessorFuncSchema {
 	name?: string;

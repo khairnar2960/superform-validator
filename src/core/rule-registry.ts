@@ -2,7 +2,7 @@ import { toCamelCase } from "../utils/case.js";
 import { CaseConverter } from "./processors/case-converter.js";
 import { CastingProcessor } from "./processors/casting.js";
 import { Processor, ProcessorFunc } from "./processors/processor.js";
-import { BaseRule, RuleFunction, RuleFunctionSchema, ValidationStep } from "./rules/base-rule.js";
+import { BaseRule, RuleFunction, RuleFunctionSchema } from "./rules/base-rule.js";
 import { DateRule } from "./rules/date-rule.js";
 import { DateTimeRule } from "./rules/datetime-rule.js";
 import { FieldRule } from "./rules/field-rules.js";
@@ -12,6 +12,7 @@ import { IntegerRule } from "./rules/integer-rule.js";
 import { StringRule } from "./rules/string-rule.js";
 import { TimeRule } from "./rules/time-rule.js";
 import { Trimmer } from "./processors/trimmer.js";
+import { MathProcessor } from "./processors/math.js";
 
 export interface RuleMeta {
     type: string,
@@ -37,6 +38,7 @@ export const allRules = [
     new CaseConverter(true),
     new CastingProcessor(),
     new CastingProcessor(true),
+    new MathProcessor(),
 ];
 
 export const ruleRegistry: Record<string, RuleMeta> = {};
