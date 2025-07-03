@@ -40,6 +40,18 @@ export class FileRule extends BaseRule {
             ],
         });
         this.registerFunction({
+            name: 'minSize',
+            paramType: 'fileSize',
+            argumentType: 'string',
+            aliases: ['minFileSize'],
+            validators: [
+                {
+                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).every(file => (file?.size || 0) >= param.bytes),
+                    message: 'Each file must be at least @{param.raw}'
+                }
+            ],
+        });
+        this.registerFunction({
             name: 'maxSize',
             paramType: 'fileSize',
             argumentType: 'string',
