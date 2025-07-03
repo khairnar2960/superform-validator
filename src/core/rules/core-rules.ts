@@ -10,9 +10,11 @@ export const isEmpty = (value: any): boolean => {
     return value === null || value === undefined;
 }
 
+export const isArrayOrObject = (value: any): boolean => isArray(value) || isObject(value);
+
 export const isJson = (value: string): boolean => {
     try {
-        return isObject(JSON.parse(value));
+        return isArrayOrObject(JSON.parse(value));
     } catch (error) {
         return false;
     }
