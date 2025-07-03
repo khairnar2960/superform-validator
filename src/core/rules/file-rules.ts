@@ -79,5 +79,21 @@ export class FileRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'imageOnly',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['fileImageOnly'],
+            validators: [
+                {
+                    callback: (value: Record<string, any>[]) => {
+						return value.every(file => {
+							return String(file?.type || '').startsWith('image/');
+						});
+					},
+                    message: '@{field} accepts image files only'
+                }
+            ],
+        });
     }
 }
