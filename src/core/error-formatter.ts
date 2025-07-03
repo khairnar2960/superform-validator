@@ -10,34 +10,30 @@ export class ErrorFormatter {
     static format(template: string = 'Invalid value', placeholders: Record<string, any> = {}): string {
         return template.replace(/@\{([^}]+)\}/g, (_, expression) => {
             try {
-                // Support modifiers, fallback chain
-                const [pathWithModifiers, ...fallbackParts] = expression.split('||').map((part: string) => part.trim());
-                const pathModifierMatch = pathWithModifiers.split('|').map((part: string) => part.trim());
-                const pathPart = pathModifierMatch[0];
-                const modifiers = pathModifierMatch.slice(1);
+                // Split all fallback parts
+                const fallbackCandidates = expression.split('||').map((part: string) => part.trim());
 
                 let value: any;
 
-                // Try each fallback in order
-                const fallbackCandidates = [pathPart, ...fallbackParts];
+                for (const candidate of fallbackCandidates) {
+                    const [path, ...modifiers] = candidate.split('|').map((part: string) => part.trim());
 
-                for (const part of fallbackCandidates) {
-                    if ((part.startsWith('"') && part.endsWith('"')) || (part.startsWith("'") && part.endsWith("'"))) {
-                        value = part.slice(1, -1);
+                    if ((path.startsWith('"') && path.endsWith('"')) || (path.startsWith("'") && path.endsWith("'"))) {
+                        value = path.slice(1, -1);
                     } else {
-                        value = this.resolvePath(part, placeholders);
+                        value = this.resolvePath(path, placeholders);
                     }
 
-                    if (value !== undefined && value !== null) break;
-                }
-
-                // Apply modifiers if value is string
-                if (typeof value === 'string') {
-                    for (const modifier of modifiers) {
-                        value = this.applyModifier(value, modifier);
+                    if (value !== undefined && value !== null) {
+                        // Apply modifiers if string
+                        if (typeof value === 'string') {
+                            for (const modifier of modifiers) {
+                                value = this.applyModifier(value, modifier);
+                            }
+                        }
+                        break; // stop at first valid resolved value
                     }
                 }
-
                 return Array.isArray(value) ? value.join(', ') : (value ?? '');
             } catch {
                 return '';

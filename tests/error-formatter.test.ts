@@ -66,9 +66,28 @@ describe('ErrorFormatter', () => {
 		)).toBe('Name: Rahul');
     });
 
+	it('applies upper modifier', () => {
+		expect(ErrorFormatter.format(
+			'Name: @{user.name | upper}', { user: { name: 'ravi' } }
+		)).toBe('Name: RAVI');
+	});
+
+	it('applies multiple modifiers', () => {
+		expect(ErrorFormatter.format(
+			'Name: @{user.name | trim | capitalize}', { user: { name: '  john' } }
+		)).toBe('Name: John');
+	});
+
+	it('handles fallback with modifier', () => {
+		expect(ErrorFormatter.format(
+			'User: @{user.name || user.username | upper || "Guest"}',
+			{ user: { username: 'fallback' } }
+		)).toBe('User: FALLBACK');
+	});
+
 	it('handles fallback with quoted strings and spaces', () => {
 		expect(ErrorFormatter.format(
-			'Role: @{user.role | trim || "  Admin  "}', { user: {} }
+			'Role: @{user.role || "  Admin  " | trim}', { user: {} }
 		)).toBe('Role: Admin');
 	});
 
