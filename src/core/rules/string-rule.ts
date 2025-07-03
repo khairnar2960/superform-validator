@@ -399,5 +399,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'noEmoji',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['noEmoji'],
+            validators: [
+                {
+                    callback: (value: string) => !/[\u{1F600}-\u{1F6FF}]/u.test(value),
+                    message: '@{field} must not contain emoji'
+                }
+            ],
+        });
     }
 }
