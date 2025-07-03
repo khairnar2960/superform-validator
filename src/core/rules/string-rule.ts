@@ -411,5 +411,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'asciiOnly',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['asciiOnly'],
+            validators: [
+                {
+                    callback: (value: string) => /^[\x00-\x7F]*$/.test(value),
+                    message: '@{field} must contain only ASCII characters'
+                }
+            ],
+        });
     }
 }
