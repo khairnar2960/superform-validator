@@ -10,13 +10,25 @@ export class ErrorFormatter {
     static format(template: string = 'Invalid value', placeholders: Record<string, any> = {}): string {
         return template.replace(/@\{([^}]+)\}/g, (_, expression) => {
             try {
-                // Evaluate expression
-                const [pathPart, ...fallbackParts] = expression.split('||').map((part: string) => part.trim());
-                let value = this.resolvePath(pathPart, placeholders);
+                // Split all parts by fallback
+                const parts = expression.split('||').map((part: string) => part.trim());
 
-                // If value is undefined or null, use fallback
-                if (value === undefined || value === null) {
-                    value = fallbackParts.join(' || ').replace(/^['"]|['"]$/g, '');
+                let value: any;
+
+                for (const part of parts) {
+                    // If quoted, treat as literal fallback
+                    if (
+                        (part.startsWith('"') && part.endsWith('"')) ||
+                        (part.startsWith("'") && part.endsWith("'"))
+                    ) {
+                        value = part.slice(1, -1);
+                    } else {
+                        // Try resolving path
+                        value = this.resolvePath(part, placeholders);
+                    }
+
+                    // Stop at first valid value
+                    if (value !== undefined && value !== null) break;
                 }
 
                 // Transform support (e.g. trim, toUpperCase)
