@@ -16,6 +16,18 @@ export class FileRule extends BaseRule {
         });
 
         this.registerFunction({
+            name: 'minFiles',
+            paramType: 'single',
+            argumentType: 'integer',
+            aliases: ['minFiles'],
+            validators: [
+                {
+                    callback: (value, param) =>  Array.from(value || []).length >= param,
+                    message: 'Select at least @{param} files'
+                }
+            ],
+        });
+        this.registerFunction({
             name: 'maxFiles',
             paramType: 'single',
             argumentType: 'integer',
