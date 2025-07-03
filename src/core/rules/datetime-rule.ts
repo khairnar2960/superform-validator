@@ -19,7 +19,7 @@ export class DateTimeRule extends BaseRule {
         this.registerFunction({
 			name: 'before',
 			paramType: 'single',
-			argumentType: 'time',
+			argumentType: 'datetime',
 			aliases: ['dateTimeBefore'],
 			validators: [
 				{
@@ -32,7 +32,7 @@ export class DateTimeRule extends BaseRule {
 		this.registerFunction({
 			name: 'after',
 			paramType: 'single',
-			argumentType: 'time',
+			argumentType: 'datetime',
 			aliases: ['dateTimeAfter'],
 			validators: [
 				{
@@ -45,7 +45,7 @@ export class DateTimeRule extends BaseRule {
 		this.registerFunction({
 			name: 'equals',
 			paramType: 'single',
-			argumentType: 'time',
+			argumentType: 'datetime',
 			aliases: ['dateTimeEquals'],
 			validators: [
 				{
@@ -58,7 +58,7 @@ export class DateTimeRule extends BaseRule {
 		this.registerFunction({
 			name: 'between',
 			paramType: 'range',
-			argumentType: 'time',
+			argumentType: 'datetime',
 			aliases: ['dateTimeBetween'],
 			validators: [
 				{
