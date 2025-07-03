@@ -327,5 +327,17 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'domain',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['domain'],
+            validators: [
+                {
+                    pattern: /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: '@{field} must be a valid domain'
+                }
+            ],
+        });
     }
 }
