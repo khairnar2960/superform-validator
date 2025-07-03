@@ -45,6 +45,23 @@ export class FieldRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'requireWith',
+            paramType: 'list',
+            argumentType: 'fieldName',
+            aliases: ['requireWith'],
+            validators: [
+                {
+                    callback: (value, param: string[], fields: Record<string, Field>) => {
+                        return !(param.some(field => {
+                            const target = fields[field] || null;
+                            return target && target.value
+                        }) && isEmpty(value));
+                    },
+                    message: '@{field} is required when @{param} is present'
+                }
+            ],
+        });
             name: 'match',
             paramType: 'fieldReference',
             argumentType: 'any',
