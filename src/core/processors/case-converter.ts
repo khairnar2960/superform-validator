@@ -1,6 +1,6 @@
 "use strict";
 
-import { toCamelCase, toKebabCase, toPascalCase, toSentenceCase, toSnakeCase, toTitleCase } from "../../utils/case.js";
+import { toCamelCase, toCapitalize, toKebabCase, toPascalCase, toSentenceCase, toSnakeCase, toTitleCase, ucFirst } from "../../utils/case.js";
 import { Processor } from "./processor.js";
 
 export class CaseConverter extends Processor {
@@ -65,6 +65,20 @@ export class CaseConverter extends Processor {
             argumentType: 'string',
             aliases: ['toUppercase'],
             processors: [(value: string) => value.toUpperCase()],
+        });
+        this.registerFunction({
+            name: 'ucFirst',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['toUcFirst'],
+            processors: [ucFirst],
+        });
+        this.registerFunction({
+            name: 'capitalize',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['toCapitalize'],
+            processors: [toCapitalize],
         });
     }
 }

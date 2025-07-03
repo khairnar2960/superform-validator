@@ -17,3 +17,5 @@ export const toTitleCase = (value: string) => value
                 .replace(/\b\w/g, char => char.toUpperCase());
 
 export const ucFirst = (value: string) => value.replace(/[-_\s]+/g, ' ').toLowerCase().replace(/(\w)(.+)?/, (_, first = '', rest = '') => first.toUpperCase() + rest)
+
+export const toCapitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
