@@ -70,5 +70,17 @@ export class DateTimeRule extends BaseRule {
 				}
 			],
 		});
+		this.registerFunction({
+			name: 'past',
+			paramType: 'none',
+			argumentType: 'datetime',
+			aliases: ['dateTimePast'],
+			validators: [
+				{
+					callback: (value: string) => extractDateTime(value).toDate() < new Date(),
+					message: '@{field} must be past date time'
+				}
+			],
+		});
     }
 }
