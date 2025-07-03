@@ -138,7 +138,3 @@ export function registerRule(schema: RuleFunctionSchema, type: string = 'string'
         ruleRegistry[alias] = ruleMeta;
     });
 }
-
-export function resolveRule(name: string): RuleMeta {
-    return ruleRegistry[name] || { type: 'string', function: 'unknown', paramType: 'none', argumentType: 'string' };
-}

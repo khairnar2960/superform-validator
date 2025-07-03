@@ -10,7 +10,6 @@ export interface ValidationResponse {
     valid: boolean,
     error?: string,
     processedValue?: any,
-    param?: any
 }
 
 function transformFieldValues(records: Record<string, any> = {}): Record<string, Field> {
