@@ -59,7 +59,7 @@ export class FileRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).every(file => (file?.size || 0) <= param.bytes),
-                    message: '@{field} exceeds maximum limit of @{param.raw}'
+                    message: 'Each file must no exceeds @{param.raw}'
                 }
             ],
         });
