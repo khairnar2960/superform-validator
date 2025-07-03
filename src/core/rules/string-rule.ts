@@ -339,5 +339,41 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'ip',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['ip'],
+            validators: [
+                {
+                    pattern: /^(\d{1,3}\.){3}\d{1,3}$|^([a-f0-9:]+:+)+[a-f0-9]+$/,
+                    message: '@{field} must be a valid IP address'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'ipv4',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['ipv4'],
+            validators: [
+                {
+                    pattern: /^(\d{1,3}\.){3}\d{1,3}$/,
+                    message: '@{field} must be a valid IPv4 address'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'ipv6',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['ipv6'],
+            validators: [
+                {
+                    pattern: /^([a-f0-9:]+:+)+[a-f0-9]+$/,
+                    message: '@{field} must be a valid IPv6 address'
+                }
+            ],
+        });
     }
 }
