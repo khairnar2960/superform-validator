@@ -95,5 +95,21 @@ export class FileRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'videoOnly',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['fileVideoOnly'],
+            validators: [
+                {
+                    callback: (value: Record<string, any>[]) => {
+						return value.every(file => {
+							return String(file?.type || '').startsWith('video/');
+						});
+					},
+                    message: '@{field} accepts video files only'
+                }
+            ],
+        });
     }
 }
