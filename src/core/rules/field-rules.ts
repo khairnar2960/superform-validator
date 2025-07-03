@@ -15,7 +15,21 @@ export class FieldRule extends BaseRule {
                 }
             ]
         });
-
+        this.registerFunction({
+            name: 'requireIf',
+            paramType: 'fieldEquals',
+            argumentType: 'any',
+            aliases: ['requireIf'],
+            validators: [
+                {
+                    callback: (value, param, fields: Record<string, Field>) => {
+                        const target = fields[param.field] || null;
+                        return !(target && target.value === param.value && isEmpty(value));
+                    },
+                    message: '@{field} is required because @{param.field} is @{param.value}'
+                }
+            ],
+        });
         this.registerFunction({
             name: 'match',
             paramType: 'fieldReference',
