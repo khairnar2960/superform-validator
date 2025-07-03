@@ -13,6 +13,23 @@ interface ValidatorOptions {
     errorClass?: string,
     errorId?: string
 }
+interface TransformedFileList {
+    file: File,
+    name: string,
+    size: number,
+    type: string,
+    extension: string,
+}
+
+const transformFiles = (files: FileList): TransformedFileList[] => {
+    return Array.from(files).map((file: File) => {
+        const { name, size, type } = file;
+        const ext = name.split('.')
+        return {
+            file, name, size, type, extension: (ext.length > 1 ? ext.at(-1) : '') as string
+        }
+    })
+}
 
 class Validator {
     private form: HTMLFormElement;
@@ -93,10 +110,9 @@ class Validator {
         for (let field in this.fields) {
             const el = this.form.querySelector(`[name="${field}"]`);
             if (el) {
-                const fieldValues = this.collectFieldValues();
                 events.forEach(event => {
                     el.addEventListener(event, () => {
-                        this.validateField(field, fieldValues);
+                        this.validateField(field, this.collectFieldValues());
                         this.renderErrors();
                     });
                 });
@@ -117,7 +133,10 @@ class Validator {
         const rules = this.fields[fieldName] || [];
         if (!el || !rules.length) return { valid: true };
 
-        let value = el instanceof HTMLInputElement && el.type === 'checkbox' ? (el.checked ? el.value : '') : el.value;
+        let value = el instanceof HTMLInputElement ? (
+            el.type === 'checkbox' ? (el.checked ? el.value : '') : (
+                el.type === 'file' ? transformFiles(el.files as FileList) : el.value
+            )) : el.value;
 
         const result: ValidationResponse = validateField(value, [fieldName, rules], fieldValues);
 
