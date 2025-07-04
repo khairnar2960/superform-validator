@@ -80,6 +80,22 @@ export class FileRule extends BaseRule {
             ],
         });
         this.registerFunction({
+            name: 'noAccepts',
+            paramType: 'list',
+            argumentType: 'string',
+            aliases: ['fileNotAccepts'],
+            validators: [
+                {
+                    callback: (value: Record<string, any>[], param: string[]) => {
+						return !value.some(file => {
+							return param.includes(file?.extension || '') || param.includes(file?.type || '');
+						});
+					},
+                    message: '@{field} does not accept (@{param}) files'
+                }
+            ],
+        });
+        this.registerFunction({
             name: 'imageOnly',
             paramType: 'none',
             argumentType: 'string',
