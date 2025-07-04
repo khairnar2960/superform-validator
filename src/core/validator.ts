@@ -123,22 +123,24 @@ class Validator {
 
     collectFieldValues(): Record<string, any> {
         const formData = new FormData(this.form);
-        return Object.fromEntries(Object.keys(this.fields).map(field => {
-            const value = formData.get(field) || undefined;
-            return [field, value];
-        }));
+        const fieldValues: Record<string, any> = {};
+        for (const field in this.fields) {
+            const rule = this.fields[field];
+            const hasArray = rule.some(r => r.type === 'array');
+            fieldValues[field] = hasArray ? formData.getAll(field) : formData.get(field);
+        }
+        return fieldValues;
     }
 
     validateField(fieldName: string, fieldValues: Record<string, any> = {}): ValidationResponse {
-        const formData = new FormData(this.form);
+        const formData = this.collectFieldValues();
         const el = this.form.querySelector(`[name="${fieldName}"]`) as InputElement;
         const rules = this.fields[fieldName] || [];
         if (!el || !rules.length) return { valid: true };
 
         const value = el instanceof HTMLInputElement ? (
-            ['checkbox', 'radio'].includes(el.type) ? (formData.get(fieldName) || undefined) : (
-                el.type === 'file' ? transformFiles(el.files as FileList) : formData.get(fieldName)
-            )) : formData.get(fieldName);
+                el.type === 'file' ? transformFiles(el.files as FileList) : formData[fieldName]
+            ) : formData[fieldName];
 
         const result: ValidationResponse = validateField(value, [fieldName, rules], fieldValues);
 
