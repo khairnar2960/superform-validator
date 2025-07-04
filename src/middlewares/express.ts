@@ -1,100 +1,100 @@
 import { NextFunction, Request, Response } from "express";
-import { validate, ValidationResponse } from "../core/validator-engine.js";
-import { parseSchema } from "../core/schema-parser.js";
+import { validate } from "../core/validator-engine.js";
+import { parseSchema, RawSchema } from "../core/schema-parser.js";
+
+interface ValidResponse {
+	valid: true;
+	validated: Record<string, any>;
+}
+
+interface InvalidResponse {
+	valid: false;
+	errors: Record<string, string>;
+}
 
 declare module 'express-serve-static-core' {
 	interface Request {
 		validated: { body?: Record<string, any>, params?: Record<string, any>, query?: Record<string, any> },
-		validate: (schema:Record<string, any>, data: Record<string, any>) => Record<string, ValidationResponse>,
-		validateBody: (schema:Record<string, any>) => Record<string, ValidationResponse>,
-		validateParams: (schema:Record<string, any>) => Record<string, ValidationResponse>,
-		validateQuery: (schema:Record<string, any>) => Record<string, ValidationResponse>,
+		validate: (schema: RawSchema, data: Record<string, any>) => ValidResponse|InvalidResponse,
+		validateBody: (schema: RawSchema) => ValidResponse|InvalidResponse,
+		validateParams: (schema: RawSchema) => ValidResponse|InvalidResponse,
+		validateQuery: (schema: RawSchema) => ValidResponse|InvalidResponse,
 	}
+}
+
+const validationHandler = (schema: RawSchema, data: Record<string, any> = {}): ValidResponse|InvalidResponse => {
+	const validated = validate(parseSchema(schema), data || {});
+	const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
+
+	if (invalid.length) {
+		return { valid: false, errors: Object.fromEntries(invalid) } as InvalidResponse;
+	}
+
+	return {
+		valid: true,
+		validated: Object.fromEntries(
+			Object.entries(validated).map(
+				([field, { processedValue }]) => [field, processedValue]
+			)
+		)
+	} as ValidResponse;
 }
 
 export const plugin = (req: Request, res: Response, next: NextFunction) => {
-	req.validate = (schema: Record<string, any>, data: Record<string, any>) => validate(parseSchema(schema), data),
-	req.validateBody = (schema: Record<string, any>) => validate(parseSchema(schema), req.body),
-	req.validateParams = (schema: Record<string, any>) => validate(parseSchema(schema), req.params),
-	req.validateQuery = (schema: Record<string, any>) => validate(parseSchema(schema), req.query),
+	req.validate = (schema: RawSchema, data: Record<string, any>) => validationHandler(schema, data),
+	req.validateBody = (schema: RawSchema) => validationHandler(schema, req.body),
+	req.validateParams = (schema: RawSchema) => validationHandler(schema, req.params),
+	req.validateQuery = (schema: RawSchema) => validationHandler(schema, req.query),
 	next();
 }
 
-export const validateBody = (schema: Record<string, any>) => {
-	const parsedSchema = parseSchema(schema);
+export const validateBody = (schema: RawSchema) => {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const validated = validate(parsedSchema, req.body || {});
+		const validation = validationHandler(schema, req.body || {});
 
-		const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
-
-		if (invalid.length) {
+		if (!validation.valid) {
 			return res.status(400).json({
 				status: 'error',
-				message: 'Validation error',
-				errors: Object.fromEntries(invalid)
+				message: 'Body validation failed',
+				errors: validation.errors
 			});
 		}
 
-		req.validated = {
-			body: Object.fromEntries(
-				Object.entries(validated).map(
-					([field, { processedValue }]) => [field, processedValue]
-				)
-			)
-		} as { body?: Record<string, any> };
+		req.validated = { body: validation.validated };
 		next();
 	}
 }
 
-export const validateParams = (schema: Record<string, any>) => {
-	const parsedSchema = parseSchema(schema);
+export const validateParams = (schema: RawSchema) => {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const validated = validate(parsedSchema, req.params);
+		const validation = validationHandler(schema, req.params || {});
 
-		const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
-
-		if (invalid.length) {
+		if (!validation.valid) {
 			return res.status(400).json({
 				status: 'error',
-				message: 'Validation error',
-				errors: Object.fromEntries(invalid)
+				message: 'Parameters validation failed',
+				errors: validation.errors
 			});
 		}
 
-		req.validated = {
-			params: Object.fromEntries(
-				Object.entries(validated).map(
-					([field, { processedValue }]) => [field, processedValue]
-				)
-			)
-		} as { params?: Record<string, any> };
+		req.validated = { params: validation.validated };
 		next();
 	}
 }
 
-export const validateQuery = (schema: Record<string, any>) => {
-	const parsedSchema = parseSchema(schema);
+export const validateQuery = (schema: RawSchema) => {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const validated = validate(parsedSchema, req.query);
+		const validation = validationHandler(schema, req.query || {});
 
-		const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
-
-		if (invalid.length) {
+		if (!validation.valid) {
 			return res.status(400).json({
 				status: 'error',
-				message: 'Validation error',
-				errors: Object.fromEntries(invalid)
+				message: 'Query validation failed',
+				errors: validation.errors
 			});
 		}
 
-		req.validated = {
-			query: Object.fromEntries(
-				Object.entries(validated).map(
-					([field, { processedValue }]) => [field, processedValue]
-				)
-			)
-		} as { query?: Record<string, any> };
-
+		req.validated = { query: validation.validated };
 		next();
 	}
 }
