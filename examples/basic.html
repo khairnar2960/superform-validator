@@ -52,19 +52,19 @@
 	<script>
 		// basic definition with no message
 		const validator = FormValidator.init('#form', {
-			something: 'require|in::name,email,address',
-			name: 'require|minLength::2|maxLength::50',
+			// something: 'require|notInList(name,email,address)',
+			something: 'require|inList(name,email,address)',
+			name: 'require|minLength(2)|maxLength(50)',
 			email: 'require|email',
-			age: 'require|integer|length::2',
+			age: 'require|integer|length(2)',
 			mobile: 'require|mobile',
-			password: 'require|minLength::8|maxLength::20',
-			confirm_password: 'require|match::password',
-			resume: 'require|file::maxFiles(1)|file::maxSize(20kb)|file::accepts(png|jpg|jpeg)',
-			// something: 'require|notIn::name,email,address'
+			password: 'require|minLength(8)|maxLength(20)',
+			confirm_password: 'require|match(password)',
+			resume: 'require|maxFiles(1)|maxFileSize(20kb)|fileAccepts(png|jpg|jpeg)',
 			date_of_birth: 'require|date',
 			office_time: 'require|time',
 			portfolio_link: 'require|url',
-		}).enableLiveValidation();
+		}).enableLiveValidation(['input', 'blur', 'change']);
 	</script>
 </body>
 </html>

@@ -31,15 +31,28 @@
 			<label>Resume</label>
 			<input type="file" name="resume" multiple>
 		</div>
+		<div>
+			<label>Gender</label>
+			<div>
+				<label><input type="radio" name="gender" value="male"> Male</label>
+				<label><input type="radio" name="gender" value="female"> Female</label>
+				<label><input type="radio" name="gender" value="other"> Other</label>
+			</div>
+		</div>
 		<button>Submit</button>
 	</form>
 	<script src="../dist/form-validator.js"></script>
 	<script>
 		// Register Custom validation rule
-		FormValidator.registerRule('password', (value) => {
-			return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
-		}, `
-		<div>
+		FormValidator.registerRule({
+			name: 'password',
+			paramType: 'none',
+			argumentType: 'any',
+			aliases: ['password'],
+			validators: [
+				{
+					pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+					message: `<div>
 			<span>@{field} must have</span>
 			<ul>
 				<li>8 characters in length</li>
@@ -48,24 +61,29 @@
 				<li>One digit</li>
 				<li>One special character (@$!%*?&)</li>
 			</ul>
-		</div>
-		`)
+		</div>`
+				}
+			]
+		});
+
 		// advance definition with casting and error message
 		const validator = FormValidator.init('#form', {
 			something: {
 				require: true,
-				in: 'name,email,address'
+				inList: ['name', 'email', 'address']
 			},
 			name: {
 				require: true,
 				minLength: 2,
 				maxLength: 50,
-				cast: 'trim|titlecase'
+				trim: true,
+				toTitlecase: true,
 			},
 			email: {
 				require: true,
 				email: true,
-				cast: ['trim', 'lowercase']
+				trim: true,
+				toLowercase: true,
 			},
 			mobile: {
 				require: true,
@@ -73,27 +91,27 @@
 				length: 10,
 				custom: {
 					pattern: /^[6-9][0-9]{9}$/,
-					message: 'Invalid @{field}'
+					message: '[@{field}] value must have valid mobile.'
 				},
-				cast: (val) => parseInt(val)
+				toInteger: true,
 			},
 			password: {
 				require: true,
-				// password: true,
-				minLength: 8,
-				maxLength: 20,
-				contains: '@',
-				notContains: '\'',
-				custom: {
-					pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-					message: '@{field} must have at least one lowercase, uppercase, digit & special character from (@$!%*?&)'
-				},
-				messages: {
-					minLength: '@{field} must have at least @{length} characters',
-					maxLength: '@{field} must not exceed @{length} characters',
-					contains: '@{field} must contain @{other}',
-					notContains: '@{field} must not contain @{other}'
-				}
+				password: true,
+				// minLength: 8,
+				// maxLength: 20,
+				// contains: '@',
+				// notContains: '\'',
+				// custom: {
+				// 	pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+				// 	message: '@{field} must have at least one lowercase, uppercase, digit & special character from (@$!%*?&)'
+				// },
+				// messages: {
+				// 	minLength: '@{field} must have at least @{length} characters',
+				// 	maxLength: '@{field} must not exceed @{length} characters',
+				// 	contains: '@{field} must contain @{other}',
+				// 	notContains: '@{field} must not contain @{other}'
+				// }
 			},
 			confirm_password: {
 				require: true,
@@ -101,11 +119,17 @@
 			},
 			resume: {
 				require: true,
-				'file::maxFiles': 1,
-				'file::maxSize': '20kb',
-				'file::accepts': 'png|jpg|jpeg'
+				'maxFiles': 1,
+				'maxFileSize': '20kb',
+				'fileAccepts': ['png', 'jpg', 'jpeg']
+			},
+			gender: {
+				require: true,
 			}
-		}, console.log, console.log, { errorElement: 'span', errorClass: 'validation-error input-error', errorId: 'invalid-@{field}-error'});
+		}, (valid) => {
+			console.log(valid);
+			validator.reset();
+		}, console.log, { errorElement: 'span', errorClass: 'validation-error input-error', errorId: 'invalid-@{field}-error'});
 		
 		validator.enableLiveValidation(['blur', 'change', 'input']);
 	</script>
