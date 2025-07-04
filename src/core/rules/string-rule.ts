@@ -231,6 +231,19 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'uppercase',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['strUppercase'],
+            validators: [
+                {
+                    pattern: /^[^a-z]+$/,
+                    message: '@{field} must be fully uppercase'
+                }
+            ],
+        });
+        this.registerFunction({
             name: 'strongPassword',
             paramType: 'none',
             argumentType: 'string',
