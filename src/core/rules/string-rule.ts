@@ -220,6 +220,17 @@ export class StringRule extends BaseRule {
             ],
         });
         this.registerFunction({
+            name: 'lowercase',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['strLowercase'],
+            validators: [
+                {
+                    pattern: /^[^A-Z]+$/,
+                    message: '@{field} must be fully lowercase'
+                }
+            ],
+        });
             name: 'strongPassword',
             paramType: 'none',
             argumentType: 'string',
