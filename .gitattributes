@@ -4,5 +4,6 @@
 scripts/ export-ignore
 
 # Classify files by language for GitHub statistics
+*.ts linguist-language=TypeScript
 *.js linguist-language=JavaScript
 *.html linguist-language=HTML

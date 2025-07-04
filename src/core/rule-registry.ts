@@ -1,18 +1,20 @@
 import { toCamelCase } from "../utils/case.js";
-import { CaseConverter } from "./processors/case-converter.js";
-import { CastingProcessor } from "./processors/casting.js";
 import { Processor, ProcessorFunc } from "./processors/processor.js";
 import { BaseRule, RuleFunction, RuleFunctionSchema } from "./rules/base-rule.js";
-import { DateRule } from "./rules/date-rule.js";
-import { DateTimeRule } from "./rules/datetime-rule.js";
 import { FieldRule } from "./rules/field-rules.js";
-import { FileRule } from "./rules/file-rules.js";
-import { FloatRule } from "./rules/float-rule.js";
 import { IntegerRule } from "./rules/integer-rule.js";
+import { FloatRule } from "./rules/float-rule.js";
 import { StringRule } from "./rules/string-rule.js";
+import { DateRule } from "./rules/date-rule.js";
 import { TimeRule } from "./rules/time-rule.js";
+import { DateTimeRule } from "./rules/datetime-rule.js";
+import { FileRule } from "./rules/file-rules.js";
+import { ArrayRule } from "./rules/array-rules.js";
 import { Trimmer } from "./processors/trimmer.js";
+import { CaseConverter } from "./processors/case-converter.js";
+import { CastingProcessor } from "./processors/casting.js";
 import { MathProcessor } from "./processors/math.js";
+
 
 export interface RuleMeta {
     type: string,
@@ -32,6 +34,7 @@ export const allRules = [
 	new TimeRule(),
     new DateTimeRule(),
     new FileRule(),
+    new ArrayRule(),
     new Trimmer(),
     new Trimmer(true),
     new CaseConverter(),
