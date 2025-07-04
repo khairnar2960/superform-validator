@@ -46,7 +46,7 @@ export function validateField(value: any, fieldRules: [string, FieldRule[]], fie
     const isRequire = requireRule ? true : false;
 
     if (isEmpty(value) && defaultRule) {
-        return { valid: true, processedValue: defaultRule.param };
+        value = defaultRule.param;
     }
 
     if (isOptional && isEmpty(value)) {
