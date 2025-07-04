@@ -108,35 +108,37 @@ class Validator {
 
     enableLiveValidation(events: AllowedEvents[] = ['blur', 'change']): this {
         for (let field in this.fields) {
-            const el = this.form.querySelector(`[name="${field}"]`);
-            if (el) {
-                events.forEach(event => {
+            const elements = this.form.querySelectorAll(`[name="${field}"]`);
+            events.forEach(event => {
+                elements.forEach(el => {
                     el.addEventListener(event, () => {
                         this.validateField(field, this.collectFieldValues());
                         this.renderErrors();
                     });
                 });
-            }
+            });
         }
         return this;
     }
 
     collectFieldValues(): Record<string, any> {
+        const formData = new FormData(this.form);
         return Object.fromEntries(Object.keys(this.fields).map(field => {
-            const el = this.form.querySelector(`[name="${field}"]`) as InputElement;
-            return [field, el?.value];
+            const value = formData.get(field) || undefined;
+            return [field, value];
         }));
     }
 
     validateField(fieldName: string, fieldValues: Record<string, any> = {}): ValidationResponse {
+        const formData = new FormData(this.form);
         const el = this.form.querySelector(`[name="${fieldName}"]`) as InputElement;
         const rules = this.fields[fieldName] || [];
         if (!el || !rules.length) return { valid: true };
 
-        let value = el instanceof HTMLInputElement ? (
-            el.type === 'checkbox' ? (el.checked ? el.value : '') : (
-                el.type === 'file' ? transformFiles(el.files as FileList) : el.value
-            )) : el.value;
+        const value = el instanceof HTMLInputElement ? (
+            ['checkbox', 'radio'].includes(el.type) ? (formData.get(fieldName) || undefined) : (
+                el.type === 'file' ? transformFiles(el.files as FileList) : formData.get(fieldName)
+            )) : formData.get(fieldName);
 
         const result: ValidationResponse = validateField(value, [fieldName, rules], fieldValues);
 
@@ -217,6 +219,8 @@ class Validator {
         registerRule(schema, type);
     }
 }
+
+export { registerRule };
 
 export const init = (
     form: HTMLFormElement|string,
