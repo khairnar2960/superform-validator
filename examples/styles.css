@@ -68,7 +68,7 @@ button:hover {
     color: #fff;
     border-color: #45178d;
 }
-.validation-error {
+.validation-error, .input-error {
     color: #ff00a3;
     font-family: monospace;
     font-size: 12px;

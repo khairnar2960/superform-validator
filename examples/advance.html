@@ -38,6 +38,17 @@
 				<label><input type="radio" name="gender" value="female"> Female</label>
 				<label><input type="radio" name="gender" value="other"> Other</label>
 			</div>
+			<div id="invalid-gender-error" class="input-error"></div>
+		</div>
+		<div>
+			<label>Languages</label>
+			<div>
+				<label><input type="checkbox" name="languages" value="html"> HTML</label>
+				<label><input type="checkbox" name="languages" value="css"> CSS</label>
+				<label><input type="checkbox" name="languages" value="javascript"> JavaScript</label>
+				<label><input type="checkbox" name="languages" value="python"> Python</label>
+			</div>
+			<span id="invalid-languages-error" class="input-error"></span>
 		</div>
 		<button>Submit</button>
 	</form>
@@ -125,7 +136,13 @@
 			},
 			gender: {
 				require: true,
-			}
+			},
+			languages: {
+				require: true,
+				array: true,
+				minItems: 2,
+				maxItems: 3,
+			},
 		}, (valid) => {
 			console.log(valid);
 			validator.reset();
