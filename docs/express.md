@@ -240,3 +240,10 @@ req.validateQuery(schema); // Validate req.query
 | Custom Source Validation | ✅ Yes                 |
 | TypeScript Integration   | ✅ Yes                 |
 | Custom Error Handling    | ✅ Yes                 |
+
+## 🔗 Additional Resources
+
+* [HTML Form Validator](./html-form.md)
+* [Custom Rule Registration](./custom-rules.md)
+* [Error Formatter Guide](./error-formatter.md)
+* [Rules and Processors Reference](./rules-and-processors.md)

@@ -230,3 +230,10 @@
 | math::toFixed(integer)       | toFixed(integer)  | Fixes number to specified decimal points |
 
 ---
+
+## 🔗 Additional Resources
+
+* [HTML Form Validator](./html-form.md)
+* [Custom Rule Registration](./custom-rules.md)
+* [Express.js Plugin Guide](./express.md)
+* [Error Formatter Guide](./error-formatter.md)

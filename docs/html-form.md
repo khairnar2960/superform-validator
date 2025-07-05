@@ -139,7 +139,7 @@ const schema = {
 
 ## 🔗 Additional Resources
 
-* [Rules and Processors Reference](./docs/rules-and-processors.md)
-* [Custom Rules Guide](./custom-rules.md)
-* [Express Plugin Guide](./express.md)
-* [Error Formatter](./error-formatter.md)
+* [Custom Rule Registration](./custom-rules.md)
+* [Express.js Plugin Guide](./express.md)
+* [Error Formatter Guide](./error-formatter.md)
+* [Rules and Processors Reference](./rules-and-processors.md)

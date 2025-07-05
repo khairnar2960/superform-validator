@@ -131,3 +131,10 @@ console.log(message);
 * ✅ Missing or malformed paths are handled safely (returns empty string).
 * ✅ Supports complex expressions like:
   `@{user.name | trim | capitalize || user.username | upper || 'Guest'}`
+
+## 🔗 Additional Resources
+
+* [HTML Form Validator](./html-form.md)
+* [Custom Rule Registration](./custom-rules.md)
+* [Express.js Plugin Guide](./express.md)
+* [Rules and Processors Reference](./rules-and-processors.md)

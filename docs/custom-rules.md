@@ -143,6 +143,7 @@ quantity: 'require|integer|multipleOf(5)'
 
 ## 🔗 Additional Resources
 
-* [HTML Form Guide](./html-form.md)
-* [Express Plugin Guide](./express.md)
-* [Error Formatter](./error-formatter.md)
+* [HTML Form Validator](./html-form.md)
+* [Express.js Plugin Guide](./express.md)
+* [Error Formatter Guide](./error-formatter.md)
+* [Rules and Processors Reference](./rules-and-processors.md)
