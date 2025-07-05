@@ -50,7 +50,7 @@ export class DateRule extends BaseRule {
 			validators: [
 				{
 					callback: (value: string, param: ExtractedDate) => extractDate(value).toDate() > param.toDate(),
-					message: '@{field} must exactly match the @{param}'
+					message: '@{field} must be equal to @{param}'
 				}
 			],
 		});

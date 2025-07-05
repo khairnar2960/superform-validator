@@ -11,7 +11,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => typeof value === 'string',
-                    message: '@{field} must be a string',
+                    message: '@{field} must be a valid string',
                 }
             ]
         });
@@ -35,7 +35,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value.length <= param,
-                    message: '@{field} must not be more than @{param} characters'
+                    message: '@{field} must be at most @{param} characters long'
                 }
             ],
         });
@@ -59,7 +59,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[a-zA-Z]+$/,
-                    message: '@{field} accepts alphabets only'
+                    message: '@{field} must contain only alphabets'
                 }
             ],
         });
@@ -71,7 +71,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[a-zA-Z\s]+$/,
-                    message: '@{field} accepts alphabets & spaces only'
+                    message: '@{field} must contain only alphabets and spaces'
                 }
             ],
         });
@@ -83,7 +83,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[0-9a-zA-Z]+$/,
-                    message: '@{field} accepts alphabets & numbers only'
+                    message: '@{field} must contain only alphabets and numbers'
                 }
             ],
         });
@@ -95,7 +95,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[0-9a-zA-Z\s]+$/,
-                    message: '@{field} accepts alphabets, numbers & spaces only'
+                    message: '@{field} must contain only alphabets, numbers, and spaces'
                 }
             ],
         });
@@ -107,7 +107,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => (param as Array<any>).includes(value),
-                    message: '@{field} must be anyone of this (@{param})'
+                    message: '@{field} must be one of (@{param})'
                 }
             ],
         });
@@ -119,7 +119,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => !(param as Array<any>).includes(value),
-                    message: '@{field} must not be none of this (@{param})'
+                    message: '@{field} must not be one of (@{param})'
                 }
             ],
         });
@@ -131,7 +131,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value === param,
-                    message: '@{field} must be exactly @{param}'
+                    message: '@{field} must be equal to @{param}'
                 }
             ],
         });
@@ -143,7 +143,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => value !== param,
-                    message: '@{field} must not be @{param}'
+                    message: '@{field} must not be equal to @{param}'
                 }
             ],
         });
@@ -227,7 +227,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[^A-Z]+$/,
-                    message: '@{field} must be fully lowercase'
+                    message: '@{field} must be in lowercase'
                 }
             ],
         });
@@ -239,7 +239,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[^a-z]+$/,
-                    message: '@{field} must be fully uppercase'
+                    message: '@{field} must be in uppercase'
                 }
             ],
         });
@@ -264,7 +264,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: '@{field} must be a valid email'
+                    message: '@{field} must be a valid email address'
                 }
             ],
         });
@@ -288,7 +288,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/,
-                    message: '@{field} must be a valid PIN code'
+                    message: '@{field} must be a valid pincode'
                 }
             ],
         });
@@ -300,7 +300,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
-                    message: '@{field} must be a valid PAN'
+                    message: '@{field} must be a valid PAN card number'
                 }
             ],
         });
@@ -312,7 +312,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/,
-                    message: '@{field} must be a valid ISFC'
+                    message: '@{field} must be a valid IFSC code'
                 }
             ],
         });
@@ -336,7 +336,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     pattern: /\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i,
-                    message: '@{field} must be a valid url'
+                    message: '@{field} must be a valid URL'
                 }
             ],
         });
@@ -456,7 +456,7 @@ export class StringRule extends BaseRule {
             validators: [
                 {
                     callback: (value: string) => isJson(value),
-                    message: '@{field} must be a valid JSON'
+                    message: '@{field} must be a valid JSON string'
                 }
             ],
         });
@@ -471,7 +471,7 @@ export class StringRule extends BaseRule {
                         const words = value.trim().split(/\\s+/).length;
                         return words >= param.min && words <= param.max;
                     },
-                    message: '@{field} must have between @{param.min} and @{param.max} words'
+                    message: '@{field} must have a word count between @{param.min} and @{param.max}'
                 }
             ],
         });

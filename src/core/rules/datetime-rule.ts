@@ -11,7 +11,7 @@ export class DateTimeRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => /^[0-9]{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01]) ([0-1][0-9]|2[0-3])\:([0-5][0-9])(?:\:([0-5][0-9]))?$/.test(String(value)),
-                    message: '@{field} must be a valid date time',
+                    message: '@{field} must be a valid datetime',
                 }
             ]
 		});
@@ -50,7 +50,7 @@ export class DateTimeRule extends BaseRule {
 			validators: [
 				{
 					callback: (value: string, param: ExtractedDateTime) => extractDateTime(value).toDate() > param.toDate(),
-					message: '@{field} must exactly match the @{param}'
+					message: '@{field} must be equal to @{param}'
 				}
 			],
 		});
@@ -78,7 +78,7 @@ export class DateTimeRule extends BaseRule {
 			validators: [
 				{
 					callback: (value: string) => extractDateTime(value).toDate() < new Date(),
-					message: '@{field} must be past date time'
+					message: '@{field} must be past datetime'
 				}
 			],
 		});
@@ -90,7 +90,7 @@ export class DateTimeRule extends BaseRule {
 			validators: [
 				{
 					callback: (value: string) => extractDateTime(value).toDate() > new Date(),
-					message: '@{field} must be future date time'
+					message: '@{field} must be future datetime'
 				}
 			],
 		});

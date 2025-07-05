@@ -11,7 +11,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => /^[+-]?[0-9]+$/.test(String(value)),
-                    message: '@{field} must be an integer',
+                    message: '@{field} must be a valid integer',
                 }
             ]
         });
@@ -24,7 +24,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseInt(value) >= 0,
-                    message: '@{field} must be positive integer'
+                    message: '@{field} must be a positive integer'
                 }
             ]
         });
@@ -37,7 +37,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseInt(value) < 0,
-                    message: '@{field} must be negative integer'
+                    message: '@{field} must be a negative integer'
                 }
             ]
         });
@@ -90,7 +90,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseInt(value) % 2 === 0,
-                    message: '@{field} must be an even number'
+                    message: '@{field} must be an even integer'
                 }
             ]
         });
@@ -103,7 +103,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseInt(value) % 2 !== 0,
-                    message: '@{field} must be an odd number'
+                    message: '@{field} must be an odd integer'
                 }
             ]
         });
@@ -116,7 +116,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) === param,
-                    message: '@{field} must be exactly @{param}'
+                    message: '@{field} must be equal to @{param}'
                 }
             ]
         });
@@ -129,7 +129,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) !== param,
-                    message: '@{field} must not be @{param}'
+                    message: '@{field} must not be equal to @{param}'
                 }
             ]
         });
@@ -155,7 +155,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) >= param,
-                    message: '@{field} must be @{param} or greater'
+                    message: '@{field} must be greater than or equal to @{param}'
                 }
             ]
         });
@@ -181,7 +181,7 @@ export class IntegerRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseInt(value) <= param,
-                    message: '@{field} must be @{param} or less'
+                    message: '@{field} must be less than or equal to @{param}'
                 }
             ]
         });

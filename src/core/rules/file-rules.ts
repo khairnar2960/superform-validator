@@ -26,7 +26,7 @@ export class FileRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) =>  Array.from(value || []).length >= param,
-                    message: 'Select at least @{param} files'
+                    message: '@{field} must have at least @{param} files'
                 }
             ],
         });
@@ -38,7 +38,7 @@ export class FileRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) =>  Array.from(value || []).length <= param,
-                    message: 'Maximum @{param} files allowed for @{field}'
+                    message: '@{field} can have maximum @{param} files'
                 }
             ],
         });
@@ -49,8 +49,8 @@ export class FileRule extends BaseRule {
             aliases: ['minFileSize'],
             validators: [
                 {
-                    message: 'Each file must be at least @{param.raw}'
                     callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).reduce((total, file) => total + (file?.size || 0), 0) >= param.bytes,
+                    message: '@{field} must be larger than @{param.raw}'
                 }
             ],
         });
@@ -61,8 +61,8 @@ export class FileRule extends BaseRule {
             aliases: ['maxFileSize'],
             validators: [
                 {
-                    message: 'Each file must no exceeds @{param.raw}'
                     callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).reduce((total, file) => total + (file?.size || 0), 0) <= param.bytes,
+                    message: '@{field} must be smaller than @{param.raw}'
                 }
             ],
         });
@@ -78,7 +78,7 @@ export class FileRule extends BaseRule {
 							return param.includes(file?.extension || '') || param.includes(file?.type || '');
 						});
 					},
-                    message: 'Invalid file. Only (@{param}) allowed'
+                    message: '@{field} only accepts (@{param}) files'
                 }
             ],
         });
@@ -94,7 +94,7 @@ export class FileRule extends BaseRule {
 							return param.includes(file?.extension || '') || param.includes(file?.type || '');
 						});
 					},
-                    message: '@{field} does not accept (@{param}) files'
+                    message: '@{field} not accepts (@{param}) files'
                 }
             ],
         });

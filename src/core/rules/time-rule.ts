@@ -50,7 +50,7 @@ export class TimeRule extends BaseRule {
 			validators: [
 				{
 					callback: (value: string, param: ExtractedTime) => extractTime(value).toDate() > param.toDate(),
-					message: '@{field} must exactly match the @{param}'
+					message: '@{field} must be equal to @{param}'
 				}
 			],
 		});

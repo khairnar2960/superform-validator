@@ -15,7 +15,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => /^([+-]?([0-9]+[.][0-9]+))$/.test(String(value)) && !isNaN(parseFloat(value)),
-                    message: '@{field} must be an decimal number',
+                    message: '@{field} must be a valid decimal number',
                 }
             ]
         });
@@ -28,7 +28,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseFloat(value) >= 0,
-                    message: '@{field} must be positive decimal number'
+                    message: '@{field} must be a positive decimal number'
                 }
             ]
         });
@@ -41,7 +41,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value) => parseFloat(value) < 0,
-                    message: '@{field} must be negative decimal number'
+                    message: '@{field} must be a negative decimal number'
                 }
             ]
         });
@@ -94,7 +94,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) === param,
-                    message: '@{field} must be exactly @{param}'
+                    message: '@{field} must be equal to @{param}'
                 }
             ]
         });
@@ -107,7 +107,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) !== param,
-                    message: '@{field} must not be @{param}'
+                    message: '@{field} must not be equal to @{param}'
                 }
             ]
         });
@@ -133,7 +133,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) >= param,
-                    message: '@{field} must be @{param} or greater'
+                    message: '@{field} must be greater than or equal to @{param}'
                 }
             ]
         });
@@ -159,7 +159,7 @@ export class FloatRule extends BaseRule {
             validators: [
                 {
                     callback: (value, param) => parseFloat(value) <= param,
-                    message: '@{field} must be @{param} or less'
+                    message: '@{field} must be less than or equal to @{param}'
                 }
             ]
         });

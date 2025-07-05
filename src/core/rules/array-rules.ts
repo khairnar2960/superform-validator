@@ -11,7 +11,7 @@ export class ArrayRule extends BaseRule {
             validators: [
                 {
                     callback: (value: any) => isArray(value),
-                    message: '@{field} must be an valid array',
+                    message: '@{field} must be a valid array',
                 }
             ],
         });
@@ -23,7 +23,7 @@ export class ArrayRule extends BaseRule {
             validators: [
                 {
                     callback: (value: any) => isArray(value) && !isEmpty(value),
-                    message: '@{field} cannot be empty'
+                    message: '@{field} cannot be empty array'
                 }
             ],
         });
@@ -59,7 +59,7 @@ export class ArrayRule extends BaseRule {
             validators: [
                 {
                     callback: (value: any, param) => isArray(value) && value.length <= param,
-                    message: '@{field} must have no more than @{param} items'
+                    message: '@{field} must have maximum @{param} items'
                 }
             ],
         });
@@ -67,7 +67,7 @@ export class ArrayRule extends BaseRule {
             name: 'includes',
             paramType: 'single',
             argumentType: 'any',
-            aliases: ['arrayIncludes'],
+            aliases: ['arrayIncludes', 'arrayContains'],
             validators: [
                 {
                     callback: (value: any, param) => isArray(value) && value.includes(param),
@@ -79,7 +79,7 @@ export class ArrayRule extends BaseRule {
             name: 'excludes',
             paramType: 'single',
             argumentType: 'any',
-            aliases: ['arrayExcludes'],
+            aliases: ['arrayExcludes', 'arrayNotContains'],
             validators: [
                 {
                     callback: (value: any, param) => isArray(value) && !value.includes(param),
