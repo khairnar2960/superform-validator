@@ -3,7 +3,7 @@ name: Build and Upload Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*'
 
 jobs:
   build:
@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -27,15 +27,14 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Create release zip
+        run: |
+          zip -r superform-validator-v${{ github.ref_name }}.zip \
+            dist docs examples package.json README.md LICENSE
+
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            dist/**
-            docs/**
-            examples/**
-            package.json
-            README.md
-            LICENSE
+          files: superform-validator-v${{ github.ref_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
