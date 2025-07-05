@@ -1,3 +1,9 @@
+## [2.0.0](https://github.com/khairnar2960/superform-validator/compare/v1.0.4...v2.0.0) (2025-07-05)
+
+### Bug Fixes
+
+* **docs:** Fixes documentation internal linking ([ef6a4b8](https://github.com/khairnar2960/superform-validator/commit/ef6a4b8d1c7754d7eedd8f25128035a872aacd83))
+* **Workflow:** Fixes GitHub package release build failure ([a00afa4](https://github.com/khairnar2960/superform-validator/commit/a00afa4a2140d0ee8969deaa73ca4d8ae4cf8822))
 ## [1.0.4](https://github.com/khairnar2960/superform-validator/compare/v1.0.3...v1.0.4) (2025-07-05)
 
 ### Features
