@@ -63,5 +63,17 @@ export class ArrayRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'includes',
+            paramType: 'single',
+            argumentType: 'any',
+            aliases: ['arrayIncludes'],
+            validators: [
+                {
+                    callback: (value: any, param) => isArray(value) && value.includes(param),
+                    message: '@{field} must include @{param}'
+                }
+            ],
+        });
     }
 }
