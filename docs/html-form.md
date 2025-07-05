@@ -17,12 +17,12 @@ SuperForm Validator provides a simple, flexible way to validate native HTML form
 <!-- OR -->
 
 <!-- Recommended with specific version -->
-<script src="https://cdn.jsdelivr.net/npm/superform-validator@1.0.4/dist/form-validator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.0.1/dist/form-validator.js"></script>
 
 <!-- OR -->
 
 <!-- unpkg -->
-<script src="https://unpkg.com/superform-validator@1.0.4/dist/form-validator.js"></script>
+<script src="https://unpkg.com/superform-validator@2.0.1/dist/form-validator.js"></script>
 ```
 
 ### 📝 Basic Form Example
