@@ -1,3 +1,8 @@
+## [2.0.1](https://github.com/khairnar2960/superform-validator/compare/v2.0.0...v2.0.1) (2025-07-05)
+
+### Bug Fixes
+
+* **Action:** Fixes write permission for release ([da16dbd](https://github.com/khairnar2960/superform-validator/commit/da16dbd5c9a67e5b790248bcee3deaed351db148))
 ## [2.0.0](https://github.com/khairnar2960/superform-validator/compare/v1.0.4...v2.0.0) (2025-07-05)
 
 ### Bug Fixes
