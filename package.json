@@ -56,6 +56,13 @@
     "type": "git",
     "url": "https://github.com/khairnar2960/superform-validator"
   },
+  "homepage": "https://github.com/khairnar2960/superform-validator#readme",
+  "bugs": {
+    "url": "https://github.com/khairnar2960/superform-validator/issues"
+  },
+  "engines": {
+    "node": ">=16"
+  },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "@types/express": "^5.0.3",

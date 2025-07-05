@@ -2,10 +2,13 @@
 src/
 examples/
 scripts/
+tests/
 node_modules/
+.github/
 .gitignore
 .gitattributes
 package-lock.json
 npm-debug.log*
-README.md
-LICENSE
+CHANGELOG.md
+rollup.config.js
+tsconfig.json

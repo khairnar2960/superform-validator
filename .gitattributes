@@ -2,6 +2,7 @@
 * text=auto
 
 scripts/ export-ignore
+tests/ export-ignore
 
 # Classify files by language for GitHub statistics
 *.ts linguist-language=TypeScript
