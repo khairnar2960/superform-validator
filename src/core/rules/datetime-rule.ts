@@ -20,7 +20,7 @@ export class DateTimeRule extends BaseRule {
 			name: 'before',
 			paramType: 'single',
 			argumentType: 'datetime',
-			aliases: ['dateTimeBefore'],
+			aliases: ['datetimeBefore'],
 			validators: [
 				{
 					callback: (value: string, param: ExtractedDateTime) => extractDateTime(value).toDate() < param.toDate(),
@@ -33,7 +33,7 @@ export class DateTimeRule extends BaseRule {
 			name: 'after',
 			paramType: 'single',
 			argumentType: 'datetime',
-			aliases: ['dateTimeAfter'],
+			aliases: ['datetimeAfter'],
 			validators: [
 				{
 					callback: (value: string, param: ExtractedDateTime) => extractDateTime(value).toDate() > param.toDate(),
@@ -46,7 +46,7 @@ export class DateTimeRule extends BaseRule {
 			name: 'equals',
 			paramType: 'single',
 			argumentType: 'datetime',
-			aliases: ['dateTimeEquals'],
+			aliases: ['datetimeEquals'],
 			validators: [
 				{
 					callback: (value: string, param: ExtractedDateTime) => extractDateTime(value).toDate() > param.toDate(),
@@ -59,7 +59,7 @@ export class DateTimeRule extends BaseRule {
 			name: 'between',
 			paramType: 'range',
 			argumentType: 'datetime',
-			aliases: ['dateTimeBetween'],
+			aliases: ['datetimeBetween'],
 			validators: [
 				{
 					callback: (value: string, param: Record<string, ExtractedDateTime>) => {
@@ -74,7 +74,7 @@ export class DateTimeRule extends BaseRule {
 			name: 'past',
 			paramType: 'none',
 			argumentType: 'datetime',
-			aliases: ['dateTimePast'],
+			aliases: ['datetimePast'],
 			validators: [
 				{
 					callback: (value: string) => extractDateTime(value).toDate() < new Date(),
@@ -86,7 +86,7 @@ export class DateTimeRule extends BaseRule {
 			name: 'future',
 			paramType: 'none',
 			argumentType: 'datetime',
-			aliases: ['dateTimeFuture'],
+			aliases: ['datetimeFuture'],
 			validators: [
 				{
 					callback: (value: string) => extractDateTime(value).toDate() > new Date(),
