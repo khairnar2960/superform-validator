@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Form Validation</title>
+    <script src="../dist/form-validator.js"></script>
+    <style>.validation-error {color: #ff00a3;font-family: monospace;}</style>
+</head>
+<body>
+    <form id="basicForm">
+        <label>Name: <input type="text" name="name"></label><br><br>
+        <label>Email: <input type="email" name="email"></label><br><br>
+        <label>Mobile: <input type="text" name="mobile"></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const schema = {
+            name: 'require|minLength(2)|maxLength(20)',
+            email: 'require|email|default(user@demo.com)',
+            mobile: 'require|mobile'
+        };
+
+        const validator = FormValidator.init('#basicForm', schema, (data) => {
+            alert('Form is valid! Data: ' + JSON.stringify(data));
+        }, (errors) => {
+            console.error('Validation errors:', errors);
+        });
+
+        validator.enableLiveValidation();
+    </script>
+</body>
+</html>

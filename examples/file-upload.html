@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Validation</title>
+    <script src="../dist/form-validator.js"></script>
+    <style>.validation-error {color: #ff00a3;font-family: monospace;}</style>
+</head>
+<body>
+    <form id="fileUploadForm">
+        <label>Resume: <input type="file" name="resume" accept="image/png, image/jpeg"></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const schema = {
+            resume: 'require|maxFiles(1)|maxFileSize(20kb)|fileAccepts(png,jpg,jpeg)'
+        };
+
+        const validator = FormValidator.init('#fileUploadForm', schema, (data) => {
+            alert('File is valid!');
+        }, (errors) => {
+            console.error('Validation errors:', errors);
+        });
+
+        validator.enableLiveValidation();
+    </script>
+</body>
+</html>

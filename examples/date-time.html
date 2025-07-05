@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date and Time Validation</title>
+    <script src="../dist/form-validator.js"></script>
+    <style>.validation-error {color: #ff00a3;font-family: monospace;}</style>
+</head>
+<body>
+    <form id="dateTimeForm">
+        <label>Date of Birth: <input type="date" name="date_of_birth"></label><br><br>
+        <label>Office Time: <input type="time" name="office_time"></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const schema = {
+            date_of_birth: 'require|date|dateBefore(2017-07-01)|dateAfter(1990-01-01)',
+            office_time: 'require|time|timeBetween(10:00,12:00)'
+        };
+
+        const validator = FormValidator.init('#dateTimeForm', schema, (data) => {
+            alert('Form is valid! Data: ' + JSON.stringify(data));
+        }, (errors) => {
+            console.error('Validation errors:', errors);
+        });
+
+        validator.enableLiveValidation();
+    </script>
+</body>
+</html>

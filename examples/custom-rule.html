@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Rule Validation</title>
+    <script src="../dist/form-validator.js"></script>
+    <style>.validation-error {color: #ff00a3;font-family: monospace;}</style>
+</head>
+<body>
+    <form id="customRuleForm">
+        <label>Number: <input type="text" name="number"></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        FormValidator.registerRule({
+            name: 'isEven',
+            paramType: 'none',
+            argumentType: 'integer',
+            aliases: ['evenNumber'],
+            validators: [{
+                callback: (value) => parseInt(value) % 2 === 0,
+                message: '@{field} must be an even number'
+            }]
+        }, 'integer');
+
+        const schema = {
+            number: 'require|integer|integer::isEven'
+        };
+
+        const validator = FormValidator.init('#customRuleForm', schema, (data) => {
+            alert('Custom rule passed!');
+        }, (errors) => {
+            console.error('Validation errors:', errors);
+        });
+
+        validator.enableLiveValidation(['input']);
+    </script>
+</body>
+</html>
