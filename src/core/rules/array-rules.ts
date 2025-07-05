@@ -75,5 +75,17 @@ export class ArrayRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'excludes',
+            paramType: 'single',
+            argumentType: 'any',
+            aliases: ['arrayExcludes'],
+            validators: [
+                {
+                    callback: (value: any, param) => isArray(value) && !value.includes(param),
+                    message: '@{field} must not include @{param}'
+                }
+            ],
+        });
     }
 }
