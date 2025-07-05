@@ -1,16 +1,19 @@
 import { BaseRule } from "./base-rule.js";
+import { isArray, isEmpty, isObject } from "./core-rules.js";
 
 export class FileRule extends BaseRule {
     constructor() {
         super('file', {
-            name: 'file',
+            name: 'valid',
             paramType: 'none',
             argumentType: 'any',
             aliases: ['file'],
             validators: [
                 {
-                    callback: (value: any) => !(value === null || value === undefined || value === ''),
-                    message: '@{field} must be file',
+                    callback: (value: any) => !isEmpty(value) && isArray(value) && value.every((file: any) => {
+                        return isObject(file) && ['file', 'name', 'size', 'type', 'extension'].every(prop => 'undefined' !== typeof file[prop])
+                    }),
+                    message: '@{field} must be valid files',
                 }
             ]
         });
