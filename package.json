@@ -24,7 +24,7 @@
     }
   },
   "scripts": {
-    "clean": "rm -r dist",
+    "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "build:schemaTypes": "node scripts/build-schema-types.js",
     "build:types": "tsc && npm run build:schemaTypes",
