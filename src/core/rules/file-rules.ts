@@ -49,8 +49,8 @@ export class FileRule extends BaseRule {
             aliases: ['minFileSize'],
             validators: [
                 {
-                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).every(file => (file?.size || 0) >= param.bytes),
                     message: 'Each file must be at least @{param.raw}'
+                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).reduce((total, file) => total + (file?.size || 0), 0) >= param.bytes,
                 }
             ],
         });
@@ -61,8 +61,8 @@ export class FileRule extends BaseRule {
             aliases: ['maxFileSize'],
             validators: [
                 {
-                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).every(file => (file?.size || 0) <= param.bytes),
                     message: 'Each file must no exceeds @{param.raw}'
+                    callback: (value, param) =>  (Array.from(value || []) as Record<string, any>[]).reduce((total, file) => total + (file?.size || 0), 0) <= param.bytes,
                 }
             ],
         });
