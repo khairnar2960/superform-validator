@@ -12,6 +12,12 @@ interface InvalidResponse {
 	errors: Record<string, string>;
 }
 
+interface ValidateOptions {
+	message?: string;
+	wrap?: boolean;
+	ungrouped?: boolean;
+}
+
 declare module 'express-serve-static-core' {
 	interface Request {
 		validated: { body?: Record<string, any>, params?: Record<string, any>, query?: Record<string, any> },
@@ -20,6 +26,23 @@ declare module 'express-serve-static-core' {
 		validateParams: (schema: RawSchema) => ValidResponse|InvalidResponse,
 		validateQuery: (schema: RawSchema) => ValidResponse|InvalidResponse,
 	}
+}
+type ParsedErrors = Record<string, string>|Record<string, string>[];
+
+const parseGrouped = (errors: Record<string, string>, options: ValidateOptions = {}): ParsedErrors|ParsedErrors[] => {
+	let data: ParsedErrors = errors;
+
+	if (options?.ungrouped) {
+		data = Object.entries(errors).map(([field, error]: [string, string]) => {
+			return { [field]: error }
+		})
+	}
+
+	if (options?.wrap) {
+		data = [data] as ParsedErrors;
+	}
+
+	return data;
 }
 
 const validationHandler = (schema: RawSchema, data: Record<string, any> = {}): ValidResponse|InvalidResponse => {
@@ -48,15 +71,15 @@ export const plugin = (req: Request, res: Response, next: NextFunction) => {
 	next();
 }
 
-export const validateBody = (schema: RawSchema) => {
+export const validateBody = (schema: RawSchema, options: ValidateOptions = {}) => {
 	return (req: Request, res: Response, next: NextFunction) => {
 		const validation = validationHandler(schema, req.body || {});
 
 		if (!validation.valid) {
 			return res.status(400).json({
 				status: 'error',
-				message: 'Body validation failed',
-				errors: validation.errors
+				message: options?.message || 'Body validation failed',
+				errors: parseGrouped(validation.errors, options)
 			});
 		}
 
@@ -65,15 +88,15 @@ export const validateBody = (schema: RawSchema) => {
 	}
 }
 
-export const validateParams = (schema: RawSchema) => {
+export const validateParams = (schema: RawSchema, options: ValidateOptions = {}) => {
 	return (req: Request, res: Response, next: NextFunction) => {
 		const validation = validationHandler(schema, req.params || {});
 
 		if (!validation.valid) {
 			return res.status(400).json({
 				status: 'error',
-				message: 'Parameters validation failed',
-				errors: validation.errors
+				message: options?.message || 'Parameters validation failed',
+				errors: parseGrouped(validation.errors, options)
 			});
 		}
 
@@ -82,15 +105,15 @@ export const validateParams = (schema: RawSchema) => {
 	}
 }
 
-export const validateQuery = (schema: RawSchema) => {
+export const validateQuery = (schema: RawSchema, options: ValidateOptions = {}) => {
 	return (req: Request, res: Response, next: NextFunction) => {
 		const validation = validationHandler(schema, req.query || {});
 
 		if (!validation.valid) {
 			return res.status(400).json({
 				status: 'error',
-				message: 'Query validation failed',
-				errors: validation.errors
+				message: options?.message || 'Query validation failed',
+				errors: parseGrouped(validation.errors, options)
 			});
 		}
 
