@@ -1,3 +1,8 @@
+## [2.0.2](https://github.com/khairnar2960/superform-validator/compare/v2.0.1...v2.0.2) (2025-10-12)
+
+### Features
+
+* **Express Middleware:** Allows wrap and ungroup errors in response ([d961dfc](https://github.com/khairnar2960/superform-validator/commit/d961dfc41612503427b7df1e01808ca2039c094e)), closes [#1](https://github.com/khairnar2960/superform-validator/issues/1)
 ## [2.0.1](https://github.com/khairnar2960/superform-validator/compare/v2.0.0...v2.0.1) (2025-07-05)
 
 ### Bug Fixes
