@@ -475,5 +475,21 @@ export class StringRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'latlong',
+            paramType: 'none',
+            argumentType: 'string',
+            aliases: ['latlong'],
+            validators: [
+                {
+                    callback: (value: string) => {
+                        if (typeof value !== 'string') return false;
+                        const regex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?((1[0-7]\d(\.\d+)?)|(\d{1,2}(\.\d+)?|180(\.0+)?))$/;
+                        return regex.test(value.trim());
+                    },
+                    message: '@{field} must be a valid latitude,longitude pair'
+                }
+            ],
+        });
     }
 }
