@@ -87,5 +87,24 @@ export class ArrayRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'latLong',
+            paramType: 'none',
+            argumentType: 'any',
+            aliases: ['latLongArray'],
+            validators: [
+                {
+                    callback: (value: any) => {
+                        if (!isArray(value) || value.length !== 2) return false;
+                        const [lat, lng] = value;
+                        const latValid = typeof lat === 'number' && lat >= -90 && lat <= 90;
+                        const lngValid = typeof lng === 'number' && lng >= -180 && lng <= 180;
+
+                        return latValid && lngValid;
+                    },
+                    message: '@{field} must be a valid [latitude, longitude] coordinate array'
+                }
+            ],
+        });
     }
 }
