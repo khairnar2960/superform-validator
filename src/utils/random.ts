@@ -78,7 +78,10 @@ export class Random {
     static string(length: number = 10, options: StringOptions = {}): string {
         let charset = "";
 
-        if (options.charset) {
+        if ('undefined' !== typeof options.charset) {
+            if (!options.charset) {
+                throw new Error("Charset cannot be empty.");
+            }
             charset = options.charset;
         } else {
             let types: StringType[] = [];
