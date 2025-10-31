@@ -1,3 +1,8 @@
+## [2.0.3](https://github.com/khairnar2960/superform-validator/compare/v2.0.2...v2.0.3) (2025-10-31)
+
+### Bug Fixes
+
+* **strongPassword:** Fixed field must contain at least one digit error. ([ba4b3e7](https://github.com/khairnar2960/superform-validator/commit/ba4b3e728280e6e1652e093b67e196a3150f36d7)), closes [#2](https://github.com/khairnar2960/superform-validator/issues/2)
 ## [2.0.2](https://github.com/khairnar2960/superform-validator/compare/v2.0.1...v2.0.2) (2025-10-12)
 
 ### Features
