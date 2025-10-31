@@ -251,7 +251,7 @@ export class StringRule extends BaseRule {
             validators: [
                 { callback: value => /[A-Z]/.test(value), message: '@{field} must contain at least one uppercase letter' },
                 { callback: value => /[a-z]/.test(value), message: '@{field} must contain at least one lowercase letter' },
-                { callback: value => /\\d/.test(value), message: '@{field} must contain at least one digit' },
+                { callback: value => /\d/.test(value), message: '@{field} must contain at least one digit' },
                 { callback: value => /[!@#$%^&*]/.test(value), message: '@{field} must contain at least one special character' },
                 { callback: value => value.length >= 8, message: '@{field} must be at least 8 characters long' }
             ],
