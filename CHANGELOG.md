@@ -1,3 +1,9 @@
+## [2.0.4](https://github.com/khairnar2960/superform-validator/compare/v2.0.3...v2.0.4) (2025-10-31)
+
+### Features
+
+* **array:** adds latLong rule ([a4882a2](https://github.com/khairnar2960/superform-validator/commit/a4882a20672da0a23c95a049c1abbb9e5a794a32))
+* **string:** adds latLong rule ([97bc430](https://github.com/khairnar2960/superform-validator/commit/97bc430b373e7f1d786a753aac97d576d4f4a713))
 ## [2.0.3](https://github.com/khairnar2960/superform-validator/compare/v2.0.2...v2.0.3) (2025-10-31)
 
 ### Bug Fixes
