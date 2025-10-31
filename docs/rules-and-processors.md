@@ -99,6 +99,7 @@
 | string::asciiOnly      | string::asciiOnly                     | asciiOnly                           | Must contain only ASCII characters        |
 | string::json           | string::json                          | jsonString                          | Must be a valid JSON string               |
 | string::wordCount      | string::wordCount(integer1, integer2) | wordCount(integer1, integer2)       | Word count must be within specified range |
+| string::latlong        | string::latlong                       | latlong                             | Must be a valid latitude,longitude pair   |
 
 ---
 
@@ -168,15 +169,16 @@
 
 ## 📂 Array Rules
 
-| Rule            | Signature                | Aliases                                     | Description                           |
-| --------------- | ------------------------ | ------------------------------------------- | ------------------------------------- |
-| array::valid    | array::valid             | array                                       | Must be a valid array                 |
-| array::notEmpty | array::notEmpty          | notEmptyArray                               | Must not be empty array               |
-| array::unique   | array::unique            | uniqueArray                                 | Array items must be unique            |
-| array::minItems | array::minItems(integer) | minItems                                    | Minimum number of items in array      |
-| array::maxItems | array::maxItems(integer) | maxItems                                    | Maximum number of items in array      |
-| array::includes | array::includes(item)    | arrayIncludes(item), arrayContains(item)    | Array must include specified item     |
-| array::excludes | array::excludes(item)    | arrayExcludes(item), arrayNotContains(item) | Array must not include specified item |
+| Rule            | Signature                | Aliases                                     | Description                                               |
+| --------------- | ------------------------ | ------------------------------------------- | --------------------------------------------------------- |
+| array::valid    | array::valid             | array                                       | Must be a valid array                                     |
+| array::notEmpty | array::notEmpty          | notEmptyArray                               | Must not be empty array                                   |
+| array::unique   | array::unique            | uniqueArray                                 | Array items must be unique                                |
+| array::minItems | array::minItems(integer) | minItems                                    | Minimum number of items in array                          |
+| array::maxItems | array::maxItems(integer) | maxItems                                    | Maximum number of items in array                          |
+| array::includes | array::includes(item)    | arrayIncludes(item), arrayContains(item)    | Array must include specified item                         |
+| array::excludes | array::excludes(item)    | arrayExcludes(item), arrayNotContains(item) | Array must not include specified item                     |
+| array::latLong  | array::latLong(item)     | latLongArray                                | Array must a valid [latitude, longitude] coordinate array |
 
 ---
 
