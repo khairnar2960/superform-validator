@@ -29,12 +29,12 @@ jobs:
 
       - name: Create release zip
         run: |
-          zip -r superform-validator-v${{ github.ref_name }}.zip \
+          zip -r superform-validator-${{ github.ref_name }}.zip \
             dist docs examples package.json README.md LICENSE
 
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v1
         with:
-          files: superform-validator-v${{ github.ref_name }}.zip
+          files: superform-validator-${{ github.ref_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
