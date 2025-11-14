@@ -43,7 +43,7 @@ export class ArrayRule extends BaseRule {
             name: 'minItems',
             paramType: 'single',
             argumentType: 'integer',
-            aliases: ['minItems'],
+            aliases: ['minItems', 'arrayMinLength'],
             validators: [
                 {
                     callback: (value: any, param) => isArray(value) && value.length >= param,
@@ -55,7 +55,7 @@ export class ArrayRule extends BaseRule {
             name: 'maxItems',
             paramType: 'single',
             argumentType: 'integer',
-            aliases: ['maxItems'],
+            aliases: ['maxItems', 'arrayMaxLength'],
             validators: [
                 {
                     callback: (value: any, param) => isArray(value) && value.length <= param,
