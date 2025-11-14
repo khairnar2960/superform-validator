@@ -83,6 +83,89 @@ describe('ArrayRule', () => {
 		expect(badLen.valid).toBe(false);
 	});
 
+	it('longLat validates two-number coordinate arrays', () => {
+		const rule = new ArrayRule();
+		const ok = rule.validate('longLat', [12, 77], undefined, {} as any);
+		expect(ok.valid).toBe(true);
+
+		const badRange = rule.validate('longLat', [200, 300], undefined, {} as any);
+		expect(badRange.valid).toBe(false);
+		expect(badRange.error).toBe('@{field} must be a valid [longitude, latitude] coordinate array');
+
+		const badLen = rule.validate('longLat', [12], undefined, {} as any);
+		expect(badLen.valid).toBe(false);
+	});
+
+	it('resolves and validates arrayOf(string)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', ['a', 'b', 'c'], 'string', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', [1, '2', '3'], 'string', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
+	it('resolves and validates arrayOf(number)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', [1, 2, 3], 'number', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', ['1', 2, 3], 'number', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
+	it('resolves and validates arrayOf(boolean)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', [true, false, true], 'boolean', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', [1, '2', true], 'boolean', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
+	it('resolves and validates arrayOf(integer)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', [1, 2, 3], 'integer', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', [1, 2, 3.01], 'integer', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
+	it('resolves and validates arrayOf(float)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', [1.2, 3.4, 5.6], 'float', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', [1, 2.3, 4.5], 'float', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
+	it('resolves and validates arrayOf(array)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', [[1], [2], [3]], 'array', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', [1, '2', true, [0]], 'array', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
+	it('resolves and validates arrayOf(object)', () => {
+		const rule = new ArrayRule();
+		const res1 = rule.validate('arrayOf', [{a: 1}, {b: 2}, {c: 3}], 'object', {} as any);
+		expect(res1.valid).toBe(true);
+
+		const res2 = rule.validate('arrayOf', [1, '2', true, {a: 1}], 'object', {} as any);
+		expect(res2.valid).toBe(false);
+		expect(res2.error).toBe('@{field} must be a valid array of @{param}');
+	});
+
 	it('resolves and validates via alias names', () => {
 		const rule = new ArrayRule();
 		// unique has alias 'uniqueArray'

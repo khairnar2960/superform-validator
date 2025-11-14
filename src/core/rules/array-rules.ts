@@ -1,5 +1,5 @@
 import { BaseRule } from "./base-rule.js";
-import { isArray, isEmpty } from "./core-rules.js";
+import { isArray, isArrayOf, isEmpty, TypeOfArray } from "./core-rules.js";
 
 export class ArrayRule extends BaseRule {
     constructor() {
@@ -122,6 +122,35 @@ export class ArrayRule extends BaseRule {
                         return latValid && lngValid;
                     },
                     message: '@{field} must be a valid [longitude, latitude] coordinate array'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'of',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['arrayOf'],
+            validators: [
+                {
+                    callback: (value: any, param: TypeOfArray) => {
+                        return isArrayOf(value, param);
+                    },
+                    message: '@{field} must be a valid array of @{param}'
+                }
+            ],
+        });
+
+        this.registerFunction({
+            name: 'notOf',
+            paramType: 'single',
+            argumentType: 'string',
+            aliases: ['arrayNotOf'],
+            validators: [
+                {
+                    callback: (value: any, param: TypeOfArray) => {
+                        return !isArrayOf(value, param);
+                    },
+                    message: '@{field} must not be an array of @{param}'
                 }
             ],
         });
