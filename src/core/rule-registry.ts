@@ -5,6 +5,7 @@ import { FieldRule } from "./rules/field-rules.js";
 import { IntegerRule } from "./rules/integer-rule.js";
 import { FloatRule } from "./rules/float-rule.js";
 import { StringRule } from "./rules/string-rule.js";
+import { BooleanRule } from "./rules/boolean-rule.js";
 import { DateRule } from "./rules/date-rule.js";
 import { TimeRule } from "./rules/time-rule.js";
 import { DateTimeRule } from "./rules/datetime-rule.js";
@@ -30,6 +31,7 @@ export const allRules = [
     new IntegerRule(),
     new FloatRule(),
     new StringRule(),
+    new BooleanRule(),
     new DateRule(),
 	new TimeRule(),
     new DateTimeRule(),
