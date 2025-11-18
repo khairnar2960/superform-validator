@@ -25,7 +25,7 @@ function formatError(field: string, value: any, param: any, fields: Record<strin
     );
 }
 
-export function validateField(value: any, fieldRules: [string, FieldRule[]], fieldValues: Record<string, any>): ValidationResponse {
+export async function validateField(value: any, fieldRules: [string, FieldRule[]], fieldValues: Record<string, any>): Promise<ValidationResponse> {
 
     const fields: Record<string, Field> = transformFieldValues(fieldValues);
 
@@ -55,7 +55,7 @@ export function validateField(value: any, fieldRules: [string, FieldRule[]], fie
 
     if (isRequire && isEmpty(value)) {
         const rule: RuleFunction = ((requireRule as FieldRule).rule as RuleFunction);
-        const result = rule.validate(value, undefined, fields);
+        const result = await rule.validate(value, undefined, fields);
         return { valid: false, error: formatError(field, value, undefined, fields, result.error) };
     }
 
@@ -64,7 +64,7 @@ export function validateField(value: any, fieldRules: [string, FieldRule[]], fie
     // 4. Field-Specific Rule Validation
     for (const fieldRule of rules) {
         if (fieldRule.rule instanceof RuleFunction) {
-            const result = fieldRule.rule.validate(value, fieldRule.param, fields);
+            const result = await fieldRule.rule.validate(value, fieldRule.param, fields);
             if (!result.valid) {
                 return {
                     valid: false,
@@ -74,7 +74,8 @@ export function validateField(value: any, fieldRules: [string, FieldRule[]], fie
         } else if (fieldRule.name === 'custom') {
             const message = fieldRule.param?.message;
             if (fieldRule.type === 'callback') {
-                if (!fieldRule.param?.callback(value, null, fields)) {
+                const callbackResponse = await fieldRule.param?.callback(value, null, fields);
+                if (!callbackResponse) {
                     return {
                         valid: false,
                         error: formatError(field, value, null, fields, message),
@@ -100,13 +101,13 @@ export function validateField(value: any, fieldRules: [string, FieldRule[]], fie
     return { valid: true, processedValue: value };
 }
 
-export function validate(schema: ParsedSchema, fieldValues: Record<string, any> = {}): Record<string, ValidationResponse> {
+export async function validate(schema: ParsedSchema, fieldValues: Record<string, any> = {}): Promise<Record<string, ValidationResponse>> {
     const validations: Record<string, ValidationResponse> = {};
 
     for (const field in schema) {
         const fieldRules: FieldRule[] = schema[field];
         const value = (fieldValues[field] as any|undefined);
-        const fieldValidation: ValidationResponse = validateField(value, [field, fieldRules], fieldValues);
+        const fieldValidation: ValidationResponse = await validateField(value, [field, fieldRules], fieldValues);
         validations[field] = fieldValidation;
     }
 

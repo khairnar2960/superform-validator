@@ -91,9 +91,9 @@ class Validator {
     }
 
     bind() {
-        this.form.addEventListener('submit', e => {
+        this.form.addEventListener('submit', async e => {
             e.preventDefault();
-            const { valid, validated = {} } = this.validate();
+            const { valid, validated = {} } = await this.validate();
             if (valid) {
                 'function' === typeof this.onValid ? this.onValid(validated) : this.form.submit();
             } else {
@@ -132,7 +132,7 @@ class Validator {
         return fieldValues;
     }
 
-    validateField(fieldName: string, fieldValues: Record<string, any> = {}): ValidationResponse {
+    async validateField(fieldName: string, fieldValues: Record<string, any> = {}): Promise<ValidationResponse> {
         const formData = this.collectFieldValues();
         const el = this.form.querySelector(`[name="${fieldName}"]`) as InputElement;
         const rules = this.fields[fieldName] || [];
@@ -142,7 +142,7 @@ class Validator {
                 el.type === 'file' ? transformFiles(el.files as FileList) : formData[fieldName]
             ) : formData[fieldName];
 
-        const result: ValidationResponse = validateField(value, [fieldName, rules], fieldValues);
+        const result: ValidationResponse = await validateField(value, [fieldName, rules], fieldValues);
 
         if (!result.valid) {
             this.errors[fieldName] = result?.error as string;
@@ -152,12 +152,12 @@ class Validator {
         return result;
     }
 
-    validate(): { valid: boolean, validated: Record<string, any> } {
+    async validate(): Promise<{ valid: boolean, validated: Record<string, any> }> {
         const validated: Record<string, any> = {};
         this.errors = {};
         const fieldValues = this.collectFieldValues();
         for (const fieldName in this.fields) {
-            const { valid, processedValue = '' } = this.validateField(fieldName, fieldValues);
+            const { valid, processedValue = '' } = await this.validateField(fieldName, fieldValues);
             if (valid) {
                 validated[fieldName] = processedValue;
             }

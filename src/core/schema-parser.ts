@@ -23,6 +23,7 @@ type SchemaRuleNames = {
 }
 
 export type SchemaField = SchemaRuleNames & {
+    optional?: boolean;
     default?: any;
     custom?: ValidationStep;
     messages?: {

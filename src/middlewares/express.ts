@@ -21,10 +21,10 @@ interface ValidateOptions {
 declare module 'express-serve-static-core' {
 	interface Request {
 		validated: { body?: Record<string, any>, params?: Record<string, any>, query?: Record<string, any> },
-		validate: (schema: RawSchema, data: Record<string, any>) => ValidResponse|InvalidResponse,
-		validateBody: (schema: RawSchema) => ValidResponse|InvalidResponse,
-		validateParams: (schema: RawSchema) => ValidResponse|InvalidResponse,
-		validateQuery: (schema: RawSchema) => ValidResponse|InvalidResponse,
+		validate: (schema: RawSchema, data: Record<string, any>) => Promise<ValidResponse|InvalidResponse>,
+		validateBody: (schema: RawSchema) => Promise<ValidResponse|InvalidResponse>,
+		validateParams: (schema: RawSchema) => Promise<ValidResponse|InvalidResponse>,
+		validateQuery: (schema: RawSchema) => Promise<ValidResponse|InvalidResponse>,
 	}
 }
 type ParsedErrors = Record<string, string>|Record<string, string>[];
@@ -45,7 +45,7 @@ const parseGrouped = (errors: Record<string, string>, options: ValidateOptions =
 	return data;
 }
 
-const validationHandler = (schema: RawSchema, data: Record<string, any> = {}): ValidResponse|InvalidResponse => {
+const validationHandler = async (schema: RawSchema, data: Record<string, any> = {}): Promise<ValidResponse|InvalidResponse> => {
 	const validated = validate(parseSchema(schema), data || {});
 	const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
 
@@ -72,8 +72,8 @@ export const plugin = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const validateBody = (schema: RawSchema, options: ValidateOptions = {}) => {
-	return (req: Request, res: Response, next: NextFunction) => {
-		const validation = validationHandler(schema, req.body || {});
+	return async (req: Request, res: Response, next: NextFunction) => {
+		const validation = await validationHandler(schema, req.body || {});
 
 		if (!validation.valid) {
 			return res.status(400).json({
@@ -89,8 +89,8 @@ export const validateBody = (schema: RawSchema, options: ValidateOptions = {}) =
 }
 
 export const validateParams = (schema: RawSchema, options: ValidateOptions = {}) => {
-	return (req: Request, res: Response, next: NextFunction) => {
-		const validation = validationHandler(schema, req.params || {});
+	return async (req: Request, res: Response, next: NextFunction) => {
+		const validation = await validationHandler(schema, req.params || {});
 
 		if (!validation.valid) {
 			return res.status(400).json({
@@ -106,8 +106,8 @@ export const validateParams = (schema: RawSchema, options: ValidateOptions = {})
 }
 
 export const validateQuery = (schema: RawSchema, options: ValidateOptions = {}) => {
-	return (req: Request, res: Response, next: NextFunction) => {
-		const validation = validationHandler(schema, req.query || {});
+	return async (req: Request, res: Response, next: NextFunction) => {
+		const validation = await validationHandler(schema, req.query || {});
 
 		if (!validation.valid) {
 			return res.status(400).json({

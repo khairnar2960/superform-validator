@@ -9,7 +9,7 @@ export interface Field {
     value: any,
 }
 
-export type callback = (value: any, param: any, fields: Record<string, Field>) => boolean;
+export type callback = (value: any, param: any, fields: Record<string, Field>) => Promise<boolean>|boolean;
 
 export interface ValidationStep {
     callback?: callback | undefined;
@@ -65,21 +65,22 @@ export class RuleFunction {
      * Validate a value.
      * @param {any} value value to be validated
      * @param {any} param extra param for callback
-     * @returns {ValidationResponse}
+     * @returns {Promise<ValidationResponse>}
      */
-    validate(value: any, param: any, fields: Record<string, Field>): ValidationResponse {
+    async validate(value: any, param: any, fields: Record<string, Field>): Promise<ValidationResponse> {
 
         const response: ValidationResponse = { valid: true, function: this.name, value, param };
 
         for (const validator of this.validators) {
 
-            if (validator.callback && !validator.callback(value, param, fields)) {
-                response.valid = false;
-                response.error = validator.message;
-                return response;
-            }
-
-            if (validator.pattern && !validator.pattern.test(value)) {
+            if (validator.callback) {
+                const isValid = await validator.callback(value, param, fields);
+                if (!isValid) {
+                    response.valid = false;
+                    response.error = validator.message;
+                    return response;
+                }
+            } else if (validator.pattern && !validator.pattern.test(value)) {
                 response.valid = false;
                 response.error = validator.message;
                 return response;
@@ -132,9 +133,9 @@ export class BaseRule {
      * @param {string} functionName Function name to be validate with
      * @param {any} value value to be validated
      * @param {any} param extra param for callback
-     * @returns {ValidationResponse}
+     * @returns {Promise<ValidationResponse>}
      */
-    validate(functionName: string, value: any, param: any, fields: Record<string, Field>): ValidationResponse {
+    async validate(functionName: string, value: any, param: any, fields: Record<string, Field>): Promise<ValidationResponse> {
         let func = this.functions.get(functionName);
 
         if (!func) {
@@ -143,7 +144,7 @@ export class BaseRule {
 
         if (!func) throw new Error(`Function ${functionName} is not registered in ${this.type}`);
 
-        return func.validate(value, param, fields);
+        return await func.validate(value, param, fields);
     }
 
     /**
