@@ -1,31 +1,55 @@
+## [2.0.5](https://github.com/khairnar2960/superform-validator/compare/v2.0.4...v2.0.5) (2025-11-20)
+
+
+### Features
+
+* adds additional core rules ([e94aa5b](https://github.com/khairnar2960/superform-validator/commit/e94aa5b40faba39a3586692f37da23c97332b253))
+* Adds react plugin ([9b6929a](https://github.com/khairnar2960/superform-validator/commit/9b6929a63ac2d41b25714f6e2e837de1ca0ec9a8))
+* Adds support for asynchronous callbacks ([226826f](https://github.com/khairnar2960/superform-validator/commit/226826fbda07575f644613e661309f0ed05580a6)), closes [#3](https://github.com/khairnar2960/superform-validator/issues/3)
+* **array:** adds `arrayOf(type)` & `arrayNotOf(type)` rules ([06e96ee](https://github.com/khairnar2960/superform-validator/commit/06e96eeb0adfddd420891b222885094833336a14)), closes [#5](https://github.com/khairnar2960/superform-validator/issues/5)
+* **array:** Adds alias for min/max length [#5](https://github.com/khairnar2960/superform-validator/issues/5) ([7b1c729](https://github.com/khairnar2960/superform-validator/commit/7b1c729a4d1534df5c85cca015093a813bb05396))
+* **array:** adds longLat rule ([e782e20](https://github.com/khairnar2960/superform-validator/commit/e782e2024751138cca1d0581738f7cbfc85212c4))
+* **Boolean:** adds `boolean` rule with alias `bool` ([8153c2d](https://github.com/khairnar2960/superform-validator/commit/8153c2d94ba7e597af233c8718ef36c188f987f1)), closes [#5](https://github.com/khairnar2960/superform-validator/issues/5)
+
 ## [2.0.4](https://github.com/khairnar2960/superform-validator/compare/v2.0.3...v2.0.4) (2025-10-31)
+
 
 ### Features
 
 * **array:** adds latLong rule ([a4882a2](https://github.com/khairnar2960/superform-validator/commit/a4882a20672da0a23c95a049c1abbb9e5a794a32))
 * **string:** adds latLong rule ([97bc430](https://github.com/khairnar2960/superform-validator/commit/97bc430b373e7f1d786a753aac97d576d4f4a713))
+
 ## [2.0.3](https://github.com/khairnar2960/superform-validator/compare/v2.0.2...v2.0.3) (2025-10-31)
+
 
 ### Bug Fixes
 
 * **strongPassword:** Fixed field must contain at least one digit error. ([ba4b3e7](https://github.com/khairnar2960/superform-validator/commit/ba4b3e728280e6e1652e093b67e196a3150f36d7)), closes [#2](https://github.com/khairnar2960/superform-validator/issues/2)
+
 ## [2.0.2](https://github.com/khairnar2960/superform-validator/compare/v2.0.1...v2.0.2) (2025-10-12)
+
 
 ### Features
 
 * **Express Middleware:** Allows wrap and ungroup errors in response ([d961dfc](https://github.com/khairnar2960/superform-validator/commit/d961dfc41612503427b7df1e01808ca2039c094e)), closes [#1](https://github.com/khairnar2960/superform-validator/issues/1)
+
 ## [2.0.1](https://github.com/khairnar2960/superform-validator/compare/v2.0.0...v2.0.1) (2025-07-05)
+
 
 ### Bug Fixes
 
 * **Action:** Fixes write permission for release ([da16dbd](https://github.com/khairnar2960/superform-validator/commit/da16dbd5c9a67e5b790248bcee3deaed351db148))
+
 ## [2.0.0](https://github.com/khairnar2960/superform-validator/compare/v1.0.4...v2.0.0) (2025-07-05)
+
 
 ### Bug Fixes
 
 * **docs:** Fixes documentation internal linking ([ef6a4b8](https://github.com/khairnar2960/superform-validator/commit/ef6a4b8d1c7754d7eedd8f25128035a872aacd83))
 * **Workflow:** Fixes GitHub package release build failure ([a00afa4](https://github.com/khairnar2960/superform-validator/commit/a00afa4a2140d0ee8969deaa73ca4d8ae4cf8822))
+
 ## [1.0.4](https://github.com/khairnar2960/superform-validator/compare/v1.0.3...v1.0.4) (2025-07-05)
+
 
 ### Features
 
@@ -73,6 +97,7 @@
 * **string:** adds wordCount rule ([0f486ee](https://github.com/khairnar2960/superform-validator/commit/0f486ee173d1f8777d7e1ba3411040ed754c86fb))
 * **validatorEngine:** validator engine has validate method ([84a5f7a](https://github.com/khairnar2960/superform-validator/commit/84a5f7a14a9c96062c6cb44b5c6d780fa926cc93))
 
+
 ### Bug Fixes
 
 * **alias:** fixes alias names and param types ([215df21](https://github.com/khairnar2960/superform-validator/commit/215df21b06e44c3fe34c884bc7f94ae91c49a637))
@@ -101,16 +126,21 @@
 * **validator:** fixes file validations ([53c70e4](https://github.com/khairnar2960/superform-validator/commit/53c70e4533742367308d2da5835aee7b38dc2f64))
 * **validator:** fixes multiple checkbox validation as array ([4129e7e](https://github.com/khairnar2960/superform-validator/commit/4129e7e10a54944a7cd2c665d3fc83e32518416b))
 * **validator:** fixes radio input require validation failure ([857338c](https://github.com/khairnar2960/superform-validator/commit/857338c08a7d2fb0a7194bde22919c61ee52d5f9))
+
 ## [1.0.3](https://github.com/khairnar2960/superform-validator/compare/v1.0.2...v1.0.3) (2025-06-27)
+
 
 ### Features
 
 * options can accept error id template ([140ad4f](https://github.com/khairnar2960/superform-validator/commit/140ad4ffdfee04720923cdb57ad3b9bf13dc3035))
 
+
 ### Bug Fixes
 
 * Field missing error shown if removed from DOM ([3e00ded](https://github.com/khairnar2960/superform-validator/commit/3e00ded8881f603c4834c3f46c677fda31c2d95f))
+
 ## [1.0.2](https://github.com/khairnar2960/superform-validator/compare/v1.0.1...v1.0.2) (2025-06-26)
+
 
 ### Features
 
@@ -120,12 +150,17 @@
 * Added time rule to validate (HH:MM:SS) ([58847ad](https://github.com/khairnar2960/superform-validator/commit/58847ade68b6d9fe51b5aed9f537f8cfa1f89f26))
 * Added url rule ([9d5ce43](https://github.com/khairnar2960/superform-validator/commit/9d5ce437db947936fd0c8b75e707ba33f2c5a371))
 
+
 ### Bug Fixes
 
 * Duplicate error messages removed on invalid ([78ab6e5](https://github.com/khairnar2960/superform-validator/commit/78ab6e5486a22ec7c595b3e8e4d51a90a7cd6b51))
+
 ## [1.0.1](https://github.com/khairnar2960/superform-validator/compare/v1.0.0...v1.0.1) (2025-06-26)
+
 
 ### Bug Fixes
 
 * file name typo corrected ([7413a2e](https://github.com/khairnar2960/superform-validator/commit/7413a2e07f589e42a6462cb970df148bf0dcb7c2))
+
 ## 1.0.0 (2025-06-26)
+
