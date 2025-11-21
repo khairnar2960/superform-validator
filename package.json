@@ -61,7 +61,7 @@
     "url": "https://github.com/khairnar2960/superform-validator/issues"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18 | >=22"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
