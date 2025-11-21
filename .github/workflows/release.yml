@@ -36,7 +36,7 @@ jobs:
         id: changelog
         run: |
           # Generate the changelog for the range from the last tag to the current tag
-          changelog=$(npx conventional-changelog -p conventionalcommits -i -r --commit-path . --from ${{ steps.last-tag.outputs.last_tag }} --to ${{ github.ref_name }})
+          changelog=$(npx conventional-changelog -p conventionalcommits -i -r2 --commit-path . --from ${{ steps.last-tag.outputs.last_tag }} --to ${{ github.ref_name }})
           echo "$changelog" > changelog.txt
           cat changelog.txt
 
