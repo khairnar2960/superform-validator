@@ -24,7 +24,7 @@ A powerful, flexible, and universal JavaScript form validation library that supp
 | Custom Rule Registration           | ✅ Yes         |
 | Flexible Error Formatting Engine   | ✅ Yes         |
 | TypeScript Ready                   | ✅ Yes         |
-| React Support                      | ⏳ Coming Soon  |
+| React Support                      | ✅ Yes         |
 
 ---
 
@@ -44,12 +44,12 @@ npm install superform-validator
 <!-- OR -->
 
 <!-- Recommended with specific version -->
-<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.0.1/dist/form-validator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.0.6/dist/form-validator.js"></script>
 
 <!-- OR -->
 
 <!-- unpkg -->
-<script src="https://unpkg.com/superform-validator@2.0.1/dist/form-validator.js"></script>
+<script src="https://unpkg.com/superform-validator@2.0.6/dist/form-validator.js"></script>
 ```
 
 ---
@@ -93,6 +93,8 @@ const msg = ErrorFormatter.format('Welcome @{user.name || "Guest"}', { user: {} 
 - ✅ [Validation Rules](#validation-rules)
 - ⚡ [Validation Result Structure](#validation-result-structure)
 - 🔤 [Rules and Processors Reference](./docs/rules-and-processors.md)
+ - 🟦 [React Middleware Guide](./docs/react.md)
+ - 🧪 [React Examples](./docs/react-examples.md)
 
 ---
 
@@ -205,7 +207,6 @@ Supports advanced formatting with nested access, fallbacks, and string modifiers
 
 ## 🌟 Planned Features
 
-* 🔊 React integration via custom hooks
 * 🌐 Multi-language support
 * 👥 Field grouping and nested schema support
 
@@ -219,6 +220,8 @@ Supports advanced formatting with nested access, fallbacks, and string modifiers
 - [Custom Rule: Even Number](./examples/custom-rule.html)
 - [Express Middleware Example](./examples/express-middleware.js)
 - [Express Callback Example](./examples/express-callback.js)
+ - [React Basic Example](./examples/react-basic.tsx)
+ - [React Controller Example](./examples/react-controller.tsx)
 
 ---
 

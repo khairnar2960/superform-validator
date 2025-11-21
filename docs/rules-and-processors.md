@@ -103,6 +103,14 @@
 
 ---
 
+## 📄 Boolean Rules
+
+| Rule                   | Signature                             | Aliases                             | Description                               |
+| ---------------------- | ------------------------------------- | ----------------------------------- | ----------------------------------------- |
+| boolean::valid         | boolean::valid                        | boolean, bool                       | Must be a valid boolean value             |
+
+---
+
 ## 📅 Date Rules
 
 | Rule          | Signature                   | Aliases                   | Description                         |
@@ -178,7 +186,10 @@
 | array::maxItems | array::maxItems(integer) | maxItems                                    | Maximum number of items in array                          |
 | array::includes | array::includes(item)    | arrayIncludes(item), arrayContains(item)    | Array must include specified item                         |
 | array::excludes | array::excludes(item)    | arrayExcludes(item), arrayNotContains(item) | Array must not include specified item                     |
-| array::latLong  | array::latLong(item)     | latLongArray                                | Array must a valid [latitude, longitude] coordinate array |
+| array::latLong  | array::latLong           | latLongArray                                | Array must a valid [latitude, longitude] coordinate array |
+| array::longLat  | array::longLat           | longLatArray                                | Array must a valid [longitude, latitude] coordinate array |
+| array::of       | array::of(type)          | arrayOf                                     | Array must be type of type array<type>                    |
+| array::notOf    | array::notOf(type)       | arrayNotOf                                  | Array must not be type of type array<type>                |
 
 ---
 
