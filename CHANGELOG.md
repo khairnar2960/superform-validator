@@ -1,3 +1,11 @@
+## [2.0.6](https://github.com/khairnar2960/superform-validator/compare/v2.0.5...v2.0.6) (2025-11-21)
+
+
+### Features
+
+* **React:** adds control & watch mode ([7c08d81](https://github.com/khairnar2960/superform-validator/commit/7c08d81a57dbf411b8975d9bdd92ffd9f4caf5dc))
+* **React:** adds useForm hook ([be420c8](https://github.com/khairnar2960/superform-validator/commit/be420c8bec93b3941d3919fa1a7b433e101aa6df))
+
 ## [2.0.5](https://github.com/khairnar2960/superform-validator/compare/v2.0.4...v2.0.5) (2025-11-20)
 
 
