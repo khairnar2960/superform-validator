@@ -1,7 +1,7 @@
 import { registerRule } from "./rule-registry.js";
-import { RuleFunctionSchema } from "./rules/base-rule.js";
-import { ParsedSchema, parseSchema, RawSchema } from "./schema-parser.js";
-import { validateField, ValidationResponse } from "./validator-engine.js";
+import type { RuleFunctionSchema } from "./rules/base-rule.js";
+import { type ParsedSchema, parseSchema, type RawSchema } from "./schema-parser.js";
+import { validateField, type ValidationResponse } from "./validator-engine.js";
 
 type ValidCallback = (valid: Record<string, any>) => void;
 type InvalidCallback = (invalid: Record<string, any>) => void;

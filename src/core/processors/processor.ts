@@ -1,5 +1,5 @@
 import { toCamelCase } from "../../utils/case.js";
-import { ArgumentDataType, ParamType, Signature, SignatureRecord } from "../rules/base-rule.js";
+import type { ArgumentDataType, ParamType, Signature, SignatureRecord } from "../rules/base-rule.js";
 
 export type callback = (value: any, param?: any) => any;
 

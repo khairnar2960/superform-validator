@@ -2,9 +2,9 @@ import { ucFirst } from "../utils/case.js";
 import { ErrorFormatter } from "./error-formatter.js";
 import { ProcessorFunc } from "./processors/processor.js";
 import { postProcessors, preProcessors } from "./rule-registry.js";
-import { Field, RuleFunction, ValidationStep } from "./rules/base-rule.js";
+import { type Field, RuleFunction } from "./rules/base-rule.js";
 import { isEmpty } from "./rules/core-rules.js";
-import { FieldRule, ParsedSchema } from "./schema-parser.js";
+import type { FieldRule, ParsedSchema } from "./schema-parser.js";
 
 export interface ValidationResponse {
     valid: boolean,

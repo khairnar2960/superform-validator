@@ -3,9 +3,9 @@
 import { extractParam } from "./param-extractor.js";
 import { parseParam } from "./param-parser.js";
 import { ProcessorFunc } from "./processors/processor.js";
-import { RuleName } from "./rule-name.js";
+import type { RuleName } from "./rule-name.js";
 import { resolveRule } from "./rule-registry.js";
-import { RuleFunction, ValidationStep } from "./rules/base-rule.js";
+import { RuleFunction, type ValidationStep } from "./rules/base-rule.js";
 import { isObject } from "./rules/core-rules.js";
 
 export type FieldRule = {

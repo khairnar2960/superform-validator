@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { validate } from "../core/validator-engine.js";
-import { parseSchema, RawSchema } from "../core/schema-parser.js";
+import { parseSchema, type RawSchema } from "../core/schema-parser.js";
 
 interface ValidResponse {
 	valid: true;

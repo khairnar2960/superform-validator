@@ -1,6 +1,6 @@
 import { toCamelCase } from "../utils/case.js";
 import { Processor, ProcessorFunc } from "./processors/processor.js";
-import { BaseRule, RuleFunction, RuleFunctionSchema } from "./rules/base-rule.js";
+import { BaseRule, RuleFunction, type RuleFunctionSchema } from "./rules/base-rule.js";
 import { FieldRule } from "./rules/field-rules.js";
 import { IntegerRule } from "./rules/integer-rule.js";
 import { FloatRule } from "./rules/float-rule.js";

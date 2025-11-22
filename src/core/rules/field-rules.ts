@@ -1,4 +1,4 @@
-import { BaseRule, Field } from "./base-rule.js";
+import { BaseRule, type Field } from "./base-rule.js";
 import { isEmpty } from "./core-rules.js";
 
 export class FieldRule extends BaseRule {

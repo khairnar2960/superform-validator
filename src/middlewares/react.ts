@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useRef } from "react";
 import { validate as validator } from "../core/validator-engine.js";
-import { parseSchema, RawSchema } from "../core/schema-parser.js";
+import { parseSchema, type RawSchema } from "../core/schema-parser.js";
 
 export interface ReactValidationResult<T> {
     valid: boolean;

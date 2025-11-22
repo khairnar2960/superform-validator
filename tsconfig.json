@@ -13,7 +13,8 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "moduleSuffixes": [".js", ""]
+    "moduleSuffixes": [".js", ""],
+    "verbatimModuleSyntax": true,
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "tests"]

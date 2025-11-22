@@ -1,5 +1,5 @@
 import { BaseRule } from "./base-rule.js";
-import { isArray, isArrayOf, isEmpty, TypeOfArray } from "./core-rules.js";
+import { isArray, isArrayOf, isEmpty, type TypeOfArray } from "./core-rules.js";
 
 export class ArrayRule extends BaseRule {
     constructor() {
