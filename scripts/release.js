@@ -13,6 +13,6 @@ const updateVersion = async () => {
 
 const type = process.argv[2] || "patch"; // default to patch
 execSync(`npm version ${type}`, { stdio: "inherit" });
+await updateVersion();
 execSync("npm run changelog", { stdio: "inherit" });
 execSync("git push --follow-tags", { stdio: "inherit" });
-await updateVersion();
