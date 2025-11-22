@@ -7,15 +7,38 @@ interface ValidResponse {
 	validated: Record<string, any>;
 }
 
+interface InvalidError {
+	field: string;
+	rule: string;
+	error: string,
+}
+
 interface InvalidResponse {
 	valid: false;
-	errors: Record<string, string>;
+	errors: Record<string, InvalidError>;
+}
+
+interface ResponseOptions {
+	status: string;
+	statusCode: number;
+	message: string;
+}
+
+interface ErrorOptions {
+	emit: boolean;
+	wrap: boolean;
+	verbose: boolean;
 }
 
 interface ValidateOptions {
-	message?: string;
-	wrap?: boolean;
-	ungrouped?: boolean;
+	response: Partial<ResponseOptions>,
+	errors: Partial<ErrorOptions>;
+}
+
+interface JsonResponse {
+	status: string;
+	message: string;
+	errors?: any[]|object;
 }
 
 declare module 'express-serve-static-core' {
@@ -27,30 +50,28 @@ declare module 'express-serve-static-core' {
 		validateQuery: (schema: RawSchema) => Promise<ValidResponse|InvalidResponse>,
 	}
 }
-type ParsedErrors = Record<string, string>|Record<string, string>[];
+type ParsedErrors = Record<string, string> | InvalidError[] | Record<string, string>[];
 
-const parseGrouped = (errors: Record<string, string>, options: ValidateOptions = {}): ParsedErrors|ParsedErrors[] => {
-	let data: ParsedErrors = errors;
-
-	if (options?.ungrouped) {
-		data = Object.entries(errors).map(([field, error]: [string, string]) => {
-			return { [field]: error }
-		})
+const parseGrouped = (errors: Record<string, InvalidError>, options: Partial<ValidateOptions> = {}): ParsedErrors => {
+	if (options?.errors?.verbose) {
+		return Object.values(errors);
 	}
 
-	if (options?.wrap) {
-		data = [data] as ParsedErrors;
+	let data = Object.fromEntries(Object.entries(errors).map(([field, { error }]) => [field, error])) as Record<string, string>;
+
+	if (options?.errors?.wrap) {
+		return [data];
 	}
 
 	return data;
 }
 
 const validationHandler = async (schema: RawSchema, data: Record<string, any> = {}): Promise<ValidResponse|InvalidResponse> => {
-	const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
 	const validated = await validate(parseSchema(schema), data || {});
+	const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, rest]) => [field, { field, rule: `${rest.rule}::${rest.function}`, error: rest.error }]);
 
 	if (invalid.length) {
-		return { valid: false, errors: Object.fromEntries(invalid) } as InvalidResponse;
+		return { valid: false, errors: Object.fromEntries(invalid) };
 	}
 
 	return {
@@ -64,23 +85,33 @@ const validationHandler = async (schema: RawSchema, data: Record<string, any> = 
 }
 
 export const plugin = (req: Request, res: Response, next: NextFunction) => {
-	req.validate = (schema: RawSchema, data: Record<string, any>) => validationHandler(schema, data),
-	req.validateBody = (schema: RawSchema) => validationHandler(schema, req.body),
-	req.validateParams = (schema: RawSchema) => validationHandler(schema, req.params),
-	req.validateQuery = (schema: RawSchema) => validationHandler(schema, req.query),
+	req.validate = async (schema: RawSchema, data: Record<string, any>) => await validationHandler(schema, data),
+	req.validateBody = async (schema: RawSchema) => await validationHandler(schema, req.body),
+	req.validateParams = async (schema: RawSchema) => await validationHandler(schema, req.params),
+	req.validateQuery = async (schema: RawSchema) => await validationHandler(schema, req.query),
 	next();
 }
 
-export const validateBody = (schema: RawSchema, options: ValidateOptions = {}) => {
+const buildErrorResponse = (errors: Record<string, InvalidError>, res: Response, options: Partial<ValidateOptions>, defaultMessage: string) => {
+	const response: JsonResponse = {
+		status: options?.response?.status || 'error',
+		message: options?.response?.message || defaultMessage,
+	};
+
+	if (false !== options?.errors?.emit) {
+		response.errors = parseGrouped(errors, options);
+	}
+
+	return res.status(options?.response?.statusCode || 400).json(response);
+}
+
+export const validateBody = (schema: RawSchema, options: Partial<ValidateOptions> = {}) => {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		const validation = await validationHandler(schema, req.body || {});
 
 		if (!validation.valid) {
-			return res.status(400).json({
-				status: 'error',
-				message: options?.message || 'Body validation failed',
-				errors: parseGrouped(validation.errors, options)
-			});
+			buildErrorResponse(validation.errors, res, options, 'Body validation failed');
+			return;
 		}
 
 		req.validated = { body: validation.validated };
@@ -88,16 +119,13 @@ export const validateBody = (schema: RawSchema, options: ValidateOptions = {}) =
 	}
 }
 
-export const validateParams = (schema: RawSchema, options: ValidateOptions = {}) => {
+export const validateParams = (schema: RawSchema, options: Partial<ValidateOptions> = {}) => {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		const validation = await validationHandler(schema, req.params || {});
 
 		if (!validation.valid) {
-			return res.status(400).json({
-				status: 'error',
-				message: options?.message || 'Parameters validation failed',
-				errors: parseGrouped(validation.errors, options)
-			});
+			buildErrorResponse(validation.errors, res, options, 'Parameters validation failed');
+			return;
 		}
 
 		req.validated = { params: validation.validated };
@@ -105,16 +133,13 @@ export const validateParams = (schema: RawSchema, options: ValidateOptions = {})
 	}
 }
 
-export const validateQuery = (schema: RawSchema, options: ValidateOptions = {}) => {
+export const validateQuery = (schema: RawSchema, options: Partial<ValidateOptions> = {}) => {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		const validation = await validationHandler(schema, req.query || {});
 
 		if (!validation.valid) {
-			return res.status(400).json({
-				status: 'error',
-				message: options?.message || 'Query validation failed',
-				errors: parseGrouped(validation.errors, options)
-			});
+			buildErrorResponse(validation.errors, res, options, 'Query validation failed');
+			return;
 		}
 
 		req.validated = { query: validation.validated };

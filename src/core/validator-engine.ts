@@ -10,6 +10,8 @@ export interface ValidationResponse {
     valid: boolean,
     error?: string,
     processedValue?: any,
+    rule?: string;
+    function?: string;
 }
 
 function transformFieldValues(records: Record<string, any> = {}): Record<string, Field> {
@@ -56,7 +58,12 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
     if (isRequire && isEmpty(value)) {
         const rule: RuleFunction = ((requireRule as FieldRule).rule as RuleFunction);
         const result = await rule.validate(value, undefined, fields);
-        return { valid: false, error: formatError(field, value, undefined, fields, result.error) };
+        return {
+            valid: false,
+            rule: (requireRule as FieldRule).type,
+            function: (requireRule as FieldRule).name,
+            error: formatError(field, value, undefined, fields, result.error)
+        };
     }
 
     // 3. Type Checking (You can hook your type checker here)
@@ -68,6 +75,8 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
             if (!result.valid) {
                 return {
                     valid: false,
+                    rule: fieldRule.type,
+                    function: fieldRule.name,
                     error: formatError(field, value, fieldRule.param, fields, result.error),
                 };
             }
@@ -78,12 +87,16 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
                 if (!callbackResponse) {
                     return {
                         valid: false,
+                        rule: 'custom',
+                        function: 'callback',
                         error: formatError(field, value, null, fields, message),
                     };
                 }
             } else if (!(fieldRule.param?.pattern as RegExp).test(String(value))) {
                 return {
                     valid: false,
+                    rule: 'custom',
+                    function: 'pattern',
                     error: formatError(field, value, fieldRule.param?.pattern, fields, message || '@{field} do not match with require pattern'),
                 };
             }
