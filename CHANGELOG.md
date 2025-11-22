@@ -1,3 +1,25 @@
+## [2.0.8](https://github.com/khairnar2960/superform-validator/compare/v2.0.7...v2.0.8) (2025-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Using in react or express only missing dependency error resolved
+>Use directly from superform-validator/react or superform-validator/express
+
+### Features
+
+* Allows to override default response state status, message, statusCode ([eda1fe6](https://github.com/khairnar2960/superform-validator/commit/eda1fe64be2ed417119200653ef8928293e561b9)), closes [#4](https://github.com/khairnar2960/superform-validator/issues/4)
+* **Field:** Adds allOrNone rule to check all of mentioned field has value ([e9db952](https://github.com/khairnar2960/superform-validator/commit/e9db952293ba8007fedd93f92d87e21ca0efa40c)), closes [#6](https://github.com/khairnar2960/superform-validator/issues/6)
+* **Field:** Adds atLeastOne rule to check one of mentioned field has value ([dfa70cb](https://github.com/khairnar2960/superform-validator/commit/dfa70cbf71606d8e46458a55c2c5ffdf0577a661))
+* **Field:** Adds onlyOne rule to check only one of mentioned field has value ([67beab4](https://github.com/khairnar2960/superform-validator/commit/67beab4dadc4c3ccc17ff98444096aa0538eab2f))
+
+
+### Bug Fixes
+
+* Fixes express plugin bypassing validator due to async feature [#3](https://github.com/khairnar2960/superform-validator/issues/3) ([4e47604](https://github.com/khairnar2960/superform-validator/commit/4e476043bf8dec51214329c22e90fd7e388b9942))
+* Fixes field::require* rules validation issue ([b67e9ca](https://github.com/khairnar2960/superform-validator/commit/b67e9ca8a5c50c13867e2625202187af913c4b1c))
+* Removes plugins entry from index ([d0cc52d](https://github.com/khairnar2960/superform-validator/commit/d0cc52d0c81576a906c30f5851f5141cb490f42a))
+
 ## [2.0.7](https://github.com/khairnar2960/superform-validator/compare/v2.0.6...v2.0.7) (2025-11-21)
 
 ## [2.0.6](https://github.com/khairnar2960/superform-validator/compare/v2.0.5...v2.0.6) (2025-11-21)
