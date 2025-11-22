@@ -13,6 +13,9 @@
 | field::requireWith    | field::requireWith(field1, field2, ...)    | requireWith(field1, field2, ...)    | Field is required if any of the listed fields are present      |
 | field::requireWithout | field::requireWithout(field1, field2, ...) | requireWithout(field1, field2, ...) | Field is required if any of the listed fields are absent       |
 | field::match          | field::match(anotherField)                 | match(anotherField)                 | Field must match another field                                 |
+| field::atLeastOne     | field::atLeastOne(field1, field2, ...)     | atLeastOne(field1, field2, ...)     | At least one of given fields is required                       |
+| field::onlyOne        | field::onlyOne(field1, field2, ...)        | onlyOne(field1, field2, ...)        | Only one of given fields is required                           |
+| field::allOrNone      | field::allOrNone(field1, field2, ...)      | allOrNone(field1, field2, ...)      | All of given fields is required                                |
 
 ---
 
