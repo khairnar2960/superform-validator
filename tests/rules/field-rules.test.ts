@@ -77,4 +77,23 @@ describe('FieldRule', async () => {
         const matched = await rule.validate('match', 'y', 'other', fields);
         expect(matched.valid).toBe(true);
     });
+
+    it('atLeastOne passes when any listed field present and fails when none', async () => {
+        const rule = new FieldRule();
+        const param = ['a', 'b'];
+
+        const none = { a: { name: 'a', value: '' }, b: { name: 'b', value: '' } } as any;
+        const bad = await rule.validate('atLeastOne', '', param, none);
+        expect(bad.valid).toBe(false);
+        expect(bad.error).toBe('At least one of @{param} is required');
+
+        const one = { a: { name: 'a', value: 'X' }, b: { name: 'b', value: '' } } as any;
+        const ok = await rule.validate('atLeastOne', '', param, one);
+        expect(ok.valid).toBe(true);
+
+        // ensure fields object not mutated
+        const snapshot = JSON.stringify(one);
+        await rule.validate('atLeastOne', '', param, one);
+        expect(JSON.stringify(one)).toBe(snapshot);
+    });
 });

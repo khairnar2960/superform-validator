@@ -94,6 +94,24 @@ export class FieldRule extends BaseRule {
                     message: '@{field} not matched with @{param}'
                 }
             ],
-        })
+        });
+        this.registerFunction({
+            name: 'atLeastOne',
+            paramType: 'list',
+            argumentType: 'fieldName',
+            aliases: ['atLeastOne'],
+            validators: [
+                {
+                    callback: (_value, param: string[], fields: Record<string, Field>) => {
+                        // Passes when at least one of the referenced fields has a non-empty value
+                        return param.some(field => {
+                            const target = fields[field] || null;
+                            return target && !isEmpty(target.value);
+                        });
+                    },
+                    message: 'At least one of @{param} is required'
+                }
+            ],
+        });
     }
 }
