@@ -1,11 +1,11 @@
 const express = require('express');
-const { expressValidator } = require('superform-validator');
+const { validateBody } = require('superform-validator/express');
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const bodyMiddleware = expressValidator.validateBody({
+const bodyMiddleware = validateBody({
     mobile: 'require|integer|mobile|cast::integer',
     email: 'require|email|maxLength(128)|cast::lower|trim'
 });

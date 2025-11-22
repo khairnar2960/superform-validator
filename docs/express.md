@@ -35,13 +35,10 @@ npm install superform-validator
 
 ```js
 const express = require('express');
-const { expressValidator } = require('superform-validator');
-
-// OR Light weight express only import
-// const expressValidator = require('superform-validator/express');
+const validator = require('superform-validator/express');
 
 const app = express();
-app.use(expressValidator.plugin); // If using in callback mode 
+app.use(validator.plugin); // If using in callback mode 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -58,7 +55,7 @@ app.use(express.urlencoded({ extended: false }));
 ### Validate Query Parameters
 
 ```js
-const queryMiddleware = expressValidator.validateQuery({
+const queryMiddleware = validator.validateQuery({
   page: 'require|integer|integer::gt(0)|cast::integer',
   limit: 'optional|integer|integer::between(10,100)|default(10)|cast::integer'
 });
@@ -71,7 +68,7 @@ app.get('/users', [queryMiddleware], (req, res) => {
 ### Validate Body
 
 ```js
-const bodyMiddleware = expressValidator.validateBody({
+const bodyMiddleware = validator.validateBody({
   mobile: 'require|integer|mobile|cast::integer',
   email: 'require|email|maxLength(128)|cast::lower|trim'
 });
@@ -84,7 +81,7 @@ app.post('/users', [bodyMiddleware], (req, res) => {
 ### Validate Route Parameters
 
 ```js
-const paramMiddleware = expressValidator.validateParams({
+const paramMiddleware = validator.validateParams({
   mobile: 'require|integer|mobile|cast::integer',
   email: 'require|email|maxLength(128)|cast::lower|trim'
 });
@@ -100,17 +97,17 @@ app.get('/users/:mobile/:email', [paramMiddleware], (req, res) => {
 
 ```js
 const express = require('express');
-const { expressValidator } = require('superform-validator');
+const validator = require('superform-validator/express');
 
 const app = express();
-app.use(expressValidator.plugin); // <==
+app.use(validator.plugin); // <== register plugin
 ```
 
 ### Validate Query
 
 ```js
-app.get('/users', (req, res) => {
-  const validation = req.validateQuery({
+app.get('/users', async (req, res) => {
+  const validation = await req.validateQuery({
     page: 'require|integer|integer::gt(0)|cast::integer',
     limit: 'optional|integer|integer::between(10,100)|default(10)|cast::integer'
   });
@@ -126,8 +123,8 @@ app.get('/users', (req, res) => {
 ### Validate Body
 
 ```js
-app.post('/users', (req, res) => {
-  const validation = req.validateBody({
+app.post('/users', async (req, res) => {
+  const validation = await req.validateBody({
     mobile: 'require|integer|mobile|cast::integer',
     email: 'require|email|maxLength(128)|cast::lower|trim'
   });
@@ -143,8 +140,8 @@ app.post('/users', (req, res) => {
 ### Validate Route Parameters
 
 ```js
-app.get('/users/:mobile/:email', (req, res) => {
-  const validation = req.validateParams({
+app.get('/users/:mobile/:email', async (req, res) => {
+  const validation = await req.validateParams({
     mobile: 'require|integer|mobile|cast::integer',
     email: 'require|email|maxLength(128)|cast::lower|trim'
   });
@@ -162,10 +159,10 @@ app.get('/users/:mobile/:email', (req, res) => {
 ## ✅ Custom Validation (Any Data Source)
 
 ```js
-app.post('/custom', (req, res) => {
+app.post('/custom', async (req, res) => {
   const customPayload = req.headers;
 
-  const validation = req.validate({
+  const validation = await req.validate({
     authorization: 'require|startsWith(Bearer )'
   }, customPayload);
 
@@ -179,13 +176,50 @@ app.post('/custom', (req, res) => {
 
 ---
 
+## Control return response and error
+
+```js
+const options = {
+	response: {
+		status: 'error',            // set custom status (default 'error')
+		statusCode: 404,            // set http status code (default 400)
+		message: 'User not found',  // set custom message
+	},
+	errors: {
+		emit: false,                // will not return any errors in response (default true)
+		verbose: true,              // will return detailed errors (default false)
+		wrap: true,                 // will wrap errors object into array (default false)
+	}
+};
+
+// verbose or wrap only one works at a time
+// verbose has higher precedence
+
+app.get(
+  'users/:userId',
+  validateParams({
+    userId: {
+      require: true,
+      integer: true,
+      minInt: 1,
+      'cast::integer': true,
+    }
+  }, options)
+  (req, res) => {
+    // userId always be an valid positive, non zero integer
+    const userId = req.params.userId;
+  }
+);
+```
+---
+
 ## 📂 Validation Result Structure
 
-| Property               | Description                             |
-| ---------------------- | --------------------------------------- |
-| `validation.valid`     | Boolean indicating validation success   |
-| `validation.errors`    | Object containing field-specific errors |
-| `validation.validated` | Validated and processed data            |
+| Property               | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| `validation.valid`     | Boolean indicating validation success                     |
+| `validation.errors`    | Object containing field-specific errors on `valid: false` |
+| `validation.validated` | Validated and processed data on `valid: true`             |
 
 ---
 
@@ -205,7 +239,8 @@ req.validateQuery(schema); // Validate req.query
 
 ## ✅ Example Error Response
 
-```json
+```js
+// default
 {
   "status": "error",
   "message": "Query validation failed",
@@ -213,6 +248,36 @@ req.validateQuery(schema); // Validate req.query
     "page": "Page must be greater than 0",
     "limit": "Limit must be between 10 and 100"
   }
+}
+
+// options.errors.wrap: true
+{
+  "status": "error",
+  "message": "Query validation failed",
+  "errors": [
+    {
+      "page": "Page must be greater than 0",
+      "limit": "Limit must be between 10 and 100"
+    }
+  ]
+}
+
+// options.errors.verbose: true
+{
+  "status": "error",
+  "message": "Query validation failed",
+  "errors": [
+    {
+      "field": "page",
+      "rule": "integer::gt",
+      "error": "Page must be greater than 0"
+    },
+    {
+      "field": "limit",
+      "rule": "integer::between",
+      "error": "Limit must be between 10 and 100"
+    }
+  ]
 }
 ```
 

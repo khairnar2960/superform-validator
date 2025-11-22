@@ -1,12 +1,14 @@
-import React from 'react';
-import { useForm, useController } from '../src/middlewares/react';
+import { useForm, useController } from 'superform-validator/react';
 
-const schema = { 'profile.name': 'required', 'profile.phone': 'string' };
+const schema = {
+  name: 'required',
+  phone: 'string'
+};
 
 export default function ControllerForm() {
-  const { control, handleSubmit } = useForm(schema, { initialValues: { profile: { name: '', phone: '' } } });
+  const { control, handleSubmit } = useForm(schema, { initialValues: { name: '', phone: '' } });
 
-  const nameController = useController({ name: 'profile.name' as any, control: control as any });
+  const nameController = useController({ name: 'name', control });
 
   return (
     <form onSubmit={handleSubmit((data) => console.log('validated', data))}>

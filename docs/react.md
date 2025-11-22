@@ -16,7 +16,7 @@ Quick overview
 1) validate
 
 ```ts
-import { validate } from 'superform-validator/middlewares/react';
+import { validate } from 'superform-validator/react';
 
 const result = await validate(schema, { email: 'a@b.com' });
 if (!result.valid) console.log(result.errors);
@@ -39,14 +39,14 @@ const { errors, validated, validate, handleSubmit } = useValidator(schema);
 const { register, handleSubmit, errors, control, watch } = useForm(schema, { initialValues: {}, validateOnBlur: true });
 
 // register usage for controlled inputs
-<input {...register('profile.name')} />
+<input {...register('name')} />
 
 // controller usage
-const { field } = useController({ name: 'profile.name', control });
+const { field } = useController({ name: 'name', control });
 <input {...field} />
 
 // watch & dirty
-const current = watch('profile.name');
+const current = watch('name');
 
 // unregister
 control.unregister('tempField');
@@ -68,4 +68,4 @@ Notes & tips
 - `watch(name)` returns the current value for a nested field (or full values if no name provided). It's synchronous.
 - `trigger(name?)` runs validation and returns whether the (optional) field is valid. Currently it runs full form validation internally; it may be optimized in future releases.
 
-See `docs/react-examples.md` for runnable examples.
+See [docs/react-examples.md](./react-examples.md) for runnable examples.

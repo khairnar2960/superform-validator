@@ -1,6 +1,6 @@
 # 📦 SuperForm Validator
 
-A powerful, flexible, and universal JavaScript form validation library that supports **Native HTML Forms**, **Express.js API validation**, and is planned to support **React integration** in the future.
+A powerful, flexible, and universal JavaScript form validation library that supports **Native HTML Forms**, **Express.js API validation** and **React form validation**.
 
 ![npm](https://img.shields.io/npm/v/superform-validator)
 ![npm bundle size (version)](https://img.shields.io/bundlephobia/min/superform-validator)
@@ -44,12 +44,12 @@ npm install superform-validator
 <!-- OR -->
 
 <!-- Recommended with specific version -->
-<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.0.6/dist/form-validator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.0.7/dist/form-validator.js"></script>
 
 <!-- OR -->
 
 <!-- unpkg -->
-<script src="https://unpkg.com/superform-validator@2.0.6/dist/form-validator.js"></script>
+<script src="https://unpkg.com/superform-validator@2.0.7/dist/form-validator.js"></script>
 ```
 
 ---
@@ -93,8 +93,8 @@ const msg = ErrorFormatter.format('Welcome @{user.name || "Guest"}', { user: {} 
 - ✅ [Validation Rules](#validation-rules)
 - ⚡ [Validation Result Structure](#validation-result-structure)
 - 🔤 [Rules and Processors Reference](./docs/rules-and-processors.md)
- - 🟦 [React Middleware Guide](./docs/react.md)
- - 🧪 [React Examples](./docs/react-examples.md)
+- 🟦 [React Middleware Guide](./docs/react.md)
+- 🧪 [React Examples](./docs/react-examples.md)
 
 ---
 
@@ -220,8 +220,8 @@ Supports advanced formatting with nested access, fallbacks, and string modifiers
 - [Custom Rule: Even Number](./examples/custom-rule.html)
 - [Express Middleware Example](./examples/express-middleware.js)
 - [Express Callback Example](./examples/express-callback.js)
- - [React Basic Example](./examples/react-basic.tsx)
- - [React Controller Example](./examples/react-controller.tsx)
+- [React Basic Example](./examples/react-basic.tsx)
+- [React Controller Example](./examples/react-controller.tsx)
 
 ---
 

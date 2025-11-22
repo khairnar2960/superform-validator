@@ -7,15 +7,14 @@ Files in `examples/`:
 - `react-basic.tsx` — simple controlled form using `useForm` and `register`.
 - `react-controller.tsx` — controlled example using `useController` and `control`.
 
-Example: `examples/react-basic.tsx`
+Example: [examples/react-basic.tsx](../examples/react-basic.tsx)
 
 ```tsx
-import React from 'react';
-import { useForm } from 'superform-validator/middlewares/react';
+import { useForm } from 'superform-validator/react';
 
 const schema = {
   email: 'required|email',
-  age: 'integer|min:1',
+  age: 'integer|minInt(1)',
 };
 
 export default function BasicForm() {
@@ -41,18 +40,20 @@ export default function BasicForm() {
 }
 ```
 
-Example: `examples/react-controller.tsx`
+Example: [examples/react-controller.tsx](../examples/react-controller.tsx)
 
 ```tsx
-import React from 'react';
-import { useForm, useController } from 'superform-validator/middlewares/react';
+import { useForm, useController } from 'superform-validator/react';
 
-const schema = { 'profile.name': 'required', 'profile.phone': 'string' };
+const schema = {
+  name: 'required',
+  phone: 'string'
+};
 
 export default function ControllerForm() {
-  const { control, handleSubmit } = useForm(schema, { initialValues: { profile: { name: '', phone: '' } } });
+  const { control, handleSubmit } = useForm(schema, { initialValues: { name: '', phone: '' } });
 
-  const nameController = useController({ name: 'profile.name', control });
+  const nameController = useController({ name: 'name', control });
 
   return (
     <form onSubmit={handleSubmit((data) => console.log('validated', data))}>

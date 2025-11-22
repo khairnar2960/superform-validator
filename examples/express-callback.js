@@ -1,13 +1,13 @@
 const express = require('express');
-const { expressValidator } = require('superform-validator');
+const expressValidator = require('superform-validator/express');
 
 const app = express();
 app.use(expressValidator.plugin);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.post('/submit', (req, res) => {
-    const validation = req.validateBody({
+app.post('/submit', async (req, res) => {
+    const validation = await req.validateBody({
         mobile: 'require|integer|mobile|cast::integer',
         email: 'require|email|maxLength(128)|cast::lower|trim'
     });
