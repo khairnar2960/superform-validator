@@ -96,4 +96,22 @@ describe('FieldRule', async () => {
         await rule.validate('atLeastOne', '', param, one);
         expect(JSON.stringify(one)).toBe(snapshot);
     });
+
+    it('onlyOne passes only when exactly one field present', async () => {
+        const rule = new FieldRule();
+        const param = ['a', 'b', 'c'];
+
+        const none = { a: { name: 'a', value: '' }, b: { name: 'b', value: '' }, c: { name: 'c', value: '' } } as any;
+        const badNone = await rule.validate('onlyOne', '', param, none);
+        expect(badNone.valid).toBe(false);
+
+        const one = { a: { name: 'a', value: '1' }, b: { name: 'b', value: '' }, c: { name: 'c', value: '' } } as any;
+        const ok = await rule.validate('onlyOne', '', param, one);
+        expect(ok.valid).toBe(true);
+
+        const two = { a: { name: 'a', value: '1' }, b: { name: 'b', value: '2' }, c: { name: 'c', value: '' } } as any;
+        const badTwo = await rule.validate('onlyOne', '', param, two);
+        expect(badTwo.valid).toBe(false);
+        expect(badTwo.error).toBe('Exactly one of @{param} must be present');
+    });
 });

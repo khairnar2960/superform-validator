@@ -113,5 +113,24 @@ export class FieldRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'onlyOne',
+            paramType: 'list',
+            argumentType: 'fieldName',
+            aliases: ['onlyOne'],
+            validators: [
+                {
+                    callback: (_value, param: string[], fields: Record<string, Field>) => {
+                        // Passes when exactly one of the referenced fields has a non-empty value
+                        const count = param.reduce((acc, field) => {
+                            const target = fields[field] || null;
+                            return acc + (target && !isEmpty(target.value) ? 1 : 0);
+                        }, 0);
+                        return count === 1;
+                    },
+                    message: 'Exactly one of @{param} must be present'
+                }
+            ],
+        });
     }
 }
