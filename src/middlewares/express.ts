@@ -46,8 +46,8 @@ const parseGrouped = (errors: Record<string, string>, options: ValidateOptions =
 }
 
 const validationHandler = async (schema: RawSchema, data: Record<string, any> = {}): Promise<ValidResponse|InvalidResponse> => {
-	const validated = validate(parseSchema(schema), data || {});
 	const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, { error}]) => [field, error]);
+	const validated = await validate(parseSchema(schema), data || {});
 
 	if (invalid.length) {
 		return { valid: false, errors: Object.fromEntries(invalid) } as InvalidResponse;
