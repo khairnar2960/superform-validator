@@ -132,5 +132,26 @@ export class FieldRule extends BaseRule {
                 }
             ],
         });
+        this.registerFunction({
+            name: 'allOrNone',
+            paramType: 'list',
+            argumentType: 'fieldName',
+            aliases: ['allOrNone'],
+            validators: [
+                {
+                    callback: (_value, param: string[], fields: Record<string, Field>) => {
+                        // Passes when either all referenced fields are present (non-empty) or all are absent/empty
+                        const statuses = param.map(field => {
+                            const target = fields[field] || null;
+                            return Boolean(target && !isEmpty(target.value));
+                        });
+                        const any = statuses.some(Boolean);
+                        const all = statuses.every(Boolean);
+                        return !(any && !all) ; // fail only when some present and some absent
+                    },
+                    message: 'Either all of @{param} must be present or none'
+                }
+            ],
+        });
     }
 }

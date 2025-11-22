@@ -114,4 +114,22 @@ describe('FieldRule', async () => {
         expect(badTwo.valid).toBe(false);
         expect(badTwo.error).toBe('Exactly one of @{param} must be present');
     });
+
+    it('allOrNone passes when all present or none present, fails when mixed', async () => {
+        const rule = new FieldRule();
+        const param = ['a', 'b'];
+
+        const all = { a: { name: 'a', value: 'X' }, b: { name: 'b', value: 'Y' } } as any;
+        const okAll = await rule.validate('allOrNone', '', param, all);
+        expect(okAll.valid).toBe(true);
+
+        const none = { a: { name: 'a', value: '' }, b: { name: 'b', value: '' } } as any;
+        const okNone = await rule.validate('allOrNone', '', param, none);
+        expect(okNone.valid).toBe(true);
+
+        const mixed = { a: { name: 'a', value: 'X' }, b: { name: 'b', value: '' } } as any;
+        const bad = await rule.validate('allOrNone', '', param, mixed);
+        expect(bad.valid).toBe(false);
+        expect(bad.error).toBe('Either all of @{param} must be present or none');
+    });
 });
