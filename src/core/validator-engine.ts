@@ -44,7 +44,7 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
     // 2. Core Validation Phase
     const isOptional = rules.some(rule => rule.name === 'optional');
     const defaultRule = rules.find(rule => rule.name === 'default');
-    const requireRule = rules.find(rule => rule.name === 'require');
+    const requireRule = rules.find(rule => rule.name.startsWith('require'));
     const isRequire = requireRule ? true : false;
 
     if (isEmpty(value) && defaultRule) {
@@ -57,12 +57,17 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
 
     if (isRequire && isEmpty(value)) {
         const rule: RuleFunction = ((requireRule as FieldRule).rule as RuleFunction);
-        const result = await rule.validate(value, undefined, fields);
+        const result = await rule.validate(value, requireRule?.param, fields);
+
+        if (result.valid) {
+            return { valid: true, processedValue: value };
+        }
+
         return {
             valid: false,
             rule: (requireRule as FieldRule).type,
             function: (requireRule as FieldRule).name,
-            error: formatError(field, value, undefined, fields, result.error)
+            error: formatError(field, value, result.param, fields, result.error)
         };
     }
 
