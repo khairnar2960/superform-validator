@@ -1,4 +1,5 @@
 import { BaseRule } from "./base-rule.js";
+import { isLatitude, isLongitude } from "./core-rules.js";
 
 // Float: Typically provides around 7 decimal digits of precision.
 // Double: Offers higher precision, usually around 15-16 decimal digits.
@@ -160,6 +161,32 @@ export class FloatRule extends BaseRule {
                 {
                     callback: (value, param) => parseFloat(value) <= param,
                     message: '@{field} must be less than or equal to @{param}'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'longitude',
+            paramType: 'none',
+            argumentType: 'float',
+            aliases: ['longitude'],
+            validators: [
+                {
+                    callback: (value) => isLongitude(parseFloat(value)),
+                    message: '@{field} must be a valid longitude'
+                }
+            ]
+        });
+
+        this.registerFunction({
+            name: 'latitude',
+            paramType: 'none',
+            argumentType: 'float',
+            aliases: ['latitude'],
+            validators: [
+                {
+                    callback: (value) => isLatitude(parseFloat(value)),
+                    message: '@{field} must be a valid latitude'
                 }
             ]
         });

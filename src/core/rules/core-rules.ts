@@ -64,3 +64,5 @@ export const isArrayOf = (input: any, type: TypeOfArray): boolean => {
     return true;
 }
 
+export const isLatitude = (input: any) => typeof input === 'number' && input >= -90 && input <= 90;
+export const isLongitude = (input: any) => typeof input === 'number' && input >= -180 && input <= 180;

@@ -1,5 +1,5 @@
 import { BaseRule } from "./base-rule.js";
-import { isArray, isArrayOf, isEmpty, type TypeOfArray } from "./core-rules.js";
+import { isArray, isArrayOf, isEmpty, isLatitude, isLongitude, type TypeOfArray } from "./core-rules.js";
 
 export class ArrayRule extends BaseRule {
     constructor() {
@@ -97,10 +97,8 @@ export class ArrayRule extends BaseRule {
                     callback: (value: any) => {
                         if (!isArray(value) || value.length !== 2) return false;
                         const [lat, lng] = value;
-                        const latValid = typeof lat === 'number' && lat >= -90 && lat <= 90;
-                        const lngValid = typeof lng === 'number' && lng >= -180 && lng <= 180;
 
-                        return latValid && lngValid;
+                        return isLatitude(lat) && isLongitude(lng);
                     },
                     message: '@{field} must be a valid [latitude, longitude] coordinate array'
                 }
@@ -116,10 +114,8 @@ export class ArrayRule extends BaseRule {
                     callback: (value: any) => {
                         if (!isArray(value) || value.length !== 2) return false;
                         const [lng, lat] = value;
-                        const lngValid = typeof lng === 'number' && lng >= -180 && lng <= 180;
-                        const latValid = typeof lat === 'number' && lat >= -90 && lat <= 90;
-
-                        return latValid && lngValid;
+                        
+                        return isLatitude(lat) && isLongitude(lng);
                     },
                     message: '@{field} must be a valid [longitude, latitude] coordinate array'
                 }
