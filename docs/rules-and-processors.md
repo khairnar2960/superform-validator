@@ -56,6 +56,8 @@
 | float::gte       | float::gte(float)              | floatGte(float)              | Must be greater than or equal to specified float |
 | float::lt        | float::lt(float)               | floatLt(float)               | Must be less than specified float                |
 | float::lte       | float::lte(float)              | floatLte(float)              | Must be less than or equal to specified float    |
+| float::longitude | float::longitude               | longitude                    | Must be a valid longitude (`-180` to `180`)      |
+| float::latitude  | float::latitude                | latitude                     | Must be a valid latitude (`-90` to `90`)         |
 
 ---
 
@@ -193,6 +195,28 @@
 | array::longLat  | array::longLat           | longLatArray                                | Array must a valid [longitude, latitude] coordinate array |
 | array::of       | array::of(type)          | arrayOf                                     | Array must be type of type array<type>                    |
 | array::notOf    | array::notOf(type)       | arrayNotOf                                  | Array must not be type of type array<type>                |
+
+---
+
+## 📄 Object Rules
+
+| Rule                         | Signature                        | Aliases                                     | Description                                                |
+| ---------------------------- | -------------------------------- | ------------------------------------------- | ---------------------------------------------------------- |
+| object::valid                | object::valid                    | object                                      | Must be a valid object                                     |
+| object::notEmpty             | object::notEmpty                 | notEmptyObject                              | Object must not be empty                                   |
+| object::includes             | object::includes(key)            | objectIncludes(key), objectContains(key)    | Object must include the specified key                      |
+| object::excludes             | object::excludes(key)            | objectExcludes(key), objectNotContains(key) | Object must not include the specified key                  |
+| object::hasKeys              | object::hasKeys(key1, key2, …)   | objectHasKeys(key1, key2, …)                | Object must contain **all** specified keys                 |
+| object::hasAnyKey            | object::hasAnyKey(key1, key2, …) | objectHasAnyKey(key1, key2, …)              | Object must contain **at least one** of the specified keys |
+| object::onlyKeys             | object::onlyKeys(key1, key2, …)  | objectOnlyKeys(key1, key2, …)               | Object must not contain keys outside the specified list    |
+| object::minKeys              | object::minKeys(count)           | objectMinKeys(count)                        | Object must contain at least the specified number of keys  |
+| object::maxKeys              | object::maxKeys(count)           | objectMaxKeys(count)                        | Object must not exceed the specified number of keys        |
+| object::exactKeys            | object::exactKeys(count)         | objectExactKeys(count)                      | Object must contain exactly the specified number of keys   |
+| object::allValuesType        | object::allValuesType(type)      | objectValuesType(type)                      | All object values must be of the specified type            |
+| object::noNullValues         | object::noNullValues             | objectNoNull                                | Object must not contain `null` values                      |
+| object::noUndefinedValues    | object::noUndefinedValues        | objectNoUndefined                           | Object must not contain `undefined` values                 |
+| object::deepIncludes         | object::deepIncludes(path)       | objectDeepIncludes(path)                    | Object must include the specified nested key path          |
+| object::isPlain              | object::isPlain                  | plainObject                                 | Must be a plain JavaScript object                          |
 
 ---
 

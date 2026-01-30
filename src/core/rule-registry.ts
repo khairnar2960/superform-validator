@@ -15,6 +15,7 @@ import { Trimmer } from "./processors/trimmer.js";
 import { CaseConverter } from "./processors/case-converter.js";
 import { CastingProcessor } from "./processors/casting.js";
 import { MathProcessor } from "./processors/math.js";
+import { ObjectRule } from "./rules/object-rules.js";
 
 
 export interface RuleMeta {
@@ -44,6 +45,7 @@ export const allRules = [
     new CastingProcessor(),
     new CastingProcessor(true),
     new MathProcessor(),
+    new ObjectRule(),
 ];
 
 export const ruleRegistry: Record<string, RuleMeta> = {};
