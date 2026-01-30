@@ -1,3 +1,18 @@
+## [2.0.9](https://github.com/khairnar2960/superform-validator/compare/v2.0.8...v2.0.9) (2026-01-30)
+
+
+### Features
+
+* Adds rules to validate longitude  latitude ([599bf31](https://github.com/khairnar2960/superform-validator/commit/599bf31ebdeb9883b9f4c0b5c0d3a122bfff4bef))
+* **Core Rules:** Extends core rules ([9301b75](https://github.com/khairnar2960/superform-validator/commit/9301b75cb81f595edae1c28dc32fd03de289e56c))
+* **Object:** Adds object rules ([3776c9a](https://github.com/khairnar2960/superform-validator/commit/3776c9a3d2fd47423cb119b4533e9f18d6fb2452))
+
+
+### Bug Fixes
+
+* Fixes error types for react plugin ([0e83dfb](https://github.com/khairnar2960/superform-validator/commit/0e83dfbf88d79164c8201103736bc126aa466c99))
+* **Processor:** Fixes lost processor argument (param) ([993ae11](https://github.com/khairnar2960/superform-validator/commit/993ae112f1de27a13bb6faac6fcff05ce9342578))
+
 ## [2.0.8](https://github.com/khairnar2960/superform-validator/compare/v2.0.7...v2.0.8) (2025-11-22)
 
 
