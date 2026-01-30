@@ -30,35 +30,29 @@ export const isInteger = (value: any): boolean => Number.isInteger(value);
 export const isFloat = (value: any): boolean =>
     isNumber(value) && !Number.isInteger(value);
 
-export type TypeOfArray = 'string'|'number'|'integer'|'float'|'boolean'|'array'|'object';
+export type TypeOfArray = 'undefined'|'null'|'string'|'number'|'integer'|'float'|'boolean'|'array'|'object';
+
+export const typeChecks: Record<TypeOfArray, (input: any) => boolean> = {
+    undefined: (v) => typeof v === 'undefined',
+    null: (v) => v === null,
+    string: isString,
+    number: isNumber,
+    boolean: isBoolean,
+    integer: isInteger,
+    float: isFloat,
+    array: isArray,
+    object: isObject,
+};
+
+export const isTypeOf = (input: any, type: TypeOfArray): boolean => {
+    return typeChecks[type]?.(input) ?? false;
+}
 
 export const isArrayOf = (input: any, type: TypeOfArray): boolean => {
     if (!isArray(input)) return false;
     for (const el of input) {
-        switch (type) {
-            case 'string':
-                if (!isString(el)) return false;
-                break;
-            case 'number':
-                if (!isNumber(el)) return false;
-                break;
-            case 'boolean':
-                if (!isBoolean(el)) return false;
-                break;
-            case 'integer':
-                if (!isInteger(el)) return false;
-                break;
-            case 'float':
-                if (!isFloat(el)) return false;
-                break;
-            case 'array':
-                if (!isArray(el)) return false;
-                break;
-            case 'object':
-                if (!isObject(el)) return false;
-                break;
-            default:
-                return false;
+        if (!isTypeOf(el, type)) {
+            return false;
         }
     }
     return true;
