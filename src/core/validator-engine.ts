@@ -37,15 +37,15 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
     rules.forEach(rule => {
         if (preProcessors[rule.name]) {
             const processor = preProcessors[rule.name].function as ProcessorFunc | null;
-            value = processor?.process(value);
+            value = processor?.process(value, rule.param);
         }
     });
 
     // 2. Core Validation Phase
-    const isOptional = rules.some(rule => rule.name === 'optional');
     const defaultRule = rules.find(rule => rule.name === 'default');
     const requireRule = rules.find(rule => rule.name.startsWith('require'));
-    const isRequire = requireRule ? true : false;
+    const isRequire = !!requireRule;
+    const isOptional = rules.some(rule => rule.name === 'optional') || !isRequire;
 
     if (isEmpty(value) && defaultRule) {
         value = defaultRule.param;
@@ -67,7 +67,7 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
             valid: false,
             rule: (requireRule as FieldRule).type,
             function: (requireRule as FieldRule).name,
-            error: formatError(field, value, result.param, fields, result.error)
+            error: formatError(field, value, result.param, fields, requireRule.message ?? result.error)
         };
     }
 
@@ -82,7 +82,7 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
                     valid: false,
                     rule: fieldRule.type,
                     function: fieldRule.name,
-                    error: formatError(field, value, fieldRule.param, fields, result.error),
+                    error: formatError(field, value, fieldRule.param, fields, fieldRule.message ?? result.error),
                 };
             }
         } else if (fieldRule.name === 'custom') {
@@ -112,7 +112,7 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
     rules.forEach(rule => {
         if (postProcessors[rule.name]) {
             const processor = postProcessors[rule.name].function as ProcessorFunc | null;
-            value = processor?.process(value);
+            value = processor?.process(value, rule.param);
         }
     });
 

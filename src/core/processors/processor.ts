@@ -30,19 +30,20 @@ export class ProcessorFunc {
 	}
 
 	/**
-	 * Validate a value against a specific function in this rule.
-	 * @param {any} value value to be validated
+	 * Process a value against a specific function in this rule.
+	 * @param {any} value value to be processed
+	 * @param {any} param processor parameter
 	 * @returns {any}
 	 */
-	process(value: any): any {
+	process(value: any, param?: any): any {
 		if (Array.isArray(this.processors)) {
 			for (const callback of this.processors) {
 				if (callback) {
-					value = callback(value);
+					value = callback(value, param);
 				};
 			}
 		} else {
-			value = this.processors(value);
+			value = this.processors(value, param);
 		}
 
 		return value;
@@ -75,15 +76,16 @@ export class Processor {
 
 
 	/**
-	 * Validate a value against a specific function in this rule.
-	 * @param {string} functionName Function name to be validate with
-	 * @param {any} value value to be validated
+	 * Process a value against a specific function in this rule.
+	 * @param {string} functionName Function name to be processed with
+	 * @param {any} value value to be processed
+	 * @param {any} param processor parameter
 	 * @returns {any}
 	 */
-	process(functionName: string, value: any): any {
+	process(functionName: string, value: any, param?: any): any {
 		const func = this.functions.get(functionName);
 		if (!func) throw new Error(`Function ${functionName} is not registered in ${this.type}`);
-		return func.process(value);
+		return func.process(value, param);
 	}
 
 	/**
