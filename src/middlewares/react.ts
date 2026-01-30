@@ -202,7 +202,7 @@ export function useForm<T extends RawSchema>(
     } = options;
 
     const [values, setValues] = useState<Record<keyof T, any>>(initialValues);
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
     const [validated, setValidated] = useState<Record<string, any>>({});
     const [touched, setTouched] = useState<Record<string, boolean>>({});
     const [dirty, setDirty] = useState<Record<string, boolean>>({});
@@ -257,7 +257,7 @@ export function useForm<T extends RawSchema>(
         unsetAt(nextValues, name);
         setValues(nextValues as Record<keyof T, any>);
 
-        const nextErrors = { ...errors } as Record<string, any>;
+        const nextErrors = { ...errors } as Partial<Record<keyof T, any>>;
         unsetAt(nextErrors, name);
         setErrors(nextErrors);
 
@@ -388,7 +388,7 @@ export function useForm<T extends RawSchema>(
                 touched: touched,
                 dirty: dirty,
             },
-        };
+        } as Control<T>;
     }, [register, setFieldValue, values, errors, touched, runValidate]);
 
     return {
