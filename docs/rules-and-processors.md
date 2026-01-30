@@ -129,7 +129,7 @@
 | date::past    | date::past                  | datePast                  | Must be past date                   |
 | date::future  | date::future                | dateFuture                | Must be future date                 |
 
-> date parmeter should be passed in (YYYY-MM-DD) format
+> date parameter should be passed in (YYYY-MM-DD) format
 
 ---
 
@@ -143,7 +143,7 @@
 | time::equals  | time::equals(time)          | timeEquals(time)          | Must be same as specified time            |
 | time::between | time::between(time1, time2) | timeBetween(time1, time2) | Must be between the specified times       |
 
-> time parmeter should be passed in (HH:MM or HH:MM:SS) format
+> time parameter should be passed in (HH:MM or HH:MM:SS) format
 
 ---
 
@@ -159,7 +159,7 @@
 | datetime::past    | datetime::past                          | datetimePast                          | Must be past datetime                          |
 | datetime::future  | datetime::future                        | datetimeFuture                        | Must be future datetime                        |
 
-> datetime parmeter should be passed in (YYYY-MM-DD HH:MM:SS) format
+> datetime parameter should be passed in (YYYY-MM-DD HH:MM:SS) format
 
 ---
 
@@ -193,8 +193,10 @@
 | array::excludes | array::excludes(item)    | arrayExcludes(item), arrayNotContains(item) | Array must not include specified item                     |
 | array::latLong  | array::latLong           | latLongArray                                | Array must a valid [latitude, longitude] coordinate array |
 | array::longLat  | array::longLat           | longLatArray                                | Array must a valid [longitude, latitude] coordinate array |
-| array::of       | array::of(type)          | arrayOf                                     | Array must be type of type array<type>                    |
+| array::of       | array::of(type)          | arrayOf                                     | Array must be type of type array<type> ex. arrayOf(number)|
 | array::notOf    | array::notOf(type)       | arrayNotOf                                  | Array must not be type of type array<type>                |
+
+> *Available types to check:* `undefined`|`null`|`string`|`number`|`integer`|`float`|`boolean`|`array`|`object`
 
 ---
 
@@ -217,6 +219,8 @@
 | object::noUndefinedValues    | object::noUndefinedValues        | objectNoUndefined                           | Object must not contain `undefined` values                 |
 | object::deepIncludes         | object::deepIncludes(path)       | objectDeepIncludes(path)                    | Object must include the specified nested key path          |
 | object::isPlain              | object::isPlain                  | plainObject                                 | Must be a plain JavaScript object                          |
+
+> *Available types to check:* `undefined`|`null`|`string`|`number`|`integer`|`float`|`boolean`|`array`|`object`
 
 ---
 
@@ -242,7 +246,7 @@
 | case::snake                  | toSnakecase       | Converts to snake_case                   |
 | case::title                  | toTitlecase       | Converts to Title Case                   |
 | case::upper                  | toUppercase       | Converts to UPPERCASE                    |
-| case::ucFirst                | toUcFirst         | Uppercases first character               |
+| case::ucFirst                | toUcFirst         | Uppercase first character                |
 | case::capitalize             | toCapitalize      | Capitalizes each word                    |
 | preCase::camel               | preToCamelcase    | Pre-process to camelCase                 |
 | preCase::kebab               | preToKebabcase    | Pre-process to kebab-case                |
