@@ -3,9 +3,9 @@
 import { extractParam } from "./param-extractor.js";
 import { parseParam } from "./param-parser.js";
 import { ProcessorFunc } from "./processors/processor.js";
-import type { RuleName } from "./rule-name.js";
+import type { RuleName, SchemaField } from "./rule-name.js";
 import { resolveRule } from "./rule-registry.js";
-import { RuleFunction, type ValidationStep } from "./rules/base-rule.js";
+import { RuleFunction } from "./rules/base-rule.js";
 import { isObject } from "./rules/core-rules.js";
 
 export type FieldRule = {
@@ -17,19 +17,6 @@ export type FieldRule = {
 };
 
 export type ParsedSchema = Record<string, FieldRule[]>;
-
-type SchemaRuleNames = {
-    [ruleName in RuleName]?: any;
-}
-
-export type SchemaField = SchemaRuleNames & {
-    optional?: boolean;
-    default?: any;
-    custom?: ValidationStep;
-    messages?: {
-        [key in RuleName]?: string;
-    };
-}
 
 export type RawSchema = Record<string, SchemaField | string>;
 
@@ -68,9 +55,7 @@ export function parseSchema(rawSchema: RawSchema): ParsedSchema {
                     fieldRules.push({ name, type, rule: validator, param });
                 }
             });
-        }
-
-        if (typeof schemaDef === 'object') {
+        } else if (typeof schemaDef === 'object') {
             const { messages = {}, ...rules } = schemaDef as SchemaField;
             for (const ruleName in rules) {
                 if (ruleName === 'messages') continue;
