@@ -31,6 +31,9 @@ export function parseParam(rawParam: string | null, paramType: string, argumentT
 function parseSingleParam(raw: string, argumentType: string): string|any[]|number|boolean|ExtractedDate|ExtractedTime|ExtractedDateTime {
     if (argumentType === 'string') {
         return String(raw);
+    } else if (argumentType === 'number') {
+        if (isNaN(Number(raw)) || !Number.isFinite(Number(raw))) throw new Error(`Invalid number value ${raw}`);
+        return Number(raw);
     } else if (argumentType === 'integer') {
         if (isNaN(parseInt(raw))) throw new Error(`Invalid integer value ${raw}`);
         return parseInt(raw);

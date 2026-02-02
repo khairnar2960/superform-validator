@@ -19,6 +19,20 @@
 
 ---
 
+## Number Rules
+
+| Rule               | Signature                         | Aliases                      | Description                                   |
+| ------------------ | --------------------------------- | ---------------------------- | --------------------------------------------- |
+| number::valid      | number::valid                     | number, numeric              | Must be a valid finite number                 |
+| number::positive   | number::positive                  | positiveNumber               | Must be a positive number (≥ 0)               |
+| number::negative   | number::negative                  | negativeNumber               | Must be a negative number (< 0)               |
+| number::min        | number::min(number)               | minNum(number)               | Minimum numeric value                         |
+| number::max        | number::max(number)               | maxNum(number)               | Maximum numeric value                         |
+| number::between    | number::between(number1, number2) | numBetween(number1, number2) | Must be between specified numbers (inclusive) |
+| number::multipleOf | number::multipleOf(number)        | numMultipleOf(number)        | Must be a multiple of specified number        |
+
+---
+
 ## 📄 Integer Rules
 
 | Rule               | Signature                            | Aliases                        | Description                                        |

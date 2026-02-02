@@ -16,6 +16,7 @@ import { CaseConverter } from "./processors/case-converter.js";
 import { CastingProcessor } from "./processors/casting.js";
 import { MathProcessor } from "./processors/math.js";
 import { ObjectRule } from "./rules/object-rules.js";
+import { NumberRule } from "./rules/number-rules.js";
 
 
 export interface RuleMeta {
@@ -29,6 +30,7 @@ export interface RuleMeta {
 
 export const allRules = [
     new FieldRule(),
+    new NumberRule(),
     new IntegerRule(),
     new FloatRule(),
     new StringRule(),

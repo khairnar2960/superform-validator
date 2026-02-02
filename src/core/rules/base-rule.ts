@@ -2,7 +2,7 @@ import { isArray } from "./core-rules.js";
 
 export type ParamType = 'none' | 'single' | 'range' | 'list' | 'fileSize' | 'fieldReference' | 'fieldEquals' | 'function';
 
-export type ArgumentDataType = 'any' | 'string' | 'integer' | 'float' | 'date' | 'file' | 'fileSize' | 'fileExtension' | 'fileMimetype' | 'array' | 'boolean' | 'time' | 'datetime' | 'fieldName';
+export type ArgumentDataType = 'any' | 'string' | 'number' | 'integer' | 'float' | 'date' | 'file' | 'fileSize' | 'fileExtension' | 'fileMimetype' | 'array' | 'boolean' | 'time' | 'datetime' | 'fieldName';
 
 export interface Field {
     name: string,
