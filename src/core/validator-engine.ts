@@ -3,7 +3,7 @@ import { ErrorFormatter } from "./error-formatter.js";
 import { ProcessorFunc } from "./processors/processor.js";
 import { postProcessors, preProcessors } from "./rule-registry.js";
 import { type Field, RuleFunction } from "./rules/base-rule.js";
-import { isEmpty } from "./rules/core-rules.js";
+import { isEmpty, isObject } from "./rules/core-rules.js";
 import type { FieldRule, ParsedSchema } from "./schema-parser.js";
 
 export interface ValidationResponse {
@@ -12,6 +12,7 @@ export interface ValidationResponse {
     processedValue?: any,
     rule?: string;
     function?: string;
+    children?: Record<string, ValidationResponse>;
 }
 
 function transformFieldValues(records: Record<string, any> = {}): Record<string, Field> {
@@ -105,6 +106,25 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
                     error: formatError(field, value, fieldRule.param?.pattern, fields, message || '@{field} do not match with require pattern'),
                 };
             }
+        } else if (fieldRule.name === 'schema' && isObject(fieldRule.param)) {
+            // need to hold recursive errors/validations
+            const validations = await validate(fieldRule.param, value);
+
+            const hasErrors = Object.values(validations).some(v => !v.valid);
+
+            if (hasErrors) {
+                return {
+                    valid: false,
+                    rule: 'schema',
+                    function: 'schema',
+                    children: validations,
+                    error: formatError(field, value, null, fields, fieldRule.message ?? '@{field} schema validation failed'),
+                };
+            }
+
+            value = Object.fromEntries(
+                Object.entries(validations).map(([k, v]) => [k, v.processedValue])
+            );
         }
     }
 

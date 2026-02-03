@@ -200,7 +200,7 @@ export class ObjectRule extends BaseRule {
             validators: [
                 {
                     callback: (value: any) =>
-                        Object.prototype.toString.call(value) === "[object Object]",
+                        isObject(value) && Object.prototype.toString.call(value) === "[object Object]",
                     message: "@{field} must be a plain object",
                 },
             ],

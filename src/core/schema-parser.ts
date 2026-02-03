@@ -77,6 +77,10 @@ export function parseSchema(rawSchema: RawSchema): ParsedSchema {
                         rule: null,
                         param,
                     });
+                } else if ('schema' === ruleName) {
+                    const schema = parseSchema(param)
+                    const message = messages[ruleName as RuleName];
+                    fieldRules.push({ name: ruleName, type: ruleName, rule: null, param: schema, message });
                 } else {
                     const { function: validator, type, paramType, argumentType } = resolveRule(ruleName);
                     const parsedParam = parseParam(param === true ? null : String(param), paramType, argumentType);

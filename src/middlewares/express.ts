@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { validate } from "../core/validator-engine.js";
 import { parseSchema, type RawSchema } from "../core/schema-parser.js";
+import { collectErrors } from "../utils/helpers.js";
 
 interface ValidResponse {
 	valid: true;
@@ -50,6 +51,7 @@ declare module 'express-serve-static-core' {
 		validateQuery: (schema: RawSchema) => Promise<ValidResponse|InvalidResponse>,
 	}
 }
+
 type ParsedErrors = Record<string, string> | InvalidError[] | Record<string, string>[];
 
 const parseGrouped = (errors: Record<string, InvalidError>, options: Partial<ValidateOptions> = {}): ParsedErrors => {
@@ -68,11 +70,15 @@ const parseGrouped = (errors: Record<string, InvalidError>, options: Partial<Val
 
 const validationHandler = async (schema: RawSchema, data: Record<string, any> = {}): Promise<ValidResponse|InvalidResponse> => {
 	const validated = await validate(parseSchema(schema), data || {});
-	const invalid = Object.entries(validated).filter(([field, { valid }]) => valid === false).map(([field, rest]) => [field, { field, rule: `${rest.rule}::${rest.function}`, error: rest.error }]);
 
-	if (invalid.length) {
-		return { valid: false, errors: Object.fromEntries(invalid) };
-	}
+	const errors = collectErrors(validated);
+
+    if (Object.keys(errors).length) {
+        return {
+            valid: false,
+            errors,
+        };
+    }
 
 	return {
 		valid: true,
