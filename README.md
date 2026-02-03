@@ -44,12 +44,12 @@ npm install superform-validator
 <!-- OR -->
 
 <!-- Recommended with specific version -->
-<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.0.9/dist/form-validator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/superform-validator@2.1.0/dist/form-validator.js"></script>
 
 <!-- OR -->
 
 <!-- unpkg -->
-<script src="https://unpkg.com/superform-validator@2.0.9/dist/form-validator.js"></script>
+<script src="https://unpkg.com/superform-validator@2.1.0/dist/form-validator.js"></script>
 ```
 
 ---

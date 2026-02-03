@@ -1,3 +1,12 @@
+## [2.1.0](https://github.com/khairnar2960/superform-validator/compare/v2.0.9...v2.1.0) (2026-02-03)
+
+
+### Features
+
+* **Number:** Adds number rules ([6741b5c](https://github.com/khairnar2960/superform-validator/commit/6741b5c9993864523b87ab9afff79aa115c87e5a))
+* **Schema:** Adds support for nested schema rules for object ([e6d3cf3](https://github.com/khairnar2960/superform-validator/commit/e6d3cf3fce86528f3d53578ac80cd5e81d213110))
+* **Schema:** Adds support for rule declaration types ([70f355b](https://github.com/khairnar2960/superform-validator/commit/70f355b91639533f919d30af9fbd88e5826fb38e))
+
 ## [2.0.9](https://github.com/khairnar2960/superform-validator/compare/v2.0.8...v2.0.9) (2026-01-30)
 
 
