@@ -36,7 +36,6 @@ describe('arrayOfSchema', () => {
         expect(res2.users.error).toBe('Users must be an array of object');
 
         const res = await validate(parsed, data);
-        console.dir(res, { depth: null })
         expect(res).toHaveProperty('users');
         expect(res.users.valid).toBe(true);
         expect(Array.isArray(res.users.processedValue)).toBe(true);
