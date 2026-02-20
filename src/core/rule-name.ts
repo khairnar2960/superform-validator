@@ -5,6 +5,12 @@ export interface SchemaRuleNames {
 	require?: boolean;
 	'field::requireIf'?: `${string}=${string}`;
 	requireIf?: `${string}=${string}`;
+	'field::noEmpty'?: boolean;
+	noEmpty?: boolean;
+	'field::noNull'?: boolean;
+	noNull?: boolean;
+	'field::requireOrNull'?: boolean;
+	requireOrNull?: boolean;
 	'field::requireUnless'?: `${string}=${string}`;
 	requireUnless?: `${string}=${string}`;
 	'field::requireWith'?: string[];

@@ -8,9 +8,13 @@ describe('React middleware hooks', () => {
     it('validate() returns errors for invalid data and validated for valid data', async () => {
         const schema = { name: 'require' } as any;
 
-        const res1 = await validate(schema, { name: '' });
+        const res1 = await validate(schema, {});
         expect(res1.valid).toBe(false);
         expect(res1.errors).toBeTruthy();
+
+        const res3 = await validate({ name: { require: true, noEmpty: true }}, { name: '' });
+        expect(res3.valid).toBe(false);
+        expect(res3.errors).toBeTruthy();
 
         const res2 = await validate(schema, { name: 'Alice' });
         expect(res2.valid).toBe(true);

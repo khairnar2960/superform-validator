@@ -3,7 +3,7 @@ import { ErrorFormatter } from "./error-formatter.js";
 import { ProcessorFunc } from "./processors/processor.js";
 import { postProcessors, preProcessors } from "./rule-registry.js";
 import { type Field, RuleFunction } from "./rules/base-rule.js";
-import { isEmpty, isObject } from "./rules/core-rules.js";
+import { isEmpty, isObject, isUndefined } from "./rules/core-rules.js";
 import type { FieldRule, ParsedSchema } from "./schema-parser.js";
 
 export interface ValidationResponse {
@@ -48,15 +48,15 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
     const isRequire = !!requireRule;
     const isOptional = rules.some(rule => rule.name === 'optional') || !isRequire;
 
-    if (isEmpty(value) && defaultRule) {
+    if (isUndefined(value) && defaultRule) {
         value = defaultRule.param;
     }
 
-    if (isOptional && isEmpty(value)) {
+    if (isOptional && isUndefined(value)) {
         return { valid: true, processedValue: value };
     }
 
-    if (isRequire && isEmpty(value)) {
+    if (isRequire && isUndefined(value)) {
         const rule: RuleFunction = ((requireRule as FieldRule).rule as RuleFunction);
         const result = await rule.validate(value, requireRule?.param, fields);
 

@@ -1,5 +1,5 @@
 import { BaseRule, type Field } from "./base-rule.js";
-import { isEmpty } from "./core-rules.js";
+import { isEmpty, isUndefined } from "./core-rules.js";
 
 export class FieldRule extends BaseRule {
     constructor() {
@@ -10,7 +10,7 @@ export class FieldRule extends BaseRule {
             aliases: ['require'],
             validators: [
                 {
-                    callback: (value: any) => !isEmpty(value),
+                    callback: (value: any) => !isUndefined(value),
                     message: '@{field} is required',
                 }
             ]
@@ -24,9 +24,45 @@ export class FieldRule extends BaseRule {
                 {
                     callback: (value, param, fields: Record<string, Field>) => {
                         const target = fields[param.field] || null;
-                        return !(target && target.value === param.value && isEmpty(value));
+                        return !(target && target.value === param.value && isUndefined(value));
                     },
                     message: '@{field} is required because @{param.field} is @{param.value}'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'noEmpty',
+            paramType: 'none',
+            argumentType: 'any',
+            aliases: ['noEmpty'],
+            validators: [
+                {
+                    callback: (value) => !isEmpty(value),
+                    message: '@{field} should not be empty'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'noNull',
+            paramType: 'none',
+            argumentType: 'any',
+            aliases: ['noNull'],
+            validators: [
+                {
+                    callback: (value) => null !== value,
+                    message: '@{field} should not be null'
+                }
+            ],
+        });
+        this.registerFunction({
+            name: 'requireOrNull',
+            paramType: 'none',
+            argumentType: 'any',
+            aliases: ['requireOrNull'],
+            validators: [
+                {
+                    callback: (value) => null === value || !isUndefined(value),
+                    message: '@{field} is required or should be null'
                 }
             ],
         });
@@ -39,7 +75,7 @@ export class FieldRule extends BaseRule {
                 {
                     callback: (value, param, fields: Record<string, Field>) => {
                         const target = fields[param.field] || null;
-                        return !(target && target.value !== param.value && isEmpty(value));
+                        return !(target && target.value !== param.value && isUndefined(value));
                     },
                     message: '@{field} is required unless @{param.field} is @{param.value}'
                 }
@@ -56,7 +92,7 @@ export class FieldRule extends BaseRule {
                         return !(param.some(field => {
                             const target = fields[field] || null;
                             return target && target.value
-                        }) && isEmpty(value));
+                        }) && isUndefined(value));
                     },
                     message: '@{field} is required when @{param} is present'
                 }
@@ -73,7 +109,7 @@ export class FieldRule extends BaseRule {
                         return !(param.every(field => {
                             const target = fields[field] || null;
                             return !target || !target.value
-                        }) && isEmpty(value));
+                        }) && isUndefined(value));
                     },
                     message: '@{field} is required when @{param} is absent'
                 }
@@ -86,7 +122,7 @@ export class FieldRule extends BaseRule {
             aliases: ['match'],
             validators: [
                 {
-                    callback: (value, param, fields: Record<string, Field>) => 'undefined' !== typeof fields[param],
+                    callback: (value, param, fields: Record<string, Field>) => !isUndefined(fields[param]),
                     message: 'Matching field @{param} not found'
                 },
                 {
@@ -106,7 +142,7 @@ export class FieldRule extends BaseRule {
                         // Passes when at least one of the referenced fields has a non-empty value
                         return param.some(field => {
                             const target = fields[field] || null;
-                            return target && !isEmpty(target.value);
+                            return target && !isUndefined(target.value);
                         });
                     },
                     message: 'At least one of @{param} is required'
@@ -124,7 +160,7 @@ export class FieldRule extends BaseRule {
                         // Passes when exactly one of the referenced fields has a non-empty value
                         const count = param.reduce((acc, field) => {
                             const target = fields[field] || null;
-                            return acc + (target && !isEmpty(target.value) ? 1 : 0);
+                            return acc + (target && !isUndefined(target.value) ? 1 : 0);
                         }, 0);
                         return count === 1;
                     },
@@ -143,7 +179,7 @@ export class FieldRule extends BaseRule {
                         // Passes when either all referenced fields are present (non-empty) or all are absent/empty
                         const statuses = param.map(field => {
                             const target = fields[field] || null;
-                            return Boolean(target && !isEmpty(target.value));
+                            return Boolean(target && !isUndefined(target.value));
                         });
                         const any = statuses.some(Boolean);
                         const all = statuses.every(Boolean);

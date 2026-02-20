@@ -2,14 +2,47 @@ import { describe, it, expect } from 'vitest';
 import { FieldRule } from '../../src/core/rules/field-rules';
 
 describe('FieldRule', async () => {
-    it('require passes when value present and fails when empty', async () => {
+    it('require passes when value present and fails when undefined', async () => {
         const rule = new FieldRule();
         const ok = await rule.validate('require', 'value', undefined, {} as any);
         expect(ok.valid).toBe(true);
 
-        const bad = await rule.validate('require', '', undefined, {} as any);
+        const bad = await rule.validate('require', undefined, undefined, {} as any);
         expect(bad.valid).toBe(false);
         expect(bad.error).toBe('@{field} is required');
+    });
+
+    it('noEmpty fails for empty string and passes for non-empty', async () => {
+        const rule = new FieldRule();
+        const bad = await rule.validate('noEmpty', '', undefined, {} as any);
+        expect(bad.valid).toBe(false);
+        expect(bad.error).toBe('@{field} should not be empty');
+
+        const ok = await rule.validate('noEmpty', 'x', undefined, {} as any);
+        expect(ok.valid).toBe(true);
+    });
+
+    it('noNull fails for null and passes for non-null', async () => {
+        const rule = new FieldRule();
+        const bad = await rule.validate('noNull', null, undefined, {} as any);
+        expect(bad.valid).toBe(false);
+        expect(bad.error).toBe('@{field} should not be null');
+
+        const ok = await rule.validate('noNull', 0, undefined, {} as any);
+        expect(ok.valid).toBe(true);
+    });
+
+    it('requireOrNull passes when value present or null, fails when undefined', async () => {
+        const rule = new FieldRule();
+        const bad = await rule.validate('requireOrNull', undefined, undefined, {} as any);
+        expect(bad.valid).toBe(false);
+        expect(bad.error).toBe('@{field} is required or should be null');
+
+        const okNull = await rule.validate('requireOrNull', null, undefined, {} as any);
+        expect(okNull.valid).toBe(true);
+
+        const ok = await rule.validate('requireOrNull', 'val', undefined, {} as any);
+        expect(ok.valid).toBe(true);
     });
 
     it('requireIf triggers when target field equals value', async () => {
@@ -17,7 +50,7 @@ describe('FieldRule', async () => {
         const fields = { other: { name: 'other', value: 'yes' } } as any;
         const param = { field: 'other', value: 'yes' };
 
-        const bad = await rule.validate('requireIf', '', param, fields);
+        const bad = await rule.validate('requireIf', undefined, param, fields);
         expect(bad.valid).toBe(false);
         expect(bad.error).toBe('@{field} is required because @{param.field} is @{param.value}');
 
@@ -30,7 +63,7 @@ describe('FieldRule', async () => {
         const fields = { other: { name: 'other', value: 'no' } } as any;
         const param = { field: 'other', value: 'yes' };
 
-        const bad = await rule.validate('requireUnless', '', param, fields);
+        const bad = await rule.validate('requireUnless', undefined, param, fields);
         expect(bad.valid).toBe(false);
 
         const ok = await rule.validate('requireUnless', 'present', param, fields);
@@ -42,7 +75,7 @@ describe('FieldRule', async () => {
         const fields = { a: { name: 'a', value: '' }, b: { name: 'b', value: 'X' } } as any;
         const param = ['a', 'b'];
 
-        const bad = await rule.validate('requireWith', '', param, fields);
+        const bad = await rule.validate('requireWith', undefined, param, fields);
         expect(bad.valid).toBe(false);
 
         const ok = await rule.validate('requireWith', 'val', param, fields);
@@ -54,7 +87,7 @@ describe('FieldRule', async () => {
         const fields = { a: { name: 'a', value: '' }, b: { name: 'b', value: '' } } as any;
         const param = ['a', 'b'];
 
-        const bad = await rule.validate('requireWithout', '', param, fields);
+        const bad = await rule.validate('requireWithout', undefined, param, fields);
         expect(bad.valid).toBe(false);
 
         const ok = await rule.validate('requireWithout', 'val', param, fields);
@@ -83,7 +116,7 @@ describe('FieldRule', async () => {
         const param = ['a', 'b'];
 
         const none = { a: { name: 'a', value: '' }, b: { name: 'b', value: '' } } as any;
-        const bad = await rule.validate('atLeastOne', '', param, none);
+        const bad = await rule.validate('atLeastOne', '', param, {});
         expect(bad.valid).toBe(false);
         expect(bad.error).toBe('At least one of @{param} is required');
 
@@ -105,7 +138,7 @@ describe('FieldRule', async () => {
         const badNone = await rule.validate('onlyOne', '', param, none);
         expect(badNone.valid).toBe(false);
 
-        const one = { a: { name: 'a', value: '1' }, b: { name: 'b', value: '' }, c: { name: 'c', value: '' } } as any;
+        const one = { a: { name: 'a', value: '1' } } as any;
         const ok = await rule.validate('onlyOne', '', param, one);
         expect(ok.valid).toBe(true);
 
@@ -127,7 +160,7 @@ describe('FieldRule', async () => {
         const okNone = await rule.validate('allOrNone', '', param, none);
         expect(okNone.valid).toBe(true);
 
-        const mixed = { a: { name: 'a', value: 'X' }, b: { name: 'b', value: '' } } as any;
+        const mixed = { a: { name: 'a', value: 'X' } } as any;
         const bad = await rule.validate('allOrNone', '', param, mixed);
         expect(bad.valid).toBe(false);
         expect(bad.error).toBe('Either all of @{param} must be present or none');
