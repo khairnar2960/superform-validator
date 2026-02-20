@@ -1,3 +1,13 @@
+## [2.1.1](https://github.com/khairnar2960/superform-validator/compare/v2.1.0...v2.1.1) (2026-02-20)
+
+
+### Features
+
+* **Casting:** Adds cast::string, toStr pre and post processors ([b1cf0e6](https://github.com/khairnar2960/superform-validator/commit/b1cf0e6f033c601fe98145d3b97bf5d373358292))
+* **Core Rules:** Adds isUndefined rule ([bf3d16d](https://github.com/khairnar2960/superform-validator/commit/bf3d16dc66a08e156bcc95226599fd476c0a9721))
+* **Field:** Adds noEmpty, noNull and requireOrNull rules ([c816563](https://github.com/khairnar2960/superform-validator/commit/c81656332252da165aeef45aa24747bceb6a61e4))
+* **Schema:** Adds schema & arrayOfSchema rules ([5e379ef](https://github.com/khairnar2960/superform-validator/commit/5e379ef84a5e2a558f366bfb6a095a76c562dd9f))
+
 ## [2.1.0](https://github.com/khairnar2960/superform-validator/compare/v2.0.9...v2.1.0) (2026-02-03)
 
 
