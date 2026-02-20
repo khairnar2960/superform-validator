@@ -1,6 +1,6 @@
 {
   "name": "superform-validator",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "type": "module",
   "description": "A powerful and flexible JavaScript form validator for HTML forms/Express.js.",
   "main": "dist/index.js",
