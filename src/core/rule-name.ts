@@ -309,6 +309,8 @@ export interface SchemaRuleNames {
 	preToUcFirst?: boolean;
 	'preCase::capitalize'?: boolean;
 	preToCapitalize?: boolean;
+	'cast::string'?: boolean;
+	toStr?: boolean;
 	'cast::integer'?: boolean;
 	toInteger?: boolean;
 	'cast::float'?: boolean;
@@ -319,6 +321,8 @@ export interface SchemaRuleNames {
 	toJson?: boolean;
 	'cast::fromJson'?: boolean;
 	fromJson?: boolean;
+	'preCast::string'?: boolean;
+	preToStr?: boolean;
 	'preCast::integer'?: boolean;
 	preToInteger?: boolean;
 	'preCast::float'?: boolean;

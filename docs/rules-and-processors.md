@@ -283,13 +283,13 @@
 | preCase::upper               | preToUppercase    | Pre-process to UPPERCASE                 |
 | preCase::ucFirst             | preToUcFirst      | Pre-process to uppercase first character |
 | preCase::capitalize          | preToCapitalize   | Pre-process to capitalize each word      |
-| cast::string                 | toString          | Casts to string                          |
+| cast::string                 | toStr             | Casts to string                          |
 | cast::integer                | toInteger         | Casts to integer                         |
 | cast::float                  | toFloat           | Casts to float                           |
 | cast::boolean                | toBoolean         | Casts to boolean                         |
 | cast::toJson                 | toJson            | Casts to JSON string                     |
 | cast::fromJson               | fromJson          | Parses from JSON string                  |
-| preCast::string              | preToString       | Pre-cast to string                       |
+| preCast::string              | preToStr          | Pre-cast to string                       |
 | preCast::integer             | preToInteger      | Pre-cast to integer                      |
 | preCast::float               | preToFloat        | Pre-cast to float                        |
 | preCast::boolean             | preToBoolean      | Pre-cast to boolean                      |

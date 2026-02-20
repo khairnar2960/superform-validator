@@ -11,7 +11,7 @@ export class CastingProcessor extends Processor {
 			name: 'string',
 			paramType: 'none',
 			argumentType: 'any',
-			aliases: ['toString'],
+			aliases: ['toStr'],
 			processors: [
 				(value) => String(value)
 			],
