@@ -42,7 +42,7 @@ for (const [name, rule] of entries) {
     types += (name.includes('::') ? `'${name}'` : name) + '?: ' + type + ';\n\t';
 }
 
-const ruleNames = 'import type { ValidationStep } from "./rules/base-rule.js";\n\nexport interface SchemaRuleNames {\n\t' + types.slice(0, -1) + '};\n\nexport type RuleName<K = keyof SchemaRuleNames> = K;\n\nexport type SchemaField = SchemaRuleNames & {\n\toptional?: boolean;\n\tdefault?: any;\n\tcustom?: ValidationStep;\n\tschema?: Record<string, SchemaField>;\n\tmessages?: {\n\t\t[key in RuleName]?: string;\n\t};\n}';
+const ruleNames = 'import type { ValidationStep } from "./rules/base-rule.js";\n\nexport interface SchemaRuleNames {\n\t' + types.slice(0, -1) + '};\n\nexport type RuleName<K = keyof SchemaRuleNames> = K;\n\nexport type SchemaField = SchemaRuleNames & {\n\toptional?: boolean;\n\tdefault?: any;\n\tcustom?: ValidationStep;\n\tschema?: Record<string, SchemaField>;\n\tarrayOfSchema?: Record<string, SchemaField>;\n\tmessages?: {\n\t\t[key in RuleName]?: string;\n\t};\n}';
 // const ruleNames = 'export type RuleName = "' + Object.keys(ruleRegistry).join('"|"') + '";';
 
 const outFile = path.join(__dirname, '../src/core/rule-name.ts')

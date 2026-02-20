@@ -81,6 +81,11 @@ export function parseSchema(rawSchema: RawSchema): ParsedSchema {
                     const schema = parseSchema(param)
                     const message = messages[ruleName as RuleName];
                     fieldRules.push({ name: ruleName, type: ruleName, rule: null, param: schema, message });
+                } else if ('arrayOfSchema' === ruleName) {
+                    // allow validating each item of an array against a nested schema
+                    const schema = parseSchema(param)
+                    const message = messages[ruleName as RuleName];
+                    fieldRules.push({ name: ruleName, type: ruleName, rule: null, param: schema, message });
                 } else {
                     const { function: validator, type, paramType, argumentType } = resolveRule(ruleName);
                     const parsedParam = parseParam(param === true ? null : String(param), paramType, argumentType);

@@ -19,6 +19,7 @@
 | field::noEmpty        | field::noEmpty                             | noEmpty                             | Field cant be undefined, empty (string, array, object) or null |
 | field::noNull         | field::noNull                              | noNull                              | Field cant be null                                             |
 | field::requireOrNull  | field::requireOrNull                       | requireOrNull                       | Field is required or can be null                               |
+
 ---
 
 ## Number Rules
@@ -238,6 +239,14 @@
 
 > *Available types to check:* `undefined`|`null`|`string`|`number`|`integer`|`float`|`boolean`|`array`|`object`
 
+
+## Schema Rules
+
+| Rule          | Signature              | Aliases | Description                                                                        |
+| ------------- | ---------------------- | ------- | ---------------------------------------------------------------------------------- |
+| schema        | schema: { ... }        | -       | Validate an object field by applying a nested schema definition                    |
+| arrayOfSchema | arrayOfSchema: { ... } | -       | Validate each item of an array against a nested schema (per-index errors returned) |
+
 ---
 
 ## 🛠️ Custom Rules
@@ -274,11 +283,13 @@
 | preCase::upper               | preToUppercase    | Pre-process to UPPERCASE                 |
 | preCase::ucFirst             | preToUcFirst      | Pre-process to uppercase first character |
 | preCase::capitalize          | preToCapitalize   | Pre-process to capitalize each word      |
+| cast::string                 | toString          | Casts to string                          |
 | cast::integer                | toInteger         | Casts to integer                         |
 | cast::float                  | toFloat           | Casts to float                           |
 | cast::boolean                | toBoolean         | Casts to boolean                         |
 | cast::toJson                 | toJson            | Casts to JSON string                     |
 | cast::fromJson               | fromJson          | Parses from JSON string                  |
+| preCast::string              | preToString       | Pre-cast to string                       |
 | preCast::integer             | preToInteger      | Pre-cast to integer                      |
 | preCast::float               | preToFloat        | Pre-cast to float                        |
 | preCast::boolean             | preToBoolean      | Pre-cast to boolean                      |

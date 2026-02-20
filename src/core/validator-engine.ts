@@ -3,7 +3,7 @@ import { ErrorFormatter } from "./error-formatter.js";
 import { ProcessorFunc } from "./processors/processor.js";
 import { postProcessors, preProcessors } from "./rule-registry.js";
 import { type Field, RuleFunction } from "./rules/base-rule.js";
-import { isEmpty, isObject, isUndefined } from "./rules/core-rules.js";
+import { isArray, isEmpty, isObject, isUndefined } from "./rules/core-rules.js";
 import type { FieldRule, ParsedSchema } from "./schema-parser.js";
 
 export interface ValidationResponse {
@@ -45,6 +45,7 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
     // 2. Core Validation Phase
     const defaultRule = rules.find(rule => rule.name === 'default');
     const requireRule = rules.find(rule => rule.name.startsWith('require'));
+    const requireOrNull = rules.find(rule => rule.name === 'requireOrNull');
     const isRequire = !!requireRule;
     const isOptional = rules.some(rule => rule.name === 'optional') || !isRequire;
 
@@ -52,7 +53,7 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
         value = defaultRule.param;
     }
 
-    if (isOptional && isUndefined(value)) {
+    if ((isOptional && isUndefined(value)) || (requireOrNull && null === value)) {
         return { valid: true, processedValue: value };
     }
 
@@ -125,6 +126,59 @@ export async function validateField(value: any, fieldRules: [string, FieldRule[]
             value = Object.fromEntries(
                 Object.entries(validations).map(([k, v]) => [k, v.processedValue])
             );
+        } else if (fieldRule.name === 'arrayOfSchema' && isObject(fieldRule.param)) {
+            if (!isArray(value)) {
+                return {
+                    valid: false,
+                    rule: 'array',
+                    function: 'arrayOfSchema',
+                    error: formatError(field, value, null, fields, '@{field} must be an array'),
+                };
+            }
+
+            if (!value.every((item: unknown) => isObject(item))) {
+                return {
+                    valid: false,
+                    rule: 'array',
+                    function: 'arrayOfSchema',
+                    error: formatError(field, value, null, fields, '@{field} must be an array of object'),
+                };
+            }
+
+            // validate each array item against nested schema
+            const itemSchema: ParsedSchema = fieldRule.param;
+            const children: Record<string, ValidationResponse> = {};
+            const processedItems: any[] = [];
+            let anyError = false;
+
+            for (let i = 0; i < value.length; i++) {
+                const item = value[i] as Record<string, any> || {};
+                const validations = await validate(itemSchema, item);
+                const itemHasErrors = Object.values(validations).some(v => !v.valid);
+
+                if (itemHasErrors) {
+                    anyError = true;
+                    children[String(i)] = { valid: false, children: validations } as ValidationResponse;
+                } else {
+                    const processed = Object.fromEntries(
+                        Object.entries(validations).map(([k, v]) => [k, v.processedValue])
+                    );
+                    children[String(i)] = { valid: true, processedValue: processed } as ValidationResponse;
+                    processedItems.push(processed);
+                }
+            }
+
+            if (anyError) {
+                return {
+                    valid: false,
+                    rule: 'array',
+                    function: 'arrayOfSchema',
+                    children,
+                    error: formatError(field, value, null, fields, fieldRule.message ?? '@{field} array item schema validation failed'),
+                };
+            }
+
+            value = processedItems;
         }
     }
 

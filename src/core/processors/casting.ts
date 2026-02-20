@@ -8,6 +8,17 @@ export class CastingProcessor extends Processor {
         super('cast', isPreprocessor);
 
 		this.registerFunction({
+			name: 'string',
+			paramType: 'none',
+			argumentType: 'any',
+			aliases: ['toString'],
+			processors: [
+				(value) => String(value)
+			],
+			desc: ''
+		});
+		
+		this.registerFunction({
 			name: 'integer',
 			paramType: 'none',
 			argumentType: 'any',

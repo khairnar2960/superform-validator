@@ -380,6 +380,7 @@ export type SchemaField = SchemaRuleNames & {
 	default?: any;
 	custom?: ValidationStep;
 	schema?: Record<string, SchemaField>;
+	arrayOfSchema?: Record<string, SchemaField>;
 	messages?: {
 		[key in RuleName]?: string;
 	};
