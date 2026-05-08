@@ -3,40 +3,40 @@ import { validate } from "../core/validator-engine.js";
 import { parseSchema, type RawSchema } from "../core/schema-parser.js";
 import { collectErrors } from "../utils/helpers.js";
 
-interface ValidResponse {
+export interface ValidResponse {
 	valid: true;
 	validated: Record<string, any>;
 }
 
-interface InvalidError {
+export interface InvalidError {
 	field: string;
 	rule: string;
 	error: string,
 }
 
-interface InvalidResponse {
+export interface InvalidResponse {
 	valid: false;
 	errors: Record<string, InvalidError>;
 }
 
-interface ResponseOptions {
+export interface ResponseOptions {
 	status: string;
 	statusCode: number;
 	message: string;
 }
 
-interface ErrorOptions {
+export interface ErrorOptions {
 	emit: boolean;
 	wrap: boolean;
 	verbose: boolean;
 }
 
-interface ValidateOptions {
+export interface ValidateOptions {
 	response: Partial<ResponseOptions>,
 	errors: Partial<ErrorOptions>;
 }
 
-interface JsonResponse {
+export interface JsonResponse {
 	status: string;
 	message: string;
 	errors?: any[]|object;
@@ -52,7 +52,7 @@ declare module 'express-serve-static-core' {
 	}
 }
 
-type ParsedErrors = Record<string, string> | InvalidError[] | Record<string, string>[];
+export type ParsedErrors = Record<string, string> | InvalidError[] | Record<string, string>[];
 
 const parseGrouped = (errors: Record<string, InvalidError>, options: Partial<ValidateOptions> = {}): ParsedErrors => {
 	if (options?.errors?.verbose) {

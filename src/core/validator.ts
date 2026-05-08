@@ -3,17 +3,18 @@ import type { RuleFunctionSchema } from "./rules/base-rule.js";
 import { type ParsedSchema, parseSchema, type RawSchema } from "./schema-parser.js";
 import { validateField, type ValidationResponse } from "./validator-engine.js";
 
-type ValidCallback = (valid: Record<string, any>) => void;
-type InvalidCallback = (invalid: Record<string, any>) => void;
-type AllowedEvents = "blur" | "change" | "focus" | "input";
-type InputElement = HTMLSelectElement|HTMLInputElement|HTMLTextAreaElement|null;
+export type ValidCallback = (valid: Record<string, any>) => void;
+export type InvalidCallback = (invalid: Record<string, any>) => void;
+export type AllowedEvents = "blur" | "change" | "focus" | "input";
+export type InputElement = HTMLSelectElement|HTMLInputElement|HTMLTextAreaElement|null;
 
-interface ValidatorOptions {
+export interface ValidatorOptions {
     errorElement?: keyof HTMLElementTagNameMap,
     errorClass?: string,
     errorId?: string
 }
-interface TransformedFileList {
+
+export interface TransformedFileList {
     file: File,
     name: string,
     size: number,
