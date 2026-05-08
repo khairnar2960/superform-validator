@@ -13,3 +13,4 @@ ehthumbs.db
 .idea/
 *.sublime-workspace
 *.sublime-project
+coverage
