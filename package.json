@@ -3,24 +3,24 @@
   "version": "2.1.1",
   "type": "module",
   "description": "A powerful and flexible JavaScript form validator for HTML forms/Express.js.",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "require": "./dist/index.cjs"
     },
     "./express": {
       "types": "./dist/middlewares/express.d.ts",
       "import": "./dist/middlewares/express.js",
-      "require": "./dist/middlewares/express.js"
+      "require": "./dist/middlewares/express.cjs"
     },
     "./react": {
       "types": "./dist/middlewares/react.d.ts",
       "import": "./dist/middlewares/react.js",
-      "require": "./dist/middlewares/react.js"
+      "require": "./dist/middlewares/react.cjs"
     }
   },
   "scripts": {
